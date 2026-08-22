@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Lab — Speed Safety Nets</title>
+<style>
+:root{
+  --green-50:#f0f7f1; --green-100:#d8ecdb; --green-200:#b2d9b9; --green-300:#83c08f;
+  --green-400:#5aa86a; --green-500:#3f9150; --green-600:#2f7740; --green-700:#256034;
+  --green-800:#1c4a29; --green-900:#143520;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+
+  /* ── LIVE SITE VALUES — keep in sync with src/styles/tokens.css ── */
+  --net-spin: 100s;
+  --net-breathe: 20s;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:#0a1810;color:#fff;line-height:1.6}
+
+/* ── Lab chrome ───────────────────────────────────────────────── */
+.lab-head{padding:40px 32px 28px;border-bottom:2px solid var(--green-700)}
+.lab-head h1{font-size:1.7rem;letter-spacing:-.02em;margin-bottom:8px}
+.lab-head p{color:rgba(255,255,255,.62);max-width:80ch;font-size:.9rem}
+.lab-head code{background:rgba(255,255,255,.1);padding:2px 6px;border-radius:4px;font-size:.85em}
+
+.controls{
+  position:sticky;top:0;z-index:99;display:flex;gap:20px;flex-wrap:wrap;align-items:center;
+  padding:14px 32px;background:#06110a;border-bottom:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(8px)
+}
+.controls label{font-size:.78rem;font-weight:600;letter-spacing:.04em;
+  display:flex;align-items:center;gap:9px;color:rgba(255,255,255,.8)}
+.controls input[type=range]{width:130px;accent-color:var(--green-400)}
+.controls output{font-variant-numeric:tabular-nums;color:var(--green-300);min-width:44px;font-weight:700}
+.controls button{
+  padding:7px 15px;border-radius:6px;background:var(--green-600);color:#fff;
+  font-weight:600;font-size:.78rem;cursor:pointer;border:none}
+.controls button:hover{background:var(--green-500)}
+
+.label{padding:22px 32px 18px;background:#0a1810;border-top:1px solid rgba(255,255,255,.08)}
+.label h2{font-size:1rem;margin-bottom:4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:99px;background:var(--green-600)}
+.pill--live{background:#fff;color:var(--green-900)}
+.label p{font-size:.84rem;color:rgba(255,255,255,.6);max-width:80ch;margin-top:6px}
+.badge{display:inline-block;margin-top:9px;font-size:.68rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;padding:3px 9px;border-radius:4px;margin-right:6px}
+.badge--ok{background:#1c4a29;color:#83c08f}
+.badge--bad{background:#5a3410;color:#f0b57a}
+
+/* ── Hero under test ──────────────────────────────────────────── */
+.hero{position:relative;background:var(--green-900);overflow:hidden;min-height:400px;
+  display:flex;align-items:center}
+.hero__inner{position:relative;z-index:2;padding:52px 32px;max-width:680px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.7rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--green-300);margin-bottom:13px}
+.eyebrow::before{content:'';width:22px;height:2px;background:currentColor}
+.hero h3{font-size:clamp(1.7rem,3.6vw,2.6rem);line-height:1.13;letter-spacing:-.02em;margin-bottom:13px}
+.hero .sub{color:rgba(255,255,255,.8);max-width:52ch;font-size:.95rem}
+.glow{position:absolute;right:-12%;top:-35%;width:60%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,var(--green-700) 0%,transparent 68%);pointer-events:none;z-index:1}
+
+.net{position:absolute;inset:-60%;
+  background-image:linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:26px 26px;pointer-events:none;will-change:transform}
+
+@keyframes spin{from{rotate:0deg} to{rotate:360deg}}
+@keyframes zoom{0%,100%{scale:1} 50%{scale:1.18}}
+@keyframes meshScale{0%,100%{scale:1} 50%{scale:1.4615}}
+@keyframes meshSize{0%,100%{background-size:26px 26px} 50%{background-size:38px 38px}}
+@keyframes form{0%,100%{opacity:.55} 50%{opacity:1}}
+@keyframes sway{0%,100%{rotate:8deg;scale:1} 50%{rotate:16deg;scale:1.06}}
+@keyframes drift{from{background-position:0 0} to{background-position:26px 26px}}
+
+.v1 .net{rotate:12deg}
+.v2 .net{animation:spin var(--net-spin) linear infinite}
+.v3 .net{animation:sway var(--net-breathe) ease-in-out infinite}
+.v4 .net{rotate:12deg;animation:drift 6s linear infinite}
+.v5 .net{animation:spin var(--net-spin) linear infinite,zoom var(--net-breathe) ease-in-out infinite}
+.v6 .net{animation:spin var(--net-spin) linear infinite,meshSize var(--net-breathe) ease-in-out infinite}
+.v7 .net{animation:spin var(--net-spin) linear infinite,meshScale var(--net-breathe) ease-in-out infinite}
+.v8 .net{animation:spin var(--net-spin) linear infinite,zoom var(--net-breathe) ease-in-out infinite,
+         form var(--net-breathe) ease-in-out infinite}
+
+body.paused .net{animation-play-state:paused !important}
+
+@media (prefers-reduced-motion: reduce){.net{animation:none !important}}
+</style>
+</head>
+<body>
+
+<div class="lab-head">
+  <h1>Design Lab</h1>
+  <p>Every hero motion option, live and comparable. The one marked <strong>LIVE</strong> is
+  what is currently in <code>src/styles/global.css</code>. Use the sliders to retune, then
+  copy the values into <code>src/styles/tokens.css</code>. Keep this file — add new
+  variants here as we test them rather than making one-off pages.</p>
+</div>
+
+<div class="controls">
+  <label>Rotation <input type="range" id="spin" min="20" max="300" step="5" value="100">
+    <output id="spinOut">100s</output></label>
+  <label>Mesh cycle <input type="range" id="breathe" min="4" max="80" step="1" value="20">
+    <output id="breatheOut">20s</output></label>
+  <button id="pause">Pause all</button>
+  <button id="reset">Reset to live values</button>
+</div>
+
+<div class="label">
+  <h2><span class="pill pill--live">Live</span>7 · Rotate + mesh resize</h2>
+  <p>Your pick. The mesh opens from 26px to 38px cells and tightens back while the net
+  turns. Implemented as <code>scale: 1 → 1.4615</code> (which is 38 ÷ 26) rather than
+  animating <code>background-size</code> — pixel-for-pixel the two differ by 0.7%, but this
+  version runs at full framerate.</p>
+  <span class="badge badge--ok">16.57ms avg · 0 dropped frames</span>
+</div>
+<section class="hero v7"><div class="net"></div><div class="glow"></div><div class="hero__inner">
+  <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+  <h3>Safety netting, engineered and installed across India.</h3>
+  <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+</div></section>
+
+<div class="label">
+  <h2><span class="pill">6</span>Rotate + mesh resize <em>via background-size</em></h2>
+  <p>The literal implementation of the same effect. Visually equivalent to 7 above — and
+  the reason we do not ship it. Resizing the background forces a full repaint every frame.</p>
+  <span class="badge badge--bad">28.85ms avg · 130 of 180 frames dropped</span>
+</div>
+<section class="hero v6"><div class="net"></div><div class="glow"></div><div class="hero__inner">
+  <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+  <h3>Safety netting, engineered and installed across India.</h3>
+  <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+</div></section>
+
+<div class="label">
+  <h2><span class="pill">8</span>Rotate + zoom + fade</h2>
+  <p>Gentler mesh range, with the lines fading in step. Reads as the net assembling itself.</p>
+  <span class="badge badge--ok">16.57ms avg · 0 dropped</span>
+</div>
+<section class="hero v8"><div class="net"></div><div class="glow"></div><div class="hero__inner">
+  <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+  <h3>Safety netting, engineered and installed across India.</h3>
+  <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+</div></section>
+
+<div class="label">
+  <h2><span class="pill">5</span>Rotate + gentle zoom</h2>
+  <p>Same as 7 but a much smaller mesh range (1 → 1.18). Subtler.</p>
+  <span class="badge badge--ok">16.76ms avg · 1 dropped</span>
+</div>
+<section class="hero v5"><div class="net"></div><div class="glow"></div><div class="hero__inner">
+  <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+  <h3>Safety netting, engineered and installed across India.</h3>
+  <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+</div></section>
+
+<div class="label"><h2><span class="pill">2</span>Rotation only</h2>
+  <p>No mesh change. The original Option B.</p></div>
+<section class="hero v2"><div class="net"></div><div class="glow"></div><div class="hero__inner">
+  <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+  <h3>Safety netting, engineered and installed across India.</h3>
+  <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+</div></section>
+
+<div class="label"><h2><span class="pill">3</span>Sway</h2>
+  <p>Tilts 8°→16° and back without ever completing a turn.</p></div>
+<section class="hero v3"><div class="net"></div><div class="glow"></div><div class="hero__inner">
+  <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+  <h3>Safety netting, engineered and installed across India.</h3>
+  <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+</div></section>
+
+<div class="label"><h2><span class="pill">4</span>Diagonal drift</h2>
+  <p>The mesh travels along its own axis. Repaints, same caution as 6.</p>
+  <span class="badge badge--bad">repaints every frame</span></div>
+<section class="hero v4"><div class="net"></div><div class="glow"></div><div class="hero__inner">
+  <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+  <h3>Safety netting, engineered and installed across India.</h3>
+  <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+</div></section>
+
+<div class="label"><h2><span class="pill">1</span>Static</h2>
+  <p>Baseline. Also what anyone with reduce-motion enabled sees.</p></div>
+<section class="hero v1"><div class="net"></div><div class="glow"></div><div class="hero__inner">
+  <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+  <h3>Safety netting, engineered and installed across India.</h3>
+  <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+</div></section>
+
+<div class="label" style="border-bottom:none;padding-bottom:60px">
+  <p>Frame timings measured over 180 frames in headless Chromium on a desktop-class
+  machine. Treat them as relative cost between options, not absolute phone numbers —
+  a low-end Android would be slower across the board, which only widens the gap.</p>
+</div>
+
+<script>
+const spin = document.getElementById('spin');
+const breathe = document.getElementById('breathe');
+const spinOut = document.getElementById('spinOut');
+const breatheOut = document.getElementById('breatheOut');
+const root = document.documentElement;
+
+function apply(){
+  root.style.setProperty('--net-spin', spin.value + 's');
+  root.style.setProperty('--net-breathe', breathe.value + 's');
+  spinOut.textContent = spin.value + 's';
+  breatheOut.textContent = breathe.value + 's';
+}
+spin.addEventListener('input', apply);
+breathe.addEventListener('input', apply);
+
+document.getElementById('pause').addEventListener('click', (e) => {
+  document.body.classList.toggle('paused');
+  e.target.textContent = document.body.classList.contains('paused') ? 'Resume all' : 'Pause all';
+});
+
+document.getElementById('reset').addEventListener('click', () => {
+  spin.value = 100; breathe.value = 20; apply();
+});
+</script>
+</body>
+</html>

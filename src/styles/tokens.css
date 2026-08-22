@@ -1,0 +1,168 @@
+/**
+ * ── BRAND TOKENS ─────────────────────────────────────────────────────────
+ *
+ * The entire site is coloured from this one file. Changing a value here
+ * rebrands every page — no hunting through components.
+ *
+ * Palette taken from the client's visiting card. The brand is GREEN, not the
+ * orange the old demo used: a deep forest green for the wordmark, a fresh leaf
+ * green for accents and labels, on white. The card also carries a small
+ * rainbow swoosh in the logo, which is used sparingly as a decorative accent
+ * only — never for text or interface colour.
+ *
+ * Contrast: --green-800 on white is roughly 8:1 and --green-900 roughly 11:1,
+ * both comfortably past WCAG AA for body text. --green-500 is a decorative /
+ * large-text colour only; it must never carry small text on white.
+ */
+
+:root {
+  /* ── Brand greens ─────────────────────────────────────────────────── */
+  --green-50: #f0f7f1;
+  --green-100: #d8ecdb;
+  --green-200: #b2d9b9;
+  --green-300: #83c08f;
+  --green-400: #5aa86a;
+  --green-500: #3f9150; /* fresh leaf green — the swoosh / accent green */
+  --green-600: #2f7740;
+  --green-700: #256034;
+  --green-800: #1c4a29; /* wordmark green */
+  --green-900: #143520; /* deepest — headings on light backgrounds */
+
+  /* ── Neutrals ─────────────────────────────────────────────────────── */
+  --white: #ffffff;
+  --grey-50: #f8faf8;
+  --grey-100: #eef1ee;
+  --grey-200: #dfe4df;
+  --grey-300: #c4ccc5;
+  --grey-400: #9aa39b;
+  --grey-500: #6f786f;
+  --grey-600: #515a52;
+  --grey-700: #3a423b;
+  --grey-800: #252b26;
+  --grey-900: #151915;
+
+  /* ── Functional accents ───────────────────────────────────────────── */
+  /* Red appears on the card for the government certification line. */
+  --accent-red: #c62828;
+  /* WhatsApp brand green — fixed value, do not theme it. */
+  --whatsapp: #25d366;
+  --warning: #b45309;
+
+  /* ── Semantic roles ───────────────────────────────────────────────── */
+  /* Components reference these, not the raw scale above, so the palette can
+     be restructured without touching a single component. */
+  --color-brand: var(--green-800);
+  --color-brand-strong: var(--green-900);
+  --color-brand-accent: var(--green-500);
+  --color-brand-soft: var(--green-50);
+
+  --color-text: var(--grey-900);
+  --color-text-muted: var(--grey-600);
+  --color-text-inverse: var(--white);
+
+  --color-surface: var(--white);
+  --color-surface-alt: var(--grey-50);
+  --color-surface-brand: var(--green-800);
+
+  --color-border: var(--grey-200);
+  --color-border-strong: var(--grey-300);
+
+  --color-focus: var(--green-500);
+
+  /* ── Typography ───────────────────────────────────────────────────── */
+  /* System stack: renders instantly, costs nothing, no external font request.
+     Google Fonts would add a render-blocking round trip on the mobile
+     connections most of these visitors are on. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 3rem;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+
+  /* ── Spacing ──────────────────────────────────────────────────────── */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* ── Shape ────────────────────────────────────────────────────────── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-full: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(20 53 32 / 6%), 0 1px 3px rgb(20 53 32 / 8%);
+  --shadow-md: 0 4px 12px rgb(20 53 32 / 8%);
+  --shadow-lg: 0 12px 32px rgb(20 53 32 / 12%);
+
+  /* ── Layout ───────────────────────────────────────────────────────── */
+  --container-max: 1200px;
+  --header-height: 72px;
+
+  /* ── Motion ───────────────────────────────────────────────────────── */
+  /* `ease` starts fast and ends slow, which reads as abrupt on hover. These
+     curves start gently and settle, which is what makes movement feel
+     considered rather than snappy. */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* decelerating — entrances */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* symmetric — moves */
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1); /* general purpose */
+
+  --duration-fast: 180ms;
+  --duration-base: 280ms;
+  --duration-slow: 520ms;
+
+  --transition: var(--duration-fast) var(--ease-soft);
+  --transition-base: var(--duration-base) var(--ease-out);
+
+  /* Hero net animation — see .hero::before in global.css.
+     Two independent cycles. Raise for slower, lower for faster.
+     Deliberately not multiples of each other: the rotation and the
+     grow/shrink drift out of phase, so the net never visibly repeats. */
+  --net-spin: 100s; /* one full rotation */
+  --net-breathe: 20s; /* grow → shrink → grow, and the fade with it */
+}
+
+/*
+  Respect users who have asked their operating system to reduce motion.
+  This is not optional politeness: for people with vestibular disorders,
+  large background movement can cause genuine nausea. Every animation on the
+  site is gated behind this.
+*/
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition: 0ms;
+    --transition-base: 0ms;
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Option B variants — rotation + forming grid</title>
+<style>
+:root{
+  --green-300:#83c08f; --green-500:#3f9150; --green-600:#2f7740;
+  --green-700:#256034; --green-900:#143520;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --spin: 100s;      /* was 150s — this is the "a bit faster" */
+  --breathe: 20s;    /* the grow/shrink cycle */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:#0d1f14;color:#fff}
+
+.label{padding:22px 32px;background:#0d1f14;border-bottom:1px solid rgba(255,255,255,.1)}
+.label h2{font-size:1.05rem;margin-bottom:6px}
+.pill{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;background:var(--green-500);margin-right:10px}
+.label p{font-size:.85rem;color:rgba(255,255,255,.62);max-width:78ch;margin-top:6px}
+.cost{display:inline-block;margin-top:8px;font-size:.72rem;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;padding:3px 9px;border-radius:4px}
+.cost--cheap{background:#1c4a29;color:#83c08f}
+.cost--pricey{background:#5a3410;color:#f0b57a}
+
+.hero{position:relative;background:var(--green-900);overflow:hidden;min-height:420px;
+  display:flex;align-items:center}
+.hero__inner{position:relative;z-index:2;padding:56px 32px;max-width:700px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.7rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--green-300);margin-bottom:14px}
+.eyebrow::before{content:'';width:22px;height:2px;background:currentColor}
+.hero h1{font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.12;letter-spacing:-.02em;margin-bottom:14px}
+.hero p.sub{color:rgba(255,255,255,.8);max-width:52ch;line-height:1.6}
+.glow{position:absolute;right:-12%;top:-35%;width:60%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,var(--green-700) 0%,transparent 68%);pointer-events:none;z-index:1}
+
+.net{
+  position:absolute;inset:-60%;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:26px 26px;
+  pointer-events:none;will-change:transform;
+}
+
+/* B1 — rotate + ZOOM. Individual transform properties, so rotate and scale
+   animate on independent cycles without fighting each other. */
+.b1 .net{
+  animation: spin var(--spin) linear infinite,
+             zoom var(--breathe) ease-in-out infinite;
+}
+@keyframes spin{ from{rotate:0deg} to{rotate:360deg} }
+@keyframes zoom{ 0%,100%{scale:1} 50%{scale:1.18} }
+
+/* B2 — rotate + MESH RESIZE. The cells themselves grow and tighten in place. */
+.b2 .net{
+  animation: spin var(--spin) linear infinite,
+             mesh var(--breathe) ease-in-out infinite;
+}
+@keyframes mesh{ 0%,100%{background-size:26px 26px} 50%{background-size:38px 38px} }
+
+/* B3 — rotate + zoom + fade. The grid "forms": faint and wide, then
+   tightening and brightening. */
+.b3 .net{
+  animation: spin var(--spin) linear infinite,
+             zoom var(--breathe) ease-in-out infinite,
+             form var(--breathe) ease-in-out infinite;
+}
+@keyframes form{ 0%,100%{opacity:.55} 50%{opacity:1} }
+
+@media (prefers-reduced-motion: reduce){ .net{animation:none !important} }
+</style>
+</head>
+<body>
+
+<div class="label">
+  <h2><span class="pill">B1</span>Rotate + zoom</h2>
+  <p>Full turn every 100s (faster than the 150s you saw). Separately, the whole net scales
+  from its current size up to 118% and back every 20s. The mesh appears to advance towards
+  you and recede while it turns.</p>
+  <span class="cost cost--cheap">GPU composited — free</span>
+</div>
+<section class="hero b1">
+  <div class="net"></div><div class="glow"></div>
+  <div class="hero__inner">
+    <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+    <h1>Safety netting, engineered and installed across India.</h1>
+    <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+  </div>
+</section>
+
+<div class="label">
+  <h2><span class="pill">B2</span>Rotate + mesh resize</h2>
+  <p>Same rotation, but instead of scaling the whole layer, the grid cells themselves grow
+  from 26px to 38px and tighten back. The net stays put and appears to knit and loosen —
+  closest to a literal "forming grid".</p>
+  <span class="cost cost--pricey">Repaints every frame — measured below</span>
+</div>
+<section class="hero b2">
+  <div class="net"></div><div class="glow"></div>
+  <div class="hero__inner">
+    <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+    <h1>Safety netting, engineered and installed across India.</h1>
+    <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+  </div>
+</section>
+
+<div class="label">
+  <h2><span class="pill">B3</span>Rotate + zoom + fade</h2>
+  <p>B1 plus the lines fading between 55% and 100% opacity in step with the zoom. The grid
+  reads as assembling itself — faint and open, then tight and defined.</p>
+  <span class="cost cost--cheap">GPU composited — free</span>
+</div>
+<section class="hero b3">
+  <div class="net"></div><div class="glow"></div>
+  <div class="hero__inner">
+    <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+    <h1>Safety netting, engineered and installed across India.</h1>
+    <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+  </div>
+</section>
+
+<div class="label" style="border-bottom:none">
+  <p>All three respect the operating system's reduce-motion setting.
+  Speed is controlled by two variables: <code>--spin</code> (rotation) and
+  <code>--breathe</code> (grow/shrink) — independent, so either can be tuned alone.</p>
+</div>
+
+</body>
+</html>

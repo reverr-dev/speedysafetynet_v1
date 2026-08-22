@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero motion options — Speed Safety Nets</title>
+<style>
+:root{
+  --green-300:#83c08f; --green-500:#3f9150; --green-600:#2f7740;
+  --green-700:#256034; --green-800:#1c4a29; --green-900:#143520;
+  --white:#fff;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);background:#0d1f14;color:#fff}
+
+.label{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:22px 32px;background:#0d1f14;border-bottom:1px solid rgba(255,255,255,.1)
+}
+.label h2{font-size:1.05rem;letter-spacing:-.01em}
+.label .pill{
+  font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 10px;border-radius:99px;background:var(--green-500);color:#fff
+}
+.label p{font-size:.85rem;color:rgba(255,255,255,.6);width:100%;max-width:70ch}
+
+.hero{
+  position:relative;background:var(--green-900);overflow:hidden;
+  min-height:440px;display:flex;align-items:center
+}
+.hero__inner{position:relative;z-index:2;padding:64px 32px;max-width:720px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;font-size:.7rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--green-300);margin-bottom:14px
+}
+.eyebrow::before{content:'';width:22px;height:2px;background:currentColor}
+.hero h1{font-size:clamp(1.9rem,4vw,2.9rem);line-height:1.12;letter-spacing:-.02em;margin-bottom:16px}
+.hero p{color:rgba(255,255,255,.8);max-width:52ch;margin-bottom:26px;line-height:1.6}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;padding:14px 26px;
+  border-radius:8px;font-weight:600;background:var(--green-500);color:#fff;
+  text-decoration:none;transition:background .25s cubic-bezier(.4,0,.2,1)
+}
+.btn:hover{background:var(--green-600)}
+
+/* Shared glow */
+.glow{
+  position:absolute;right:-12%;top:-35%;width:60%;aspect-ratio:1;border-radius:50%;
+  background:radial-gradient(circle,var(--green-700) 0%,transparent 68%);
+  pointer-events:none;z-index:1
+}
+
+/* ── The grid layer ─────────────────────────────────────────────── */
+.net{
+  position:absolute;inset:-60%;
+  background-image:
+    linear-gradient(rgba(255,255,255,.075) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.075) 1px,transparent 1px);
+  background-size:26px 26px;
+  pointer-events:none;
+  will-change:transform;
+}
+
+/* A — static (current) */
+.v-a .net{transform:rotate(12deg) scale(1.1)}
+
+/* B — slow continuous rotation, 150s per turn */
+.v-b .net{animation:spin 150s linear infinite}
+@keyframes spin{
+  from{transform:rotate(0deg)}
+  to{transform:rotate(360deg)}
+}
+
+/* C — gentle sway: rotates 8deg→16deg and back. Never fully turns. */
+.v-c .net{animation:sway 40s ease-in-out infinite}
+@keyframes sway{
+  0%,100%{transform:rotate(8deg) scale(1.1)}
+  50%{transform:rotate(16deg) scale(1.16)}
+}
+
+/* D — diagonal drift: the net travels, like fabric moving past.
+   Shifts exactly one tile (26px) so it loops seamlessly. */
+.v-d .net{transform:rotate(12deg) scale(1.1);animation:drift 6s linear infinite}
+@keyframes drift{
+  from{background-position:0 0}
+  to{background-position:26px 26px}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .net{animation:none !important}
+}
+</style>
+</head>
+<body>
+
+<!-- A -->
+<div class="label">
+  <span class="pill">Option A</span>
+  <h2>Static — what's on the site now</h2>
+  <p>No movement. Included as the baseline so you can judge the others against it.</p>
+</div>
+<section class="hero v-a">
+  <div class="net"></div><div class="glow"></div>
+  <div class="hero__inner">
+    <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+    <h1>Safety netting, engineered and installed across India.</h1>
+    <p>Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+    <a class="btn" href="#">Browse Products</a>
+  </div>
+</section>
+
+<!-- B -->
+<div class="label">
+  <span class="pill">Option B</span>
+  <h2>Slow rotation — a full turn every 2½ minutes</h2>
+  <p>The whole net rotates continuously. Almost imperceptible moment to moment, but the page never feels frozen. Closest to what you described.</p>
+</div>
+<section class="hero v-b">
+  <div class="net"></div><div class="glow"></div>
+  <div class="hero__inner">
+    <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+    <h1>Safety netting, engineered and installed across India.</h1>
+    <p>Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+    <a class="btn" href="#">Browse Products</a>
+  </div>
+</section>
+
+<!-- C -->
+<div class="label">
+  <span class="pill">Option C</span>
+  <h2>Sway — tilts back and forth, 40s cycle</h2>
+  <p>Rotates between 8° and 16° and breathes slightly larger, then returns. Feels like a net under light wind rather than a spinning graphic. Never disorients because it never fully turns.</p>
+</div>
+<section class="hero v-c">
+  <div class="net"></div><div class="glow"></div>
+  <div class="hero__inner">
+    <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+    <h1>Safety netting, engineered and installed across India.</h1>
+    <p>Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+    <a class="btn" href="#">Browse Products</a>
+  </div>
+</section>
+
+<!-- D -->
+<div class="label">
+  <span class="pill">Option D</span>
+  <h2>Drift — the net travels diagonally</h2>
+  <p>The mesh slides continuously along its own axis. Seamless loop, so there is no visible restart. More noticeable than B or C — closer to a "live" feel.</p>
+</div>
+<section class="hero v-d">
+  <div class="net"></div><div class="glow"></div>
+  <div class="hero__inner">
+    <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+    <h1>Safety netting, engineered and installed across India.</h1>
+    <p>Construction safety nets, bird proofing, cricket and football nets, shade systems and artificial turf.</p>
+    <a class="btn" href="#">Browse Products</a>
+  </div>
+</section>
+
+<div class="label" style="border-bottom:none">
+  <p style="font-size:.85rem">
+    All four respect the operating system's "reduce motion" setting — anyone who has
+    asked their device to limit animation sees the static version automatically.
+    Each animates only <code>transform</code> or <code>background-position</code>,
+    which the GPU handles, so none of them cost scroll performance.
+  </p>
+</div>
+
+</body>
+</html>
