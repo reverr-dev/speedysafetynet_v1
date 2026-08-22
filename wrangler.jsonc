@@ -1,0 +1,36 @@
+{
+  // ─────────────────────────────────────────────────────────────────────
+  //  Cloudflare deployment config.
+  //
+  //  THIS FILE'S MAIN JOB IS TO STOP CLOUDFLARE GUESSING.
+  //
+  //  Without a wrangler config present, `wrangler deploy` auto-detects the
+  //  framework, sees Next.js, and assumes a SERVER deployment — it installs
+  //  the OpenNext adapter and looks for `.next/standalone/`. This project
+  //  uses `output: 'export'`, so no server build exists and that fails with:
+  //
+  //      ENOENT: .next/standalone/.next/server/pages-manifest.json
+  //
+  //  Declaring `assets.directory` here tells Cloudflare the truth: this is a
+  //  folder of finished HTML, serve it as-is. No server, no adapter, no
+  //  Worker script — which is exactly the architecture that makes hosting
+  //  free and means the site cannot fall over under traffic.
+  // ─────────────────────────────────────────────────────────────────────
+
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "speedsafetynet-demo",
+  "compatibility_date": "2026-08-20",
+
+  "assets": {
+    // Produced by `npm run build` (next.config.ts sets output: 'export').
+    "directory": "./out",
+
+    // Next's static export writes 404.html at the root of out/. This serves
+    // our branded not-found page instead of a bare Cloudflare error.
+    "not_found_handling": "404-page"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}
