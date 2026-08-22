@@ -13,6 +13,15 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 
+# Client-facing deliverables — videos, quotations, exports.
+# Kept out of git deliberately: they are outputs, not source, and git history
+# is permanent. A re-recorded 11MB walkthrough would add 11MB to the repo
+# forever, and Cloudflare re-downloads the whole repo on every build.
+docs/*.mp4
+docs/*.webm
+docs/*.pdf
+docs/*.docx
+
 npm-debug.log*
 yarn-error.log*
 .vercel
