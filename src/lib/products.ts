@@ -1,4 +1,4 @@
-import type { Product } from './types';
+import type { Product, ProductImage } from './types';
 
 /**
  * All 25 products, ported from the previous demo.
@@ -374,6 +374,70 @@ export const searchProducts = (query: string): Product[] => {
       .includes(q),
   );
 };
+
+
+// ── Home page hero ───────────────────────────────────────────────────────
+
+/**
+ * The four products shown in the hero cluster on the home page.
+ *
+ * The client picks these — they are his shop window, and they are expected to
+ * change with the season (shade nets before summer, monsoon sheds before the
+ * rains). Change the four slugs below and nothing else needs touching.
+ *
+ * Exactly four. The cluster layout has four seats; a fifth would overlap and
+ * three would leave a visible gap.
+ */
+export const HERO_PRODUCT_SLUGS = [
+  'construction-fall-safety-net',
+  'cricket-box-net',
+  'premium-artificial-grass-40mm',
+  'stainless-steel-bird-spike',
+] as const;
+
+/**
+ * Hero photographs are NOT the same files as the catalogue photographs.
+ *
+ * The catalogue uses ordinary rectangular photos. The hero needs the product
+ * cut out against transparency — a .png with a real alpha channel — so it
+ * floats over the green background instead of sitting in a visible box. A
+ * rectangular photo here is what makes a site look like a template.
+ *
+ * Shoot on any plain background, remove it, export PNG. Roughly square
+ * framing with a little breathing room: the four seats assume similar
+ * proportions, so one very wide and one very tall product unbalances it.
+ */
+export const HERO_IMAGES: Record<string, ProductImage> = {
+  'construction-fall-safety-net': {
+    src: '/images/hero/construction-fall-safety-net.png',
+    alt: 'Roll of green construction safety netting',
+  },
+  'cricket-box-net': {
+    src: '/images/hero/cricket-box-net.png',
+    alt: 'Cricket practice net panel on its steel frame',
+  },
+  'premium-artificial-grass-40mm': {
+    src: '/images/hero/premium-artificial-grass-40mm.png',
+    alt: 'Square of 40mm artificial grass turf',
+  },
+  'stainless-steel-bird-spike': {
+    src: '/images/hero/stainless-steel-bird-spike.png',
+    alt: 'Strip of stainless steel bird spikes',
+  },
+};
+
+export interface HeroProduct {
+  product: Product;
+  image: ProductImage;
+}
+
+/** The hero four, resolved to real products. Silently skips a bad slug. */
+export const heroProducts = (): HeroProduct[] =>
+  HERO_PRODUCT_SLUGS.map((slug) => {
+    const product = getProduct(slug);
+    const image = HERO_IMAGES[slug];
+    return product && image ? { product, image } : null;
+  }).filter((x): x is HeroProduct => x !== null);
 
 /**
  * Shot list to hand to the client. Every product needs at least one real

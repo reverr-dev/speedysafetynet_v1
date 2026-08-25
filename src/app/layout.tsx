@@ -7,6 +7,8 @@ import Footer from '@/components/Footer';
 import FloatingActions from '@/components/FloatingActions';
 import PageTransition from '@/components/PageTransition';
 import ScrollReveal from '@/components/ScrollReveal';
+// ⚠️ DEMO ONLY — delete this import and <ThemeSwitcher /> below before launch.
+import ThemeSwitcher from '@/components/ThemeSwitcher';
 
 /**
  * Search engine indexing is OFF unless explicitly switched on.
@@ -115,6 +117,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       */}
       <body suppressHydrationWarning>
         <StructuredData />
+        {/* ⚠️ DEMO ONLY — the colour-scheme preview bar. It sits first in the
+            document so it can be sticky above the header rather than floating
+            over it. Delete this line and the import at the top before launch. */}
+        <ThemeSwitcher />
         {/* PageTransition sits INSIDE EnquiryProvider so that remounting the
             page on navigation does not remount the provider — the enquiry
             basket has to survive clicking a link. */}

@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { SITE } from '@/lib/site';
 import { CATEGORIES } from '@/lib/categories';
-import { countByCategory, featuredProducts, PRODUCTS } from '@/lib/products';
+import { countByCategory, PRODUCTS } from '@/lib/products';
 import { WORKFLOW } from '@/lib/services';
 import { quickWhatsAppUrl } from '@/lib/enquiry';
-import ProductCard from '@/components/ProductCard';
+import FeaturedProducts from '@/components/FeaturedProducts';
 import { CheckIcon, PhoneIcon, WhatsAppIcon } from '@/components/Icons';
 
 const HERO_BADGES = [
@@ -15,7 +15,6 @@ const HERO_BADGES = [
 ];
 
 export default function HomePage() {
-  const featured = featuredProducts();
   // Show the six busiest categories; the rest are one click away.
   const topCategories = CATEGORIES.filter((c) => countByCategory(c.slug) > 0).slice(0, 6);
 
@@ -53,6 +52,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* The client's four chosen products, immediately below the headline —
+          the strongest position on the page. Set via HERO_PRODUCT_SLUGS. */}
+      <FeaturedProducts />
 
       <section className="section section--tight">
         <div className="container">
@@ -102,20 +105,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section">
-        <div className="container">
-          <div className="section-head">
-            <span className="eyebrow">Most requested</span>
-            <h2>Popular solutions</h2>
-          </div>
-          <div className="grid grid--4">
-            {featured.map((p) => (
-              <ProductCard product={p} key={p.id} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       <section className="section section--alt">
         <div className="container">
           <div className="section-head">
@@ -137,10 +126,7 @@ export default function HomePage() {
       <section className="section section--brand">
         <div className="container" style={{ textAlign: 'center', maxWidth: '44rem' }}>
           <h2>Need a quotation?</h2>
-          <p
-            className="lead"
-            style={{ margin: 'var(--space-4) auto var(--space-6)' }}
-          >
+          <p className="lead" style={{ margin: 'var(--space-4) auto var(--space-6)' }}>
             Send us your requirement on WhatsApp or by email. We respond with a
             professional quotation within one business day.
           </p>
