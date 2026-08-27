@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hero product display — options</title>
+<style>
+:root{
+  --green-50:#f0f7f1; --green-100:#d8ecdb; --green-200:#b2d9b9; --green-300:#83c08f;
+  --green-400:#5aa86a; --green-500:#3f9150; --green-600:#2f7740; --green-700:#256034;
+  --green-800:#1c4a29; --green-900:#143520; --white:#fff; --whatsapp:#25d366;
+  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+  --cycle: 5s;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:#0a1810;color:#fff;line-height:1.6}
+
+.lab-head{padding:36px 32px 26px;border-bottom:2px solid var(--green-700)}
+.lab-head h1{font-size:1.6rem;letter-spacing:-.02em;margin-bottom:8px}
+.lab-head p{color:rgba(255,255,255,.62);max-width:82ch;font-size:.9rem}
+.controls{position:sticky;top:0;z-index:99;display:flex;gap:22px;flex-wrap:wrap;align-items:center;
+  padding:13px 32px;background:#06110a;border-bottom:1px solid rgba(255,255,255,.14)}
+.controls label{font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:9px;color:rgba(255,255,255,.8)}
+.controls input[type=range]{width:150px;accent-color:var(--green-400)}
+.controls output{font-variant-numeric:tabular-nums;color:var(--green-300);min-width:38px;font-weight:700}
+.controls button{padding:7px 15px;border-radius:6px;background:var(--green-600);color:#fff;
+  font-weight:600;font-size:.78rem;cursor:pointer;border:none}
+
+.label{padding:22px 32px 16px;background:#0a1810;border-top:1px solid rgba(255,255,255,.08)}
+.label h2{font-size:1rem;margin-bottom:4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font-size:.66rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:99px;background:var(--green-600)}
+.pill--rec{background:#fff;color:var(--green-900)}
+.label p{font-size:.84rem;color:rgba(255,255,255,.62);max-width:82ch;margin-top:6px}
+
+/* ── Hero shell ──────────────────────────────────────────────── */
+.hero{position:relative;background:var(--green-900);overflow:hidden;min-height:560px;display:flex;align-items:center}
+.hero__grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:40px;
+  align-items:center;width:100%;max-width:1200px;margin:0 auto;padding:56px 32px}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.7rem;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--green-300);margin-bottom:14px}
+.eyebrow::before{content:'';width:22px;height:2px;background:currentColor}
+.hero h3{font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.13;letter-spacing:-.02em;margin-bottom:14px}
+.hero .sub{color:rgba(255,255,255,.8);margin-bottom:24px;font-size:.95rem;max-width:46ch}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 24px;border-radius:8px;
+  font-weight:600;font-size:.95rem;text-decoration:none;border:none;cursor:pointer;
+  transition:background .25s cubic-bezier(.16,1,.3,1),transform .25s cubic-bezier(.16,1,.3,1)}
+.btn--accent{background:var(--green-500);color:#fff}
+.btn--accent:hover{background:var(--green-600)}
+.btn--outline{border:2px solid rgba(255,255,255,.45);color:#fff;background:transparent}
+.net{position:absolute;inset:-60%;background-image:
+  linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);
+  background-size:26px 26px;pointer-events:none;
+  animation:spin 100s linear infinite, meshzoom 20s ease-in-out infinite}
+@keyframes spin{from{rotate:0deg}to{rotate:360deg}}
+@keyframes meshzoom{0%,100%{scale:1}50%{scale:1.4615}}
+
+/* ── Shared stage ────────────────────────────────────────────── */
+.stage{position:relative;height:470px}
+.card{position:absolute;transition:all 900ms cubic-bezier(.16,1,.3,1);
+  display:flex;flex-direction:column;align-items:center}
+.card img{width:100%;height:auto;display:block;
+  filter:drop-shadow(0 22px 26px rgba(0,0,0,.45))}
+.card__name{margin-top:8px;font-size:.85rem;font-weight:600;text-align:center;
+  color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.6);transition:opacity .5s}
+.card__btn{margin-top:9px;padding:8px 18px;border-radius:99px;background:#fff;color:var(--green-900);
+  font-size:.78rem;font-weight:700;border:none;cursor:pointer;white-space:nowrap;
+  transition:opacity .5s,transform .5s;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.card__btn:hover{background:var(--green-100)}
+.card:not(.is-active) .card__btn{opacity:0;pointer-events:none;transform:translateY(6px)}
+.card:not(.is-active) .card__name{opacity:.45}
+
+body.paused .net,body.paused .card{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){.net{animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="lab-head">
+  <h1>Hero product display — three options</h1>
+  <p>Four products beside the headline, cycling automatically. The images here are rough mock cutouts
+  so you can judge the <em>motion and layout</em> — with real background-removed photographs each of
+  these gets substantially better. Buttons say <strong>Add to enquiry</strong>, not "Add to cart":
+  the site takes enquiries, and cart language promises a checkout that does not exist.</p>
+</div>
+
+<div class="controls">
+  <label>Cycle <input type="range" id="cyc" min="2" max="12" step="1" value="5"><output id="cycOut">5s</output></label>
+  <button id="pause">Pause</button>
+</div>
+
+<!-- ══ A — SPOTLIGHT CLUSTER ══ -->
+<div class="label">
+  <h2><span class="pill pill--rec">Recommended</span>A · Spotlight cluster</h2>
+  <p>All four products are visible the whole time, arranged in a loose cluster. Nothing moves position —
+  instead the <em>emphasis</em> rotates: one lifts, sharpens and gains its name and button while the
+  others sit back, smaller and dimmed. Solves the carousel problem, because every visitor sees all four
+  products no matter when they look or how briefly they stay.</p>
+</div>
+<section class="hero" data-variant="cluster">
+  <div class="net"></div>
+  <div class="hero__grid">
+    <div>
+      <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+      <h3>Safety netting, engineered and installed across India.</h3>
+      <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems
+      and artificial turf — fitted by our own team from five branches.</p>
+      <div class="btns">
+        <a class="btn btn--accent" href="#">Browse Products</a>
+        <a class="btn btn--outline" href="#">98926 12816</a>
+      </div>
+    </div>
+    <div class="stage"></div>
+  </div>
+</section>
+
+<!-- ══ B — ORBIT ══ -->
+<div class="label">
+  <h2><span class="pill">B</span>Orbit</h2>
+  <p>The four products travel around an ellipse. The one at the front is large and sharp; the others
+  recede, shrink and fade as they move behind. Closest to the circular idea you described. More
+  striking, but a visitor who glances for two seconds only really registers the front product.</p>
+</div>
+<section class="hero" data-variant="orbit">
+  <div class="net"></div>
+  <div class="hero__grid">
+    <div>
+      <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+      <h3>Safety netting, engineered and installed across India.</h3>
+      <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems
+      and artificial turf — fitted by our own team from five branches.</p>
+      <div class="btns">
+        <a class="btn btn--accent" href="#">Browse Products</a>
+        <a class="btn btn--outline" href="#">98926 12816</a>
+      </div>
+    </div>
+    <div class="stage"></div>
+  </div>
+</section>
+
+<!-- ══ C — DEPTH STACK ══ -->
+<div class="label">
+  <h2><span class="pill">C</span>Depth stack</h2>
+  <p>Cards fanned like a held hand, the front one swapping every few seconds. The most product-focused
+  and the boldest looking — but the three behind are barely readable, so it is really a one-product
+  display with decoration behind it.</p>
+</div>
+<section class="hero" data-variant="stack">
+  <div class="net"></div>
+  <div class="hero__grid">
+    <div>
+      <span class="eyebrow">ISO 9001:2015 · Government Certified</span>
+      <h3>Safety netting, engineered and installed across India.</h3>
+      <p class="sub">Construction safety nets, bird proofing, cricket and football nets, shade systems
+      and artificial turf — fitted by our own team from five branches.</p>
+      <div class="btns">
+        <a class="btn btn--accent" href="#">Browse Products</a>
+        <a class="btn btn--outline" href="#">98926 12816</a>
+      </div>
+    </div>
+    <div class="stage"></div>
+  </div>
+</section>
+
+<div class="label" style="border-bottom:none;padding-bottom:60px">
+  <p>All three animate only <code>transform</code> and <code>opacity</code>, so they run on the GPU and
+  cost nothing in scroll performance — the same rule we applied to the net background. All respect the
+  operating system's reduce-motion setting. On mobile the right column stacks below the text; option A
+  degrades best there, since it stays a simple grid.</p>
+</div>
+
+<script>
+const PRODUCTS = [
+  { img:'img/p1.png', name:'Construction Safety Net' },
+  { img:'img/p2.png', name:'Cricket Practice Net' },
+  { img:'img/p3.png', name:'Artificial Turf' },
+  { img:'img/p4.png', name:'Bird Spikes' },
+];
+
+// Layouts: per-variant position for each slot, given how far it is from active.
+const LAYOUT = {
+  // offset 0 = active. Fixed seats; only styling changes.
+  // Seats are spread so the ACTIVE card's name + button (roughly 60px below
+  // the image) never lands on top of the product beneath it.
+  cluster: [
+    { l:'2%',  t:'0%',   w:'40%' },
+    { l:'54%', t:'6%',   w:'34%' },
+    { l:'6%',  t:'58%',  w:'34%' },
+    { l:'56%', t:'64%',  w:'30%' },
+  ],
+  // The front seat sits high enough that the active card's name and button
+  // still fall inside the stage — at t:46% they dropped below the fold.
+  orbit: [
+    { l:'28%', t:'28%',  w:'44%', z:4 },   // front
+    { l:'64%', t:'10%',  w:'26%', z:3 },   // right
+    { l:'36%', t:'0%',   w:'20%', z:2 },   // back
+    { l:'2%',  t:'10%',  w:'26%', z:3 },   // left
+  ],
+  stack: [
+    { l:'22%', t:'16%',  w:'54%', z:4, r:'-4deg' },
+    { l:'34%', t:'12%',  w:'48%', z:3, r:'7deg'  },
+    { l:'12%', t:'10%',  w:'48%', z:2, r:'-13deg'},
+    { l:'26%', t:'8%',   w:'46%', z:1, r:'16deg' },
+  ],
+};
+
+// Declared BEFORE the hero setup below, which calls cycleMs() immediately.
+// `const` is not hoisted — leaving these at the bottom of the file threw
+// "Cannot access 'cycleMs' before initialization" and no timer ever started.
+const cyc = document.getElementById('cyc');
+const cycOut = document.getElementById('cycOut');
+const cycleMs = () => Number(cyc.value) * 1000;
+
+document.querySelectorAll('.hero').forEach(hero => {
+  const variant = hero.dataset.variant;
+  const stage = hero.querySelector('.stage');
+
+  const cards = PRODUCTS.map(p => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.innerHTML = `<img src="${p.img}" alt="${p.name}">
+      <div class="card__name">${p.name}</div>
+      <button class="card__btn">Add to enquiry</button>`;
+    stage.appendChild(el);
+    return el;
+  });
+
+  let active = 0;
+
+  function render() {
+    const seats = LAYOUT[variant];
+    cards.forEach((el, i) => {
+      // Which seat does this card occupy right now?
+      const seat = seats[(i - active + cards.length) % cards.length];
+      const isActive = (i === active);
+      el.style.left = seat.l;
+      el.style.top = seat.t;
+      el.style.width = seat.w;
+      el.style.zIndex = isActive ? 10 : (seat.z ?? 1);
+      el.style.opacity = isActive ? 1 : (variant === 'cluster' ? .58 : .4);
+      el.style.filter = isActive ? 'none' : 'blur(1.1px) saturate(.7)';
+      el.style.transform =
+        `scale(${isActive ? 1.06 : (variant === 'cluster' ? .82 : .88)})` +
+        ` rotate(${seat.r ?? (isActive ? '-2deg' : '3deg')})`;
+      el.classList.toggle('is-active', isActive);
+    });
+  }
+
+  render();
+  hero._tick = () => { active = (active + 1) % cards.length; render(); };
+
+  // Clicking any card promotes it — a visitor should never have to wait.
+  cards.forEach((el, i) => el.addEventListener('click', () => {
+    active = i; render(); restart();
+  }));
+
+  let timer;
+  function restart() {
+    clearInterval(timer);
+    if (!document.body.classList.contains('paused')) {
+      timer = setInterval(hero._tick, cycleMs());
+    }
+  }
+  hero._restart = restart;
+  restart();
+});
+
+cyc.addEventListener('input', () => {
+  cycOut.textContent = cyc.value + 's';
+  document.documentElement.style.setProperty('--cycle', cyc.value + 's');
+  document.querySelectorAll('.hero').forEach(h => h._restart());
+});
+
+document.getElementById('pause').addEventListener('click', e => {
+  document.body.classList.toggle('paused');
+  const paused = document.body.classList.contains('paused');
+  e.target.textContent = paused ? 'Resume' : 'Pause';
+  document.querySelectorAll('.hero').forEach(h => h._restart());
+});
+</script>
+</body>
+</html>

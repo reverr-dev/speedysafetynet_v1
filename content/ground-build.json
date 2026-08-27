@@ -1,0 +1,218 @@
+{
+  "_source": "Transcribed from the client's own quotation (Quote 37, 22-08-2026). Technical figures are reproduced exactly as he wrote them. Spelling of prose was corrected; no specification was changed, rounded or inferred.",
+  "_unconfirmed": [
+    "The density figure (14,000 / 16,000 etc) sits under a garbled header in the source sheet — it reads 'GAUGE: 5/8\", : 14000, DETAX: S/SQM'. Labelled 'Density' here. Confirm the unit with the client before launch.",
+    "Warranty periods look inconsistent in the source: the FIFA-approved 50mm carries 2 years while the cheaper Multisport 35mm carries 5. Worth checking it is not a slip in his own sheet.",
+    "'FIFA approved' is a specific certification. Do not publish until the client provides the mill's certificate."
+  ],
+  "slug": "sports-ground-construction",
+  "title": "Football & Cricket Ground Construction",
+  "summary": "A playing surface is a structure, not a carpet. We build the ground from the sub-base up — civil work, steel, netting, padding and floodlighting — so the turf sits on something that drains and the fencing stands up to a struck ball.",
+  "rateNote": "Indicative starting rates for planning. Final pricing follows a site survey — access, ground condition and area all move the number. GST is charged additionally at the applicable rate.",
+  "stages": [
+    {
+      "number": "01",
+      "title": "Civil base and levelling",
+      "summary": "Everything above this fails if the base is wrong. Water has to leave the ground, and the surface has to be flat enough that a ball runs true.",
+      "detail": [
+        "Plain cement concrete (PCC) sub-base, laid to a fall so water runs off",
+        "Three-layer crushed stone levelling: 50mm, then 25mm, then 10mm",
+        "Water levelling, drainage provision and parapet base"
+      ],
+      "fromRate": 25,
+      "unit": "sq ft",
+      "id": "gb-civil-base",
+      "image": "/images/ground/civil-base.jpg",
+      "alt": "Workers screeding a wet concrete sub-base on a ground under construction"
+    },
+    {
+      "number": "02",
+      "title": "Steel structure",
+      "summary": "The frame that carries the fencing. Two approaches, chosen by span and budget.",
+      "detail": [
+        "Square section: 4\" × 4\" MS verticals, 3mm wall, at 20ft centres",
+        "Triangle section: L-angle 2mm, zigzag cross-braced, at 50ft centres",
+        "2\" MS horizontals, 2mm wall, zigzag corner bracing",
+        "5mm base plates, 1ft × 1ft, on anchor fasteners",
+        "Red oxide primer throughout; access gate 4ft × 7ft"
+      ],
+      "fromRate": 55,
+      "unit": "sq ft",
+      "id": "gb-steel-structure",
+      "image": null,
+      "alt": null
+    },
+    {
+      "number": "03",
+      "title": "Netting",
+      "summary": "Braided net on all four sides with a 12mm border rope, plus a lighter twisted net overhead.",
+      "detail": [
+        "Vertical fencing: 2.5mm braided, 45mm or 38mm mesh, 12mm border rope on all four sides",
+        "Overhead: 1.75mm twisted net, 45mm or 38mm mesh",
+        "8mm stainless wire rope cross-support tying net to structure"
+      ],
+      "fromRate": 5,
+      "unit": "sq ft",
+      "id": "gb-netting",
+      "image": "/images/ground/netting.jpg",
+      "alt": "Football being played inside a netted enclosure with padded red posts"
+    },
+    {
+      "number": "04",
+      "title": "Padding and safety",
+      "summary": "Anywhere a player can run into steel gets covered. This is the part that separates a built ground from a fenced field.",
+      "detail": [
+        "15mm foam under rexine, 0.75\" finished thickness",
+        "Vertical poles wrapped to 7ft height",
+        "Horizontal rails and gate frame padded",
+        "2 year warranty"
+      ],
+      "fromRate": 80,
+      "unit": "running ft",
+      "id": "gb-padding",
+      "image": "/images/ground/padding.jpg",
+      "alt": "Red rexine padding being wrapped around a steel post"
+    },
+    {
+      "number": "05",
+      "title": "Floodlighting",
+      "summary": "Evening play is where a ground earns its money, and most bookings in Mumbai are after dark.",
+      "detail": [
+        "Osram 240W LED floodlights",
+        "2.5mm two-core wiring throughout",
+        "L&T MCB distribution box",
+        "2 year warranty"
+      ],
+      "fromRate": 3200,
+      "unit": "light",
+      "id": "gb-floodlighting",
+      "image": null,
+      "alt": null
+    },
+    {
+      "number": "06",
+      "title": "Turf laying",
+      "summary": "Rolled, seamed and dressed. The infill is what makes it play correctly and stand back up.",
+      "detail": [
+        "Joint tape and adhesive seaming",
+        "Silica sand and SBR rubber infill, brushed in by hand",
+        "Installation included in the rate"
+      ],
+      "fromRate": 65,
+      "unit": "sq ft",
+      "id": "gb-turf",
+      "image": "/images/ground/turf.jpg",
+      "alt": "Cricket being played on a laid artificial turf pitch"
+    }
+  ],
+  "turf": [
+    {
+      "name": "FIFA-Approved 50mm",
+      "note": "Double-coated, PU primary backing",
+      "pileHeight": "50mm",
+      "gauge": "5/8\"",
+      "density": "14,000",
+      "stitches": "14/10",
+      "infill": "Silica 3000 g/sqft + SBR rubber 250 g/sqft",
+      "warrantyYears": 2,
+      "fromRate": 85,
+      "bestFor": "Full-size football, competition play",
+      "id": "turf-fifa-approved-50mm"
+    },
+    {
+      "name": "Bellin Turf 50mm",
+      "note": "Double-coated, PU primary backing",
+      "pileHeight": "50mm",
+      "gauge": "5/8\"",
+      "density": "16,000",
+      "stitches": "14/10",
+      "infill": "Silica 3000 g/sqft + SBR rubber 250 g/sqft",
+      "warrantyYears": 5,
+      "fromRate": 95,
+      "bestFor": "Football, heavy commercial use",
+      "id": "turf-bellin-turf-50mm"
+    },
+    {
+      "name": "Bellin Turf 30mm Non-Infill",
+      "note": "Double-coated, PU primary backing",
+      "pileHeight": "30mm",
+      "gauge": "5/8\"",
+      "density": "13,000",
+      "stitches": "14/10",
+      "infill": "Silica 1000 g/sqft",
+      "warrantyYears": 2,
+      "fromRate": 95,
+      "bestFor": "Rooftop and terrace grounds where load matters",
+      "id": "turf-bellin-turf-30mm-non-infill"
+    },
+    {
+      "name": "Multisport 35mm",
+      "note": "Double-coated",
+      "pileHeight": "35mm",
+      "gauge": "5/8\"",
+      "density": "17,000",
+      "stitches": "14/10",
+      "infill": "Silica 1000 g/sqft + SBR rubber 100 g/sqft",
+      "warrantyYears": 5,
+      "fromRate": 65,
+      "bestFor": "Multi-sport and box cricket",
+      "id": "turf-multisport-35mm"
+    },
+    {
+      "name": "Cricket Astro Turf 15mm",
+      "note": "With backing softness sheet",
+      "pileHeight": "15mm",
+      "gauge": "16/3\"",
+      "density": "6,900 S/sq",
+      "stitches": "330/100",
+      "infill": "None — laid direct",
+      "warrantyYears": 2,
+      "fromRate": 110,
+      "bestFor": "Cricket pitch strips",
+      "id": "turf-cricket-astro-turf-15mm"
+    }
+  ],
+  "nets": [
+    {
+      "name": "Vertical fencing net — 45mm mesh",
+      "thickness": "2.5mm braided",
+      "mesh": "45mm",
+      "borderRope": "12mm, all four sides",
+      "warrantyYears": 5,
+      "fromRate": 9,
+      "id": "net-vertical-fencing-net-45mm-mesh"
+    },
+    {
+      "name": "Vertical fencing net — 38mm mesh",
+      "thickness": "2.5mm braided",
+      "mesh": "38mm",
+      "borderRope": "12mm, all four sides",
+      "warrantyYears": 5,
+      "fromRate": 10.5,
+      "id": "net-vertical-fencing-net-38mm-mesh"
+    },
+    {
+      "name": "Overhead net — 45mm mesh",
+      "thickness": "1.75mm twisted",
+      "mesh": "45mm",
+      "borderRope": "12mm, all four sides",
+      "warrantyYears": 2,
+      "fromRate": 5,
+      "id": "net-overhead-net-45mm-mesh"
+    },
+    {
+      "name": "Overhead net — 38mm mesh",
+      "thickness": "1.75mm twisted",
+      "mesh": "38mm",
+      "borderRope": "12mm, all four sides",
+      "warrantyYears": 2,
+      "fromRate": 6,
+      "id": "net-overhead-net-38mm-mesh"
+    }
+  ],
+  "banner": {
+    "image": "/images/ground/banner.jpg",
+    "alt": "A floodlit five-a-side football ground enclosed in green netting"
+  },
+  "_photos": "Stage photographs are the client's own site pictures, taken from his quotation. Stages 02 and 05 have no image because the versions in that file were under 420px wide. Ask him for the originals from his phone."
+}

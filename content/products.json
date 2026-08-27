@@ -1,0 +1,557 @@
+[
+  {
+    "id": "sn-001",
+    "slug": "construction-fall-safety-net",
+    "name": "Construction Fall Safety Net",
+    "categorySlug": "safety-nets",
+    "shortDescription": "Site safety nets for high-rise projects.",
+    "fullDescription": "Impact tested debris and fall protection netting for engineering and high-rise construction sites. Installed with correct tensioning and anchoring by our site team.",
+    "images": [
+      {
+        "src": "/images/products/construction-fall-safety-net.jpg",
+        "alt": "Construction fall safety net installed on a high-rise site"
+      }
+    ],
+    "applications": [
+      "High-rise construction",
+      "Scaffolding perimeters",
+      "Open floor edges",
+      "Lift shafts"
+    ],
+    "featured": true
+  },
+  {
+    "id": "sn-002",
+    "slug": "balcony-anti-fall-net",
+    "name": "Balcony Anti-Fall Net",
+    "categorySlug": "safety-nets",
+    "shortDescription": "Home safety nets for children and pets.",
+    "fullDescription": "Durable nylon netting for balcony safety that protects children and pets without blocking airflow or the view. Fitted to the balcony frame with a discreet fixing system.",
+    "images": [
+      {
+        "src": "/images/products/balcony-anti-fall-net.jpg",
+        "alt": "Balcony safety net fitted to a residential balcony railing"
+      }
+    ],
+    "applications": [
+      "Apartment balconies",
+      "Child safety",
+      "Pet safety",
+      "Window grilles"
+    ],
+    "featured": true
+  },
+  {
+    "id": "sn-003",
+    "slug": "industrial-debris-net",
+    "name": "Industrial Debris Net",
+    "categorySlug": "safety-nets",
+    "shortDescription": "Fine mesh netting for debris containment.",
+    "fullDescription": "Fine breathable mesh that prevents falling debris from leaving a construction site, protecting pedestrians and vehicles below.",
+    "images": [
+      {
+        "src": "/images/products/industrial-debris-net.jpg",
+        "alt": "Fine mesh debris containment net on a building facade"
+      }
+    ],
+    "applications": [
+      "Facade renovation",
+      "Demolition sites",
+      "Roadside construction"
+    ]
+  },
+  {
+    "id": "bn-001",
+    "slug": "anti-bird-net",
+    "name": "Anti Bird Net",
+    "categorySlug": "bird-nets",
+    "shortDescription": "Knotted nylon anti-bird netting.",
+    "fullDescription": "Knotted nylon netting that blocks pigeons and other birds without harming them. UV stabilised for long outdoor life.",
+    "images": [
+      {
+        "src": "/images/products/anti-bird-net.jpg",
+        "alt": "Anti bird net fitted across a balcony opening"
+      }
+    ],
+    "applications": [
+      "Balconies",
+      "Ducts and shafts",
+      "Terraces",
+      "Parking areas"
+    ],
+    "featured": true
+  },
+  {
+    "id": "bn-002",
+    "slug": "birds-protective-nets",
+    "name": "Birds Protective Nets",
+    "categorySlug": "bird-nets",
+    "shortDescription": "Heavy duty protective netting for industrial spaces.",
+    "fullDescription": "Large-span protective netting for warehouses and factories, preventing bird entry and nesting in roof structures.",
+    "images": [
+      {
+        "src": "/images/products/birds-protective-nets.jpg",
+        "alt": "Large span bird netting across a warehouse roof structure"
+      }
+    ],
+    "applications": [
+      "Warehouses",
+      "Factory sheds",
+      "Godowns",
+      "Atriums"
+    ]
+  },
+  {
+    "id": "bn-003",
+    "slug": "transparent-bird-net",
+    "name": "Transparent Bird Net",
+    "categorySlug": "bird-nets",
+    "shortDescription": "Near-invisible bird netting that preserves the view.",
+    "fullDescription": "Virtually invisible netting that provides full bird protection while maintaining your outward view. Preferred for sea-facing and high-floor apartments.",
+    "images": [
+      {
+        "src": "/images/products/transparent-bird-net.jpg",
+        "alt": "Transparent bird net that is barely visible against a city view"
+      }
+    ],
+    "applications": [
+      "Sea-facing apartments",
+      "High-floor balconies",
+      "Premium residences"
+    ]
+  },
+  {
+    "id": "bs-001",
+    "slug": "stainless-steel-bird-spike",
+    "name": "Stainless Steel Bird Spike",
+    "categorySlug": "bird-spikes",
+    "shortDescription": "Industrial grade stainless spikes for ledge protection.",
+    "fullDescription": "Polycarbonate base with stainless steel spikes. Weather resistant and long lasting. Stops birds landing on ledges, parapets and signboards.",
+    "images": [
+      {
+        "src": "/images/products/stainless-steel-bird-spike.jpg",
+        "alt": "Stainless steel bird spikes mounted along a building ledge"
+      }
+    ],
+    "price": {
+      "amount": 65,
+      "unit": "running foot"
+    },
+    "specs": [
+      {
+        "label": "Base material",
+        "value": "Polycarbonate"
+      },
+      {
+        "label": "Spike material",
+        "value": "Stainless steel"
+      }
+    ],
+    "applications": [
+      "Window ledges",
+      "Parapet walls",
+      "Signboards",
+      "AC units"
+    ]
+  },
+  {
+    "id": "bs-002",
+    "slug": "plastic-bird-spike",
+    "name": "Plastic Bird Spike",
+    "categorySlug": "bird-spikes",
+    "shortDescription": "UV stabilised plastic spikes for residential use.",
+    "fullDescription": "Affordable and effective UV stabilised plastic bird spikes, well suited to residential balconies and windowsills.",
+    "images": [
+      {
+        "src": "/images/products/plastic-bird-spike.jpg",
+        "alt": "UV stabilised plastic bird spikes on a residential windowsill"
+      }
+    ],
+    "price": {
+      "amount": 110,
+      "unit": "running foot"
+    },
+    "specs": [
+      {
+        "label": "Material",
+        "value": "UV stabilised polypropylene"
+      }
+    ],
+    "applications": [
+      "Residential balconies",
+      "Windowsills",
+      "Railings"
+    ]
+  },
+  {
+    "id": "ppr-001",
+    "slug": "braided-pp-rope",
+    "name": "Braided PP Rope",
+    "categorySlug": "pp-rope",
+    "shortDescription": "High strength polypropylene braided rope.",
+    "fullDescription": "Versatile braided industrial rope used for securing cargo, tensioning nets and general site work.",
+    "images": [
+      {
+        "src": "/images/products/braided-pp-rope.jpg",
+        "alt": "Coil of braided polypropylene rope"
+      }
+    ],
+    "specs": [
+      {
+        "label": "Material",
+        "value": "Polypropylene"
+      }
+    ],
+    "applications": [
+      "Net tensioning",
+      "Cargo securing",
+      "General site use"
+    ]
+  },
+  {
+    "id": "ppr-002",
+    "slug": "twisted-pp-safety-rope",
+    "name": "Twisted PP Safety Rope",
+    "categorySlug": "pp-rope",
+    "shortDescription": "Safety grade twisted rope for construction.",
+    "fullDescription": "Strong and reliable twisted polypropylene rope used in height safety systems and net anchoring.",
+    "images": [
+      {
+        "src": "/images/products/twisted-pp-safety-rope.jpg",
+        "alt": "Twisted polypropylene safety rope"
+      }
+    ],
+    "specs": [
+      {
+        "label": "Material",
+        "value": "Polypropylene"
+      }
+    ],
+    "applications": [
+      "Height safety systems",
+      "Net anchoring",
+      "Barricading"
+    ]
+  },
+  {
+    "id": "shn-001",
+    "slug": "agri-shade-net-75",
+    "name": "Agri Shade Net — 75%",
+    "categorySlug": "shade-nets",
+    "shortDescription": "Agriculture grade sun protection netting.",
+    "fullDescription": "Green shade netting for nurseries and agricultural greenhouses, reducing direct sunlight while allowing airflow.",
+    "images": [
+      {
+        "src": "/images/products/agri-shade-net-75.jpg",
+        "alt": "Green agricultural shade net over a plant nursery"
+      }
+    ],
+    "specs": [
+      {
+        "label": "Shade factor",
+        "value": "75%"
+      }
+    ],
+    "applications": [
+      "Plant nurseries",
+      "Greenhouses",
+      "Terrace gardens"
+    ]
+  },
+  {
+    "id": "shn-002",
+    "slug": "car-parking-shade-mesh",
+    "name": "Car Parking Shade Mesh",
+    "categorySlug": "shade-nets",
+    "shortDescription": "Premium shade mesh for vehicle shelters.",
+    "fullDescription": "Durable tensioned shade mesh that reduces heat build-up in open parking areas and protects vehicle paintwork.",
+    "images": [
+      {
+        "src": "/images/products/car-parking-shade-mesh.jpg",
+        "alt": "Tensioned shade mesh over an open car parking area"
+      }
+    ],
+    "applications": [
+      "Society parking",
+      "Commercial parking",
+      "Showroom forecourts"
+    ],
+    "featured": true
+  },
+  {
+    "id": "shn-003",
+    "slug": "privacy-fence-shade",
+    "name": "Privacy Fence Shade",
+    "categorySlug": "shade-nets",
+    "shortDescription": "Privacy netting for residential fences.",
+    "fullDescription": "Blocks outside visibility while allowing airflow through. Commonly fitted to garden fences, terraces and compound walls.",
+    "images": [
+      {
+        "src": "/images/products/privacy-fence-shade.jpg",
+        "alt": "Privacy shade netting fitted along a garden fence"
+      }
+    ],
+    "applications": [
+      "Garden fences",
+      "Terraces",
+      "Compound walls"
+    ]
+  },
+  {
+    "id": "ms-001",
+    "slug": "industrial-monsoon-shed",
+    "name": "Industrial Monsoon Shed",
+    "categorySlug": "monsoon-shed",
+    "shortDescription": "Heavy duty rain protection sheds.",
+    "fullDescription": "Custom fabricated monsoon sheds for storage areas and loading bays, designed and installed to suit the site.",
+    "images": [
+      {
+        "src": "/images/products/industrial-monsoon-shed.jpg",
+        "alt": "Industrial monsoon shed covering a loading bay"
+      }
+    ],
+    "applications": [
+      "Loading bays",
+      "Storage yards",
+      "Open work areas",
+      "Society entrances"
+    ]
+  },
+  {
+    "id": "pt-001",
+    "slug": "blue-pe-tarpaulin",
+    "name": "Blue PE Tarpaulin",
+    "categorySlug": "pe-tarpaulin",
+    "shortDescription": "Waterproof PE tarpaulin for general use.",
+    "fullDescription": "Lightweight yet strong waterproof cover suitable for a wide range of protective applications.",
+    "images": [
+      {
+        "src": "/images/products/blue-pe-tarpaulin.jpg",
+        "alt": "Blue polyethylene tarpaulin sheet"
+      }
+    ],
+    "specs": [
+      {
+        "label": "Material",
+        "value": "Polyethylene (PE)"
+      }
+    ],
+    "applications": [
+      "Goods covering",
+      "Temporary roofing",
+      "Site protection"
+    ]
+  },
+  {
+    "id": "pt-002",
+    "slug": "heavy-duty-hdpe-tarpaulin",
+    "name": "Heavy Duty HDPE Tarpaulin",
+    "categorySlug": "pe-tarpaulin",
+    "shortDescription": "Reinforced high-GSM tarpaulin for vehicle covers.",
+    "fullDescription": "High GSM reinforced tarpaulin offering maximum protection against rain and sun. Used for vehicle and machinery covers.",
+    "images": [
+      {
+        "src": "/images/products/heavy-duty-hdpe-tarpaulin.jpg",
+        "alt": "Heavy duty HDPE tarpaulin covering machinery"
+      }
+    ],
+    "specs": [
+      {
+        "label": "Material",
+        "value": "HDPE, high GSM"
+      }
+    ],
+    "applications": [
+      "Vehicle covers",
+      "Machinery covers",
+      "Long-term outdoor storage"
+    ]
+  },
+  {
+    "id": "spn-001",
+    "slug": "cricket-box-net",
+    "name": "Cricket Box Net",
+    "categorySlug": "sports-nets",
+    "shortDescription": "Fully enclosed cricket practice net.",
+    "fullDescription": "Complete box enclosure for cricket practice, supplied and installed with the supporting structure.",
+    "images": [
+      {
+        "src": "/images/products/cricket-box-net.jpg",
+        "alt": "Enclosed cricket practice net box"
+      }
+    ],
+    "applications": [
+      "Cricket academies",
+      "Schools and colleges",
+      "Society grounds",
+      "Turf grounds"
+    ],
+    "featured": true
+  },
+  {
+    "id": "spn-002",
+    "slug": "football-goal-post-net",
+    "name": "Football Goal Post Net",
+    "categorySlug": "sports-nets",
+    "shortDescription": "Heavy duty goal post netting.",
+    "fullDescription": "Weatherproof nylon netting for professional and club goal posts.",
+    "images": [
+      {
+        "src": "/images/products/football-goal-post-net.jpg",
+        "alt": "Football goal post fitted with a nylon net"
+      }
+    ],
+    "applications": [
+      "Football grounds",
+      "Turf facilities",
+      "Schools"
+    ]
+  },
+  {
+    "id": "spn-003",
+    "slug": "tennis-boundary-net",
+    "name": "Tennis Boundary Net",
+    "categorySlug": "sports-nets",
+    "shortDescription": "Wide span boundary netting for courts.",
+    "fullDescription": "Tall boundary netting for tennis, volleyball and multi-sport courts, keeping play contained within the facility.",
+    "images": [
+      {
+        "src": "/images/products/tennis-boundary-net.jpg",
+        "alt": "Tall boundary netting around a tennis court"
+      }
+    ],
+    "applications": [
+      "Tennis courts",
+      "Volleyball courts",
+      "Multi-sport facilities"
+    ]
+  },
+  {
+    "id": "ft-001",
+    "slug": "professional-football-ground-turf",
+    "name": "Professional Football Ground Turf",
+    "categorySlug": "football-turf",
+    "shortDescription": "Professional grade football turf, supplied and laid.",
+    "fullDescription": "High performance sports turf designed for heavy footfall and player safety, including base preparation and installation.",
+    "images": [
+      {
+        "src": "/images/products/professional-football-ground-turf.jpg",
+        "alt": "Professional football turf pitch"
+      }
+    ],
+    "applications": [
+      "Turf grounds",
+      "Five-a-side pitches",
+      "Sports academies"
+    ],
+    "featured": true
+  },
+  {
+    "id": "ag-001",
+    "slug": "premium-artificial-grass-40mm",
+    "name": "Premium Artificial Grass — 40mm",
+    "categorySlug": "artificial-grass",
+    "shortDescription": "Lush 40mm landscape grass.",
+    "fullDescription": "Realistic look and feel with a 40mm pile height. Maintenance free artificial turf for gardens and landscaping.",
+    "images": [
+      {
+        "src": "/images/products/premium-artificial-grass-40mm.jpg",
+        "alt": "40mm premium artificial landscape grass"
+      }
+    ],
+    "specs": [
+      {
+        "label": "Pile height",
+        "value": "40 mm"
+      }
+    ],
+    "applications": [
+      "Gardens",
+      "Landscaping",
+      "Villa lawns"
+    ]
+  },
+  {
+    "id": "ag-002",
+    "slug": "artificial-lawn-grass",
+    "name": "Artificial Lawn Grass",
+    "categorySlug": "artificial-grass",
+    "shortDescription": "Multi-purpose lawn grass for rooftops.",
+    "fullDescription": "High density fibres with excellent drainage, well suited to terrace gardens and rooftop lawns.",
+    "images": [
+      {
+        "src": "/images/products/artificial-lawn-grass.jpg",
+        "alt": "Artificial lawn grass laid on a terrace"
+      }
+    ],
+    "applications": [
+      "Terrace gardens",
+      "Rooftop lawns",
+      "Balconies"
+    ]
+  },
+  {
+    "id": "cg-001",
+    "slug": "carpet-grass-roll",
+    "name": "Carpet Grass Roll",
+    "categorySlug": "carpet-grass",
+    "shortDescription": "Easy to install grass rolls for events.",
+    "fullDescription": "Portable and durable grass carpet rolls for indoor and outdoor events, exhibitions and temporary installations.",
+    "images": [
+      {
+        "src": "/images/products/carpet-grass-roll.jpg",
+        "alt": "Roll of carpet grass being laid out"
+      }
+    ],
+    "applications": [
+      "Events",
+      "Exhibitions",
+      "Wedding venues",
+      "Temporary displays"
+    ]
+  },
+  {
+    "id": "gm-001",
+    "slug": "decorative-grass-mats",
+    "name": "Decorative Grass Mats",
+    "categorySlug": "grass-mats",
+    "shortDescription": "Interlocking grass mats for balconies.",
+    "fullDescription": "Small modular interlocking grass tiles that allow a quick balcony or patio makeover without any fixing work.",
+    "images": [
+      {
+        "src": "/images/products/decorative-grass-mats.jpg",
+        "alt": "Interlocking decorative grass mats on a balcony floor"
+      }
+    ],
+    "applications": [
+      "Balconies",
+      "Patios",
+      "Small terraces"
+    ]
+  },
+  {
+    "id": "nh-001",
+    "slug": "nylon-hammock-hanging-mesh-net",
+    "name": "Nylon Hammock Hanging Mesh Net",
+    "categorySlug": "nylon-hammock",
+    "shortDescription": "Strong nylon hanging mesh.",
+    "fullDescription": "High-tensile strength nylon rope mesh used for hammocks, adventure zones and play area netting.",
+    "images": [
+      {
+        "src": "/images/products/nylon-hammock-hanging-mesh-net.jpg",
+        "alt": "Nylon rope hammock mesh net"
+      }
+    ],
+    "specs": [
+      {
+        "label": "Material",
+        "value": "Nylon rope"
+      }
+    ],
+    "applications": [
+      "Hammocks",
+      "Adventure zones",
+      "Play areas"
+    ]
+  }
+]

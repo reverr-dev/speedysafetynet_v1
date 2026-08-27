@@ -4,64 +4,55 @@
  * The entire site is coloured from this one file. Changing a value here
  * rebrands every page — no hunting through components.
  *
- * Palette taken from the client's visiting card. The brand is GREEN, not the
- * orange the old demo used: a deep forest green for the wordmark, a fresh leaf
- * green for accents and labels, on white. The card also carries a small
- * rainbow swoosh in the logo, which is used sparingly as a decorative accent
- * only — never for text or interface colour.
+ * The brand is SAFETY ORANGE ON CHARCOAL, chosen by the client from five
+ * schemes previewed on the live site. It is the colour language of the work
+ * itself: hi-vis, hazard marking, hard hats. Of the options it was also the
+ * hardest to mistake for a competitor.
  *
- * Contrast: --green-800 on white is roughly 8:1 and --green-900 roughly 11:1,
- * both comfortably past WCAG AA for body text. --green-500 is a decorative /
- * large-text colour only; it must never carry small text on white.
+ * Note the scale is deliberately NOT one hue. Warm tints at the light end,
+ * orange in the middle, neutral charcoal at 700–900. A single-hue orange scale
+ * turns brown at the dark end, and brown headings on a safety site look like
+ * a mistake rather than a decision.
+ *
+ * Contrast, measured, all past WCAG AA:
+ *   brand-800 on white ......... 14.15:1
+ *   brand-500 on white ..........  5.11:1
+ *   white on brand-500 ..........  5.11:1
+ *   brand-500 on brand-50 .......  4.72:1   (the featured band)
+ *   brand-300 on brand-900 ......  8.37:1   (hero eyebrow)
  */
 
 :root {
   /* ── Brand palette ────────────────────────────────────────────────
-     THE THEME LIVES HERE. Every colour on the site derives from this one
-     scale, so swapping a brand means replacing eleven values — nothing else.
-
-     Alternative themes are defined further down under [data-theme]. They
-     override only --brand-*, and because --green-* below point AT --brand-*,
-     the whole site follows. (The --green-* names are kept because every
-     component already references them; they are aliases now, not greens.)  */
-  --brand-50: #f0f7f1;
-  --brand-100: #d8ecdb;
-  --brand-200: #b2d9b9;
-  --brand-300: #83c08f;
-  --brand-400: #5aa86a;
-  /* Accent. Was #3f9150, which measured 3.91:1 on white — below the 4.5:1
-     needed for small text, and it is used for the eyebrow labels and the
-     primary button. #357f46 is the same hue at 4.91:1. */
-  --brand-500: #357f46;
-  --brand-600: #2f7740;
-  --brand-700: #256034;
-  --brand-800: #1c4a29;
-  --brand-900: #143520;
-
-  /* Aliases — components reference these. Do not give them literal values. */
-  --green-50: var(--brand-50);
-  --green-100: var(--brand-100);
-  --green-200: var(--brand-200);
-  --green-300: var(--brand-300);
-  --green-400: var(--brand-400);
-  --green-500: var(--brand-500);
-  --green-600: var(--brand-600);
-  --green-700: var(--brand-700);
-  --green-800: var(--brand-800);
-  --green-900: var(--brand-900);
+     Every colour on the site derives from this scale, so rebranding means
+     replacing ten values and nothing else. */
+  --brand-50: #fff4ec;
+  --brand-100: #ffe3d0;
+  --brand-200: #ffc6a3;
+  --brand-300: #ffa16b;
+  --brand-400: #f2762b;
+  /* Accent. #c2521a measured 4.30:1 against --brand-50, which is the
+     background of the featured band — the eyebrow label there would have
+     failed AA. This is the same orange one step darker. */
+  --brand-500: #b84d17;
+  --brand-600: #a34413;
+  /* Charcoal from here down, not brown. See the note above. */
+  --brand-700: #333b3f;
+  --brand-800: #262c2f;
+  --brand-900: #1a1f21;
 
   /* ── Neutrals ─────────────────────────────────────────────────────── */
   --white: #ffffff;
-  --grey-50: #f8faf8;
-  --grey-100: #eef1ee;
-  --grey-200: #dfe4df;
-  --grey-300: #c4ccc5;
-  --grey-400: #9aa39b;
-  --grey-500: #6f786f;
-  --grey-600: #515a52;
-  --grey-700: #3a423b;
-  --grey-800: #252b26;
-  --grey-900: #151915;
+  --grey-50: #faf9f8;
+  --grey-100: #f1efee;
+  --grey-200: #e4e1df;
+  --grey-300: #ccc7c4;
+  --grey-400: #a39d9a;
+  --grey-500: #78726f;
+  --grey-600: #5a5451;
+  --grey-700: #423d3a;
+  --grey-800: #2b2725;
+  --grey-900: #191615;
 
   /* ── Functional accents ───────────────────────────────────────────── */
   /* Red appears on the card for the government certification line. */
@@ -73,10 +64,10 @@
   /* ── Semantic roles ───────────────────────────────────────────────── */
   /* Components reference these, not the raw scale above, so the palette can
      be restructured without touching a single component. */
-  --color-brand: var(--green-800);
-  --color-brand-strong: var(--green-900);
-  --color-brand-accent: var(--green-500);
-  --color-brand-soft: var(--green-50);
+  --color-brand: var(--brand-800);
+  --color-brand-strong: var(--brand-900);
+  --color-brand-accent: var(--brand-500);
+  --color-brand-soft: var(--brand-50);
 
   --color-text: var(--grey-900);
   --color-text-muted: var(--grey-600);
@@ -84,12 +75,12 @@
 
   --color-surface: var(--white);
   --color-surface-alt: var(--grey-50);
-  --color-surface-brand: var(--green-800);
+  --color-surface-brand: var(--brand-800);
 
   --color-border: var(--grey-200);
   --color-border-strong: var(--grey-300);
 
-  --color-focus: var(--green-500);
+  --color-focus: var(--brand-500);
 
   /* ── Typography ───────────────────────────────────────────────────── */
   /* System stack: renders instantly, costs nothing, no external font request.
@@ -133,18 +124,13 @@
   --radius-lg: 14px;
   --radius-full: 999px;
 
-  --shadow-sm: 0 1px 2px rgb(20 53 32 / 6%), 0 1px 3px rgb(20 53 32 / 8%);
-  --shadow-md: 0 4px 12px rgb(20 53 32 / 8%);
-  --shadow-lg: 0 12px 32px rgb(20 53 32 / 12%);
+  --shadow-sm: 0 1px 2px rgb(26 31 33 / 6%), 0 1px 3px rgb(26 31 33 / 8%);
+  --shadow-md: 0 4px 12px rgb(26 31 33 / 8%);
+  --shadow-lg: 0 12px 32px rgb(26 31 33 / 12%);
 
   /* ── Layout ───────────────────────────────────────────────────────── */
   --container-max: 1200px;
   --header-height: 72px;
-  /* ⚠️ DEMO ONLY — height of the colour-scheme preview bar. ThemeSwitcher
-     measures the real bar and overwrites this on <html> at runtime, because
-     the options wrap to a second row on a narrow phone. This value is only
-     the first-paint fallback. Delete with the ThemeSwitcher component. */
-  --theme-bar-height: 52px;
 
   /* ── Motion ───────────────────────────────────────────────────────── */
   /* `ease` starts fast and ends slow, which reads as abrupt on hover. These
@@ -167,92 +153,6 @@
      grow/shrink drift out of phase, so the net never visibly repeats. */
   --net-spin: 100s; /* one full rotation */
   --net-breathe: 20s; /* grow → shrink → grow, and the fade with it */
-}
-
-/* ═══════════════════════════════════════════════════════════════════════
-   ALTERNATIVE THEMES
-
-   Set data-theme on <html> to switch. Only --brand-* is overridden; every
-   other token derives from it, so one block repaints the entire site.
-
-   All three were contrast-checked against WCAG AA (4.5:1 for text):
-     brand-800 heading on white · brand-500 label on white ·
-     white on brand-500 button · brand-300 on brand-900 hero
-   ═══════════════════════════════════════════════════════════════════════ */
-
-/* Industrial blue — the safety-equipment convention. Reads as engineering
-   and reliability rather than landscaping. */
-:root[data-theme='blue'] {
-  --brand-50: #eff5fa;
-  --brand-100: #d6e6f2;
-  --brand-200: #b0cee6;
-  --brand-300: #7fb0d6;
-  --brand-400: #4f8fc4;
-  --brand-500: #2b6cb0;
-  --brand-600: #22578f;
-  --brand-700: #1c4674;
-  --brand-800: #16375c;
-  --brand-900: #102844;
-}
-
-/* Corporate navy — the same family as the blue above but taken deeper.
-   Worth showing both because they photograph very differently against the
-   green nets themselves. Blue reads as engineering and equipment; navy reads
-   as an established firm. */
-:root[data-theme='navy'] {
-  --brand-50: #eef2f8;
-  --brand-100: #d9e2ef;
-  --brand-200: #b5c6de;
-  --brand-300: #8aa5c8;
-  --brand-400: #5183c2;
-  /* Kept lighter than the rest of the scale on purpose: at navy's natural
-     darkness the primary button would have read as black, not blue. */
-  --brand-500: #2f63b0;
-  --brand-600: #24508f;
-  --brand-700: #1a3d6e;
-  --brand-800: #12294d;
-  --brand-900: #0b1b33;
-}
-
-/* Professional white — monochrome graphite. Pages are white, the hero and
-   footer are near-black, and there is no brand hue at all.
-   The deliberate consequence: WhatsApp green becomes the only colour on the
-   page, so the enquiry buttons pull the eye harder here than in any other
-   scheme. The trade-off is that the site has no colour of its own to be
-   remembered by — it looks expensive, not distinctive. */
-:root[data-theme='white'] {
-  --brand-50: #eef0f2;
-  --brand-100: #e2e5e8;
-  --brand-200: #cdd2d7;
-  --brand-300: #aeb5bb;
-  --brand-400: #79828a;
-  --brand-500: #4d565e;
-  --brand-600: #3d454c;
-  --brand-700: #2c3238;
-  --brand-800: #1d2226;
-  --brand-900: #101416;
-}
-
-/* Safety orange on charcoal — the actual colour language of site safety:
-   hi-vis, hazard markings, hard hats. The most distinctive of the three and
-   the hardest to confuse with a competitor. Note the scale is deliberately
-   not one hue: warm tints at the light end, orange in the middle, neutral
-   charcoal at the dark end — so headings and dark panels stay readable
-   instead of turning brown. */
-:root[data-theme='orange'] {
-  --brand-50: #fff4ec;
-  --brand-100: #ffe3d0;
-  --brand-200: #ffc6a3;
-  --brand-300: #ffa16b;
-  --brand-400: #f2762b;
-  /* #c2521a measured 4.30:1 against --brand-50, which is the background of
-     the featured band — the eyebrow label there would have failed AA. This is
-     the same orange one step darker: 5.11:1 on white, 4.72:1 on the tint. */
-  --brand-500: #b84d17;
-  --brand-600: #a34413;
-  --brand-700: #333b3f;
-  --brand-800: #262c2f;
-  --brand-900: #1a1f21;
 }
 
 /*

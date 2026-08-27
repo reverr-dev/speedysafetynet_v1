@@ -4,6 +4,7 @@ import { SERVICES, WORKFLOW, PROJECTS } from '@/lib/services';
 import { getCategory } from '@/lib/categories';
 import { quickWhatsAppUrl } from '@/lib/enquiry';
 import ProductImage from '@/components/ProductImage';
+import GroundBuild from '@/components/GroundBuild';
 import { SERVICE_ICONS, ArrowRightIcon, WhatsAppIcon } from '@/components/Icons';
 
 export const metadata: Metadata = {
@@ -76,6 +77,12 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Sports ground construction ──────────────────────────────────
+          Placed before the gallery deliberately: it is the highest-value
+          work the client does, and specification detail at this level is
+          what a facility owner is actually comparing contractors on. */}
+      <GroundBuild />
 
       {/* ── Our Work ────────────────────────────────────────────────────
           Completed outdoor installations. Every tile carries an

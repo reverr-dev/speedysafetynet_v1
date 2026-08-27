@@ -89,6 +89,12 @@ export const TrashIcon = ({ size = 18, className }: IconProps) => (
   </svg>
 );
 
+export const PlusIcon = ({ size = 16, className }: IconProps) => (
+  <svg {...base(size)} className={className}>
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+);
+
 export const ArrowRightIcon = ({ size = 16, className }: IconProps) => (
   <svg {...base(size)} className={className}>
     <path d="M5 12h14M13 6l6 6-6 6" />

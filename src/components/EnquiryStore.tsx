@@ -30,6 +30,18 @@ interface EnquiryContextValue {
   ready: boolean;
   has: (productId: string) => boolean;
   add: (product: Product, quantity?: number, note?: string) => void;
+  /**
+   * Add something that is not a catalogue product — a construction stage, a
+   * turf grade, a netting specification.
+   *
+   * The basket has always held products, but a visitor looking at the ground
+   * construction section wants to ask about *that stage* or *that turf*, and
+   * making them hunt for the nearest catalogue entry instead is how an
+   * enquiry gets abandoned. The stored shape is identical, so the enquiry
+   * page, the WhatsApp message and the email all handle these with no
+   * changes at all.
+   */
+  addCustom: (item: { id: string; name: string; category: string; note?: string }) => void;
   remove: (productId: string) => void;
   setQuantity: (productId: string, quantity: number) => void;
   setNote: (productId: string, note: string) => void;
@@ -104,6 +116,29 @@ export function EnquiryProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const addCustom = useCallback(
+    (item: { id: string; name: string; category: string; note?: string }) => {
+      setItems((prev) => {
+        // Already in the basket — do not silently add a duplicate line. The
+        // person almost certainly clicked twice, and two identical rows in an
+        // enquiry email makes the business look disorganised.
+        if (prev.some((i) => i.productId === item.id)) return prev;
+        if (prev.length >= MAX_ITEMS) return prev;
+        return [
+          ...prev,
+          {
+            productId: item.id,
+            productName: item.name,
+            categoryName: item.category,
+            quantity: 1,
+            note: item.note ?? '',
+          },
+        ];
+      });
+    },
+    [],
+  );
+
   const remove = useCallback((productId: string) => {
     setItems((prev) => prev.filter((i) => i.productId !== productId));
   }, []);
@@ -132,8 +167,9 @@ export function EnquiryProvider({ children }: { children: ReactNode }) {
       setQuantity,
       setNote,
       clear,
+      addCustom,
     }),
-    [items, ready, add, remove, setQuantity, setNote, clear],
+    [items, ready, add, addCustom, remove, setQuantity, setNote, clear],
   );
 
   return <EnquiryContext.Provider value={value}>{children}</EnquiryContext.Provider>;

@@ -22,7 +22,7 @@ export default function HomePage() {
     <>
       <section className="hero">
         <div className="container hero__inner">
-          <span className="eyebrow" style={{ color: 'var(--green-300)' }}>
+          <span className="eyebrow" style={{ color: 'var(--brand-300)' }}>
             ISO 9001:2015 · Government Certified
           </span>
           <h1>Safety netting, engineered and installed across India.</h1>
