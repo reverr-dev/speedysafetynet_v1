@@ -140,21 +140,31 @@ export const HERO_IMAGES: Record<string, ProductImage> = settingsData.heroImages
 export interface HeroProduct {
   product: Product;
   image: ProductImage;
+  /** 'cutout' floats on the tint; 'photo' fills the card edge to edge. */
+  kind: 'cutout' | 'photo';
 }
 
 /**
  * The hero four, resolved to real products.
  *
- * Silently skips a slug that no longer matches a product. That is deliberate:
- * if the client removes a product that happens to be featured, the band shows
- * three items rather than the whole home page failing to build. A missing
- * fourth card is a cosmetic problem; a broken build is an outage.
+ * Prefers a transparent cutout where one exists, because a product floating on
+ * the tint looks composed. Falls back to the product's own catalogue
+ * photograph, which is what we actually have — expecting a netting contractor
+ * to produce background-removed PNGs before launch was never realistic, and a
+ * band showing four grey placeholders is worse than one showing four photos.
+ *
+ * A slug with no product at all is skipped rather than throwing. If the client
+ * removes a product that happens to be featured, the band shows three cards;
+ * a missing fourth card is cosmetic, a failed build is an outage.
  */
 export const heroProducts = (): HeroProduct[] =>
   HERO_PRODUCT_SLUGS.map((slug) => {
     const product = getProduct(slug);
-    const image = HERO_IMAGES[slug];
-    return product && image ? { product, image } : null;
+    if (!product) return null;
+    const cutout = HERO_IMAGES[slug];
+    return cutout
+      ? { product, image: cutout, kind: 'cutout' as const }
+      : { product, image: product.images[0], kind: 'photo' as const };
   }).filter((x): x is HeroProduct => x !== null);
 
 /**

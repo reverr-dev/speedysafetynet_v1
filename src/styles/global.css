@@ -800,16 +800,35 @@ p {
   position: relative;
   display: block;
   aspect-ratio: 1;
+  overflow: hidden;
   background: var(--color-brand-soft);
-  padding: var(--space-5);
 }
 
 .feature-card__media img {
   width: 100%;
   height: 100%;
+  transition: transform var(--transition-base);
+}
+
+/*
+  Two kinds of image, two treatments.
+
+  A cut-out PNG is padded and set on the tint so the product appears to float,
+  with a drop shadow doing the lifting. An ordinary photograph gets neither —
+  padding it would leave a border of tint around a rectangle, and a drop shadow
+  on a rectangle just looks like a mistake. It fills the frame instead.
+*/
+.feature-card__media--cutout {
+  padding: var(--space-5);
+}
+
+.feature-card__media--cutout img {
   object-fit: contain;
   filter: drop-shadow(0 14px 18px rgb(26 31 33 / 22%));
-  transition: transform var(--transition-base);
+}
+
+.feature-card__media--photo img {
+  object-fit: cover;
 }
 
 .feature-card:hover .feature-card__media img {

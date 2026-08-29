@@ -39,11 +39,14 @@ export default function FeaturedProducts() {
         </div>
 
         <div className="featured__grid">
-          {items.map(({ product, image }, i) => {
+          {items.map(({ product, image, kind }, i) => {
             const category = getCategory(product.categorySlug);
             return (
               <article className="feature-card" key={product.id}>
-                <Link href={`/products/${product.slug}`} className="feature-card__media">
+                <Link
+                  href={`/products/${product.slug}`}
+                  className={`feature-card__media feature-card__media--${kind}`}
+                >
                   {/* The first card is the largest image above the fold, so it
                       must not lazy-load — it is the LCP Google measures. */}
                   <ProductImage src={image.src} alt={image.alt} priority={i === 0} />

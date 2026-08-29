@@ -5,22 +5,6 @@
     "premium-artificial-grass-40mm",
     "stainless-steel-bird-spike"
   ],
-  "heroImages": {
-    "construction-fall-safety-net": {
-      "src": "/images/hero/construction-fall-safety-net.png",
-      "alt": "Roll of green construction safety netting"
-    },
-    "cricket-box-net": {
-      "src": "/images/hero/cricket-box-net.png",
-      "alt": "Cricket practice net panel on its steel frame"
-    },
-    "premium-artificial-grass-40mm": {
-      "src": "/images/hero/premium-artificial-grass-40mm.png",
-      "alt": "Square of 40mm artificial grass turf"
-    },
-    "stainless-steel-bird-spike": {
-      "src": "/images/hero/stainless-steel-bird-spike.png",
-      "alt": "Strip of stainless steel bird spikes"
-    }
-  }
+  "heroImages": {},
+  "_note": "heroImages holds transparent PNG cutouts only. It is empty because none exist yet and asking a netting contractor for background-removed PNGs before launch was never realistic. With no cutout, the band falls back to the product's own catalogue photograph — see heroProducts() in src/lib/products.ts."
 }
