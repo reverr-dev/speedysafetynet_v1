@@ -9,7 +9,7 @@
     "images": [
       {
         "src": "/images/products/construction-fall-safety-net.jpg",
-        "alt": "Construction fall safety net installed on a high-rise site"
+        "alt": "Two-layer braided safety net, full sample"
       }
     ],
     "applications": [
@@ -61,6 +61,28 @@
     ]
   },
   {
+    "id": "ig-001",
+    "slug": "invisible-grill",
+    "name": "Invisible Grill",
+    "categorySlug": "invisible-grills",
+    "shortDescription": "Stainless steel cable grill for windows and balconies.",
+    "fullDescription": "Tensioned stainless steel cables fitted vertically across a window or balcony opening. Strong enough to stop a child falling, thin enough that the view and the breeze are barely affected — which is why schools and high-rise apartments choose them over a conventional welded grill.",
+    "images": [
+      {
+        "src": "/images/products/invisible-grill.jpg",
+        "alt": "Invisible grill safety information panel"
+      }
+    ],
+    "applications": [
+      "Schools",
+      "High-rise apartments",
+      "Balconies",
+      "Children's bedrooms",
+      "Society common areas"
+    ],
+    "featured": true
+  },
+  {
     "id": "bn-001",
     "slug": "anti-bird-net",
     "name": "Anti Bird Net",
@@ -70,7 +92,7 @@
     "images": [
       {
         "src": "/images/products/anti-bird-net.jpg",
-        "alt": "Anti bird net fitted across a balcony opening"
+        "alt": "Anti bird net installation"
       }
     ],
     "applications": [
@@ -456,7 +478,7 @@
     "images": [
       {
         "src": "/images/products/premium-artificial-grass-40mm.jpg",
-        "alt": "40mm premium artificial landscape grass"
+        "alt": "Artificial grass applications — residential, sports and commercial"
       }
     ],
     "specs": [

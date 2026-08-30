@@ -6,6 +6,8 @@ import {
   productsInCategory,
   searchProducts,
   featuredProducts,
+  HERO_IMAGES,
+  HERO_PRODUCT_SLUGS,
 } from '../src/lib/products';
 import {
   validateEnquiry,
@@ -35,8 +37,8 @@ const check = (name: string, fn: () => void) => {
 
 console.log('\nDATA INTEGRITY');
 
-check('25 products ported', () => assert.equal(PRODUCTS.length, 25));
-check('14 categories defined', () => assert.equal(CATEGORIES.length, 14));
+check('26 products in the catalogue', () => assert.equal(PRODUCTS.length, 26));
+check('15 categories defined', () => assert.equal(CATEGORIES.length, 15));
 
 check('every product slug is unique', () => {
   const slugs = PRODUCTS.map((p) => p.slug);
@@ -102,7 +104,12 @@ check('search finds by application, not just name', () => {
 });
 
 check('empty search returns everything', () => {
-  assert.equal(searchProducts('   ').length, 25);
+  // Compared against PRODUCTS.length rather than a literal: this test is
+  // about "everything", not about a particular catalogue size. The two
+  // counts above are deliberately literal — they exist to fail loudly when
+  // the catalogue changes, which is how the Invisible Grill addition got
+  // noticed.
+  assert.equal(searchProducts('   ').length, PRODUCTS.length);
 });
 
 console.log('\nENQUIRY VALIDATION');
@@ -300,6 +307,28 @@ check('extra product images use the -2, -3 suffix convention', () => {
 check('every project has alt text worth indexing', () => {
   for (const pr of PROJECTS) {
     assert.ok(pr.images[0].alt.length > 15, `${pr.slug} has weak alt text`);
+  }
+});
+
+check('every home-page tile override points at a real catalogue image', () => {
+  // A typo here is silent and ugly: the tile falls back to the striped
+  // "Photograph required" placeholder on the busiest part of the site, and
+  // nothing else on the page looks wrong enough to notice.
+  const known = new Set(PRODUCTS.flatMap((p) => p.images.map((i) => i.src)));
+  for (const [slug, image] of Object.entries(HERO_IMAGES)) {
+    assert.ok(
+      PRODUCTS.some((p) => p.slug === slug),
+      `heroImages has an override for "${slug}", which is not a product`,
+    );
+    assert.ok(
+      HERO_PRODUCT_SLUGS.includes(slug),
+      `heroImages overrides "${slug}", which is not one of the four featured products`,
+    );
+    assert.ok(
+      known.has(image.src) || image.src.endsWith('.png'),
+      `heroImages "${slug}" points at ${image.src}, which is not in that catalogue`,
+    );
+    assert.ok(image.alt.length > 15, `heroImages "${slug}" has weak alt text`);
   }
 });
 

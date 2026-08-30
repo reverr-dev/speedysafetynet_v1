@@ -130,7 +130,10 @@
 
   /* ── Layout ───────────────────────────────────────────────────────── */
   --container-max: 1200px;
-  --header-height: 72px;
+  /* 80, not 72: the client's mark is 54px tall and needs air above and below
+     it. Every sticky offset on the site reads this token, so the anchors and
+     the sticky quotation panel follow automatically. */
+  --header-height: 80px;
 
   /* ── Motion ───────────────────────────────────────────────────────── */
   /* `ease` starts fast and ends slow, which reads as abrupt on hover. These

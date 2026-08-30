@@ -124,16 +124,17 @@ export const searchProducts = (query: string): Product[] => {
 export const HERO_PRODUCT_SLUGS: readonly string[] = settingsData.heroProductSlugs;
 
 /**
- * Hero photographs are NOT the same files as the catalogue photographs.
+ * An override for the picture shown in the home-page band — and ONLY there.
  *
- * The catalogue uses ordinary rectangular photos. The hero band needs the
- * product cut out against transparency — a .png with a real alpha channel —
- * so it floats on the tinted background instead of sitting in a visible box.
- * A rectangular photo here is what makes a site look like a template.
+ * Empty, and that is the intended state. The tiles show the client's own
+ * pictures, whole: the same file the product page leads with, not a crop of
+ * it. Substituting a tighter crop into the tile was tried and reverted — it
+ * meant the front page showed something he had never sent us.
  *
- * Shoot on any plain background, remove it, export PNG. Roughly square
- * framing with a little breathing room: the four seats assume similar
- * proportions, so one very wide and one very tall product unbalances the row.
+ * The one thing that belongs here is a transparent .png cutout, if he ever
+ * supplies one: the product against a real alpha channel, which the band can
+ * float on the tint with a drop shadow instead of sitting in a visible box.
+ * A .jpg here would be a crop by another name.
  */
 export const HERO_IMAGES: Record<string, ProductImage> = settingsData.heroImages;
 
@@ -147,11 +148,8 @@ export interface HeroProduct {
 /**
  * The hero four, resolved to real products.
  *
- * Prefers a transparent cutout where one exists, because a product floating on
- * the tint looks composed. Falls back to the product's own catalogue
- * photograph, which is what we actually have — expecting a netting contractor
- * to produce background-removed PNGs before launch was never realistic, and a
- * band showing four grey placeholders is worse than one showing four photos.
+ * Uses the override above where one is set, otherwise the product's own first
+ * photograph — which is the client's artwork, and the right default.
  *
  * A slug with no product at all is skipped rather than throwing. If the client
  * removes a product that happens to be featured, the band shows three cards;
@@ -161,10 +159,13 @@ export const heroProducts = (): HeroProduct[] =>
   HERO_PRODUCT_SLUGS.map((slug) => {
     const product = getProduct(slug);
     if (!product) return null;
-    const cutout = HERO_IMAGES[slug];
-    return cutout
-      ? { product, image: cutout, kind: 'cutout' as const }
-      : { product, image: product.images[0], kind: 'photo' as const };
+    const override = HERO_IMAGES[slug];
+    const image = override ?? product.images[0];
+    // Only a real alpha channel gets the floating treatment. A .jpg cannot
+    // have one, so padding and drop-shadowing it would frame a rectangle in a
+    // tinted mount — the thing that made these tiles look unfinished.
+    const kind = image.src.toLowerCase().endsWith('.png') ? 'cutout' : 'photo';
+    return { product, image, kind } as HeroProduct;
   }).filter((x): x is HeroProduct => x !== null);
 
 /**

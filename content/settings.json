@@ -1,10 +1,11 @@
 {
   "heroProductSlugs": [
     "construction-fall-safety-net",
-    "cricket-box-net",
     "premium-artificial-grass-40mm",
-    "stainless-steel-bird-spike"
+    "invisible-grill",
+    "anti-bird-net"
   ],
   "heroImages": {},
-  "_note": "heroImages holds transparent PNG cutouts only. It is empty because none exist yet and asking a netting contractor for background-removed PNGs before launch was never realistic. With no cutout, the band falls back to the product's own catalogue photograph — see heroProducts() in src/lib/products.ts."
+  "_note": "heroImages is empty on purpose. The home-page tiles show the client's own pictures, whole — the same file the product page leads with, not a crop of it. Anything put in here overrides the tile for that product, and the only thing that belongs here is a transparent .png cutout if he ever supplies one.",
+  "_heroNote": "The client's own four, in his order: Safety Net, Artificial Grass, Invisible Grill, Anti Bird Net. He calls them his prime and hot-selling lines and wants them visible the moment someone scans the QR code on his card."
 }

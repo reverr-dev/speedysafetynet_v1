@@ -53,7 +53,16 @@ export default function Header() {
       <header className="header">
         <div className="container header__inner">
           <Link className="logo" href="/">
-            <span className="logo__mark">SSN</span>
+            {/* eslint-disable-next-line @next/next/no-img-element -- the
+                static export runs with images.unoptimized, so next/image buys
+                nothing here. */}
+            <img
+              className="logo__mark"
+              src="/images/brand/iso-logo.png"
+              alt=""
+              width={606}
+              height={359}
+            />
             <span className="logo__text">
               <span className="logo__name">{SITE.name}</span>
               <span className="logo__tag">{SITE.tagline}</span>

@@ -97,3 +97,55 @@ Every product currently points at a local path under
 `/public/images/products/` that does not exist yet. Run
 `PHOTO_MANIFEST` in `src/lib/products.ts` for the shot list. Stock imagery on
 a safety-equipment site undermines the credibility the site exists to build.
+
+### 6. The invisible-grill poster — school crest and AI imagery
+
+`public/images/products/invisible-grill.jpg` is the client's own artwork,
+published exactly as he supplied it. Two things on it need his confirmation
+before the site goes live:
+
+**The school crest.** The bottom-left panel reads "OUR ESTEEMED CLIENT" over
+the crest of **Delhi Public School, Panvel**. Naming a customer and using
+their mark is his claim to make, not ours — but it is worth checking he has
+their agreement, because a school is exactly the kind of institution that
+objects, and it objects to the client, not to us.
+
+**The photographs.** The classroom, corridor and building shots on this
+poster look AI-generated: the pupils' hands and the whiteboard geometry do
+not survive close reading. If they are, he should know that before a customer
+asks him which school that is. It does not make the poster unusable — plenty
+of trade marketing is illustrative — but it does mean the images should not
+be described anywhere as installations of his.
+
+The same question applies to the swimming-pool photograph in the same batch.
+
+### 7. Every picture is shown whole
+
+Nothing on the site crops the client's images. The home-page tiles, the
+catalogue cards and the product page all show the complete picture, centred on
+the brand tint, at whatever proportions it happens to have.
+
+That costs some tidiness — his safety-net photograph is 4:3, his grass sheet is
+square and his invisible-grill poster is 16:9, so no common frame fits all
+three without letterboxing two of them. It is the right trade anyway. These are
+composed posters with headlines, badges and a web address on them; a crop that
+cuts the sides off is not a smaller version of his artwork, it is a damaged
+one.
+
+Two things follow from this, and both were mistakes made once already:
+
+* Do not put a tighter crop in `heroImages` to make a tile look neater. The
+  front page would then show a picture he never sent.
+* Do not add a `-2` crop of an image the product already has. Extra images are
+  for genuinely different photographs.
+
+### 8. Watermarking
+
+`scripts/watermark.py` burns the company mark into product, project and
+ground photographs. Two rules matter when adding pictures:
+
+* His four artworks are listed in `ALREADY_BRANDED` and are never stamped —
+  they carry his gear device and web address already, and a second one lands
+  on top of the first.
+* `public/images/_originals/` is the script's bookkeeping and is committed on
+  purpose. Delete it and the next run puts a second mark on every photograph.

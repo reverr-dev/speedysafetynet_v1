@@ -140,10 +140,13 @@ export const WORKFLOW = [
  * Services page. Each entry carries a category so the visitor can request the
  * same service directly from the photo.
  *
- * ⚠️ PLACEHOLDER RECORDS. These describe the type of work the client does,
- * but the specific projects, locations and photographs must be supplied and
- * approved by the client before launch. Do not publish invented project
- * references — a contractor checking them would catch it immediately.
+ * Entries marked REAL use the client's own photographs and can be published.
+ *
+ * ⚠️ The REST ARE PLACEHOLDERS. They describe the type of work he does, but the
+ * specific projects, locations and photographs must be supplied and approved by
+ * him before launch. Do not publish invented project references — a contractor
+ * checking them would catch it immediately, and on a safety-equipment site that
+ * is the one kind of doubt you cannot afford.
  */
 export const PROJECTS: Project[] = [
   {
@@ -155,22 +158,25 @@ export const PROJECTS: Project[] = [
       'Perimeter fall-protection and debris netting installed across an active high-rise construction site.',
     images: [{ src: '/images/projects/high-rise-safety-netting-mumbai.jpg', alt: 'Green safety netting wrapped around a high-rise construction site' }],
   },
+  // REAL — client's own photograph.
   {
-    slug: 'cricket-practice-nets',
-    title: 'Cricket Practice Net Enclosure',
+    slug: 'indoor-cricket-dome',
+    title: 'Indoor Cricket Facility — Tensile Roof',
     location: 'Mumbai',
     categorySlug: 'sports-nets',
     summary:
-      'Fully enclosed practice net with fabricated support structure for a sports facility.',
-    images: [{ src: '/images/projects/cricket-practice-nets.jpg', alt: 'Enclosed cricket practice nets with steel support frame' }],
+      'Fully enclosed indoor cricket facility: tensile sheet roof on a steel frame, laid turf, lane netting and full overhead lighting.',
+    images: [{ src: '/images/projects/indoor-cricket-dome.jpg', alt: 'Indoor cricket facility with green turf, lane netting and a tensile sheet roof' }],
   },
+  // REAL — client's own photograph.
   {
-    slug: 'football-turf-ground',
-    title: 'Multi-Sport Turf Ground',
+    slug: 'multisport-court',
+    title: 'Multi-Sport Court & Turf Ground',
     location: 'Mumbai',
-    categorySlug: 'football-turf',
-    summary: 'Professional sports turf laid over a prepared base for a five-a-side facility.',
-    images: [{ src: '/images/projects/football-turf-ground.jpg', alt: 'Football goal post on a professionally laid turf pitch' }],
+    categorySlug: 'sports-nets',
+    summary:
+      'Acrylic multi-sport court with perimeter netting, alongside a laid turf football ground on the same site.',
+    images: [{ src: '/images/projects/multisport-court.jpg', alt: 'Blue acrylic multi-sport court enclosed in netting beside a green turf football ground' }],
   },
   {
     slug: 'artificial-green-wall',

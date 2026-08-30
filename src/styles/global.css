@@ -399,17 +399,23 @@ p {
   min-width: 0;
 }
 
+/*
+  The client's own certification mark, in the slot the "SSN" monogram used to
+  hold. He asked for his logo on the site and this is where a logo belongs —
+  top left, on every page, next to the name rather than buried in the body.
+
+  Height-constrained with automatic width because the mark is a wide gear
+  device, not a square: fixing both dimensions would squash it.
+
+  Sized at 54px rather than the usual 40-ish. The mark carries its own
+  lettering — "MANUFACTURER ISO 9001:2015" and the web address — and below
+  about 50px that lettering stops resolving and the whole thing reads as a
+  blue smudge. The client asked for his logo to be visible properly, so the
+  header grew to fit it rather than the mark shrinking to fit the header.
+*/
 .logo__mark {
-  width: 42px;
-  height: 42px;
-  border-radius: var(--radius-md);
-  background: var(--color-brand);
-  color: var(--color-text-inverse);
-  display: grid;
-  place-items: center;
-  font-weight: var(--weight-bold);
-  font-size: var(--text-sm);
-  letter-spacing: 0.02em;
+  height: 54px;
+  width: auto;
   flex-shrink: 0;
 }
 
@@ -449,11 +455,18 @@ p {
   }
 }
 
+/* On a phone the mark competes with the name and the enquiry button for a
+   320px row, so it steps down. Height only — a fixed width would squash a
+   wide mark into an oval. */
+@media (max-width: 560px) {
+  .logo__mark {
+    height: 44px;
+  }
+}
+
 @media (max-width: 400px) {
   .logo__mark {
-    width: 36px;
     height: 36px;
-    font-size: var(--text-xs);
   }
 }
 
@@ -796,10 +809,19 @@ p {
 
 /* The product sits on the soft brand tint rather than white, so a cut-out
    PNG reads as floating on a surface instead of pasted onto a card. */
+/*
+  4:3, matching the catalogue cards rather than the square this used to be.
+
+  It is not an arbitrary shape. The client's four artworks are 940x788,
+  1400x1050, 1120x900 and 1080x1080 — three of them are already very close to
+  4:3. Cropping them to a square threw away a quarter of each picture; at 4:3
+  they fill the frame with almost nothing lost, which is the "zoom to fit, but
+  not that much" the tile needs.
+*/
 .feature-card__media {
   position: relative;
   display: block;
-  aspect-ratio: 1;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--color-brand-soft);
 }
@@ -827,8 +849,32 @@ p {
   filter: drop-shadow(0 14px 18px rgb(26 31 33 / 22%));
 }
 
+/*
+  OLD REASONING, kept because it explains why the square frame was wrong:
+
+  `cover` fills the square neatly but eats the edges, and several of these are
+  the client's own composed artwork — a collage, an information panel — where
+  cropping cuts off half the message.
+
+  `contain` alone leaves the image touching two edges and floating clear of the
+  other two, which reads as a bug. Even padding on all four sides turns the
+  same leftover space into a mount, the way a framed print sits on a card. The
+  cards keep a common frame so the row lines up, and each image sits centred
+  inside it whatever its own proportions are.
+
+  We tried `cover` here and reverted it, so this is worth stating plainly:
+  these four pictures are the client's own composed artwork, and cropping any
+  part of one is worse than the tint showing round its edges. His safety-net
+  photograph is 4:3, his grass sheet is square and his invisible-grill poster
+  is 16:9 — no single frame contains all three without cutting something off,
+  so the frame gives way and the picture stays whole.
+*/
+.feature-card__media--photo {
+  padding: var(--space-4);
+}
+
 .feature-card__media--photo img {
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .feature-card:hover .feature-card__media img {
@@ -1373,17 +1419,21 @@ p {
   transform: translateY(-4px);
 }
 
+/* Same rule as the home-page tiles: the whole picture, never a crop of it.
+   The catalogue grid needs a common frame so the rows line up, but what sits
+   inside that frame is the complete image on its own tint. */
 .card__media {
   position: relative;
   aspect-ratio: 4 / 3;
   background: var(--color-brand-soft);
   overflow: hidden;
+  padding: var(--space-3);
 }
 
 .card__media img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* Shown until real photography arrives. Deliberately obvious so a
@@ -1613,7 +1663,22 @@ p {
 
 .gallery__main {
   position: relative;
-  aspect-ratio: 16 / 10;
+  /*
+    No fixed aspect ratio here, deliberately.
+
+    On the card a common square matters, because the four have to line up as a
+    row. On the product page there is only one image and nothing to line it up
+    with — so forcing it into a 16:10 box only ever did one of two bad things:
+    crop a tall poster, or strand a wide one in a band of tint.
+
+    Letting the image set its own height means a square collage renders square,
+    a landscape photograph renders landscape, and the visitor sees the whole
+    thing at the largest size the column allows. The cap stops a very tall
+    image pushing the specification table off the screen.
+  */
+  display: grid;
+  place-items: center;
+  min-height: 260px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--color-border);
   background: var(--color-brand-soft);
@@ -1621,9 +1686,10 @@ p {
 }
 
 .gallery__main img {
+  max-height: 620px;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Scrolls sideways rather than wrapping, so a product with many photographs
