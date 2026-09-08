@@ -406,4 +406,29 @@ check('no project claims work we cannot evidence', () => {
   }
 });
 
+check('watermark suppression is only used where it is justified', () => {
+  // `watermark: false` hides the corner mark. Every use of it has to be a
+  // picture that already carries the company mark in its own pixels — three
+  // of the client's posters, and one photograph the old burn-in script
+  // stamped before there were clean originals to restore from.
+  //
+  // This check exists because the flag was once applied to a plain
+  // photograph by mistake, and the only symptom was a product quietly
+  // shipping with no branding on it at all.
+  const JUSTIFIED = new Set([
+    '/images/products/invisible-grill.jpg',
+    '/images/products/anti-bird-net.jpg',
+    '/images/products/premium-artificial-grass-40mm.jpg',
+    '/images/products/balcony-anti-fall-net.jpg',
+    '/images/projects/indoor-cricket-dome.jpg',
+    '/images/projects/multisport-court.jpg',
+  ]);
+  const suppressed = [...PRODUCTS.flatMap((p) => p.images), ...PROJECTS.flatMap((p) => p.images)]
+    .filter((im) => im.watermark === false)
+    .map((im) => im.src);
+  for (const src of suppressed) {
+    assert.ok(JUSTIFIED.has(src), `${src} suppresses the watermark with no reason on record`);
+  }
+});
+
 console.log(`\n${pass} checks passed${process.exitCode ? ' — WITH FAILURES' : ''}\n`);

@@ -28,6 +28,8 @@ export interface BuildStage {
   /** null where the client's original photograph was too small to use. */
   image: string | null;
   alt: string | null;
+  /** false where the picture already carries the mark in its own pixels. */
+  watermark?: boolean;
 }
 
 export interface TurfSpec {

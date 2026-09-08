@@ -101,7 +101,11 @@ export default function GroundBuild() {
         <div className="gb__stages">
           {stages.map((stage) => (
             <article className="gbs" key={stage.id}>
-              <div className={`gbs__media${stage.image ? '' : ' gbs__media--none'}`}>
+              <div
+                className={`gbs__media${stage.image ? '' : ' gbs__media--none'}${
+                  stage.watermark === false ? ' media--unmarked' : ''
+                }`}
+              >
                 {stage.image ? (
                   <ProductImage src={stage.image} alt={stage.alt ?? stage.title} />
                 ) : (

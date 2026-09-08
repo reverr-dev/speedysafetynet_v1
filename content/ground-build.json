@@ -71,7 +71,8 @@
       "unit": "running ft",
       "id": "gb-padding",
       "image": "/images/ground/padding.jpg",
-      "alt": "Red rexine padding being wrapped around a steel post"
+      "alt": "Red rexine padding being wrapped around a steel post",
+      "watermark": false
     },
     {
       "number": "05",

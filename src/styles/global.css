@@ -1550,14 +1550,13 @@ p {
    it, which is exactly what a video player does with a 21:9 film in a 16:9
    window, and reads as a badge on the card rather than a mistake. */
 
-/* The ground-build photographs are deliberately absent from this list. Every
-   one of them was burned in by scripts/watermark.py before the CSS mark
-   existed, and there are no clean originals to go back to — so a CSS mark on
-   top would be the second one on the same picture. If those images are ever
-   replaced with fresh files from the client, add `.gbs__media::after` here. */
+/* The ground-build banner is deliberately absent from this list: its own
+   ::after is the dark gradient the heading sits on, and it can only have one.
+   That picture keeps the mark burned into it from the old script. */
 .card__media::after,
 .feature-card__media::after,
 .gallery__main::after,
+.gbs__media::after,
 .project::after {
   content: '';
   position: absolute;
@@ -1587,7 +1586,8 @@ p {
 .card__media:has(.card__placeholder)::after,
 .feature-card__media:has(.card__placeholder)::after,
 .gallery__main:has(.card__placeholder)::after,
-.project:has(.card__placeholder)::after {
+.project:has(.card__placeholder)::after,
+.gbs__media--none::after {
   content: none;
 }
 
