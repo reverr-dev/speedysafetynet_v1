@@ -108,7 +108,12 @@ export default function ServicesPage() {
                 : '/contact';
 
               return (
-                <article className="project" key={project.slug}>
+                <article
+                  className={`project${
+                    project.images[0].watermark === false ? ' media--unmarked' : ''
+                  }`}
+                  key={project.slug}
+                >
                   <ProductImage
                     src={project.images[0].src}
                     alt={project.images[0].alt}
@@ -116,9 +121,11 @@ export default function ServicesPage() {
 
                   <div className="project__overlay">
                     <h3 className="project__title">{project.title}</h3>
+                    {/* Joined rather than concatenated, so a project whose
+                        location the client has not confirmed shows just the
+                        category — not a stray leading " · ". */}
                     <p className="project__meta">
-                      {project.location}
-                      {category ? ` · ${category.name}` : ''}
+                      {[project.location, category?.name].filter(Boolean).join(' · ')}
                     </p>
                     <Link className="project__cta" href={enquiryHref}>
                       Enquire for this service

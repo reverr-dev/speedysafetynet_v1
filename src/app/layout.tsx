@@ -76,7 +76,9 @@ function StructuredData() {
     name: SITE.name,
     description: SITE.description,
     url: SITE_URL,
-    telephone: `+${SITE.contact.landlineE164}`,
+    // The primary mobile, not a landline: this is the number Google shows
+    // beside the business, so it has to be one that is answered.
+    telephone: `+${SITE.contact.phoneE164}`,
     email: SITE.contact.email,
     address: {
       '@type': 'PostalAddress',

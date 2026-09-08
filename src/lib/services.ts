@@ -149,16 +149,20 @@ export const WORKFLOW = [
  * is the one kind of doubt you cannot afford.
  */
 export const PROJECTS: Project[] = [
-  {
-    slug: 'high-rise-safety-netting-mumbai',
-    title: 'High-Rise Construction Safety Netting',
-    location: 'Mumbai',
-    categorySlug: 'safety-nets',
-    summary:
-      'Perimeter fall-protection and debris netting installed across an active high-rise construction site.',
-    images: [{ src: '/images/projects/high-rise-safety-netting-mumbai.jpg', alt: 'Green safety netting wrapped around a high-rise construction site' }],
-  },
-  // REAL — client's own photograph.
+  /*
+   * Every project below is one of the client's own installations, evidenced by
+   * a photograph or a video frame he sent us.
+   *
+   * Four invented entries used to sit here — a green wall, a high-rise netting
+   * job, a balcony bird-netting job and a landscape lawn — written to fill the
+   * gallery before we had real material. They are gone. A project gallery is a
+   * claim about work someone has actually done, and a customer who asks about
+   * one of them and gets a blank look does more damage than a shorter gallery
+   * ever could.
+   *
+   * `location` is deliberately blank where he has not told us where the job
+   * was. It renders as nothing rather than as a guess.
+   */
   {
     slug: 'indoor-cricket-dome',
     title: 'Indoor Cricket Facility — Tensile Roof',
@@ -166,9 +170,8 @@ export const PROJECTS: Project[] = [
     categorySlug: 'sports-nets',
     summary:
       'Fully enclosed indoor cricket facility: tensile sheet roof on a steel frame, laid turf, lane netting and full overhead lighting.',
-    images: [{ src: '/images/projects/indoor-cricket-dome.jpg', alt: 'Indoor cricket facility with green turf, lane netting and a tensile sheet roof' }],
+    images: [{ src: '/images/projects/indoor-cricket-dome.jpg', alt: 'Indoor cricket facility with green turf, lane netting and a tensile sheet roof', watermark: false }],
   },
-  // REAL — client's own photograph.
   {
     slug: 'multisport-court',
     title: 'Multi-Sport Court & Turf Ground',
@@ -176,32 +179,42 @@ export const PROJECTS: Project[] = [
     categorySlug: 'sports-nets',
     summary:
       'Acrylic multi-sport court with perimeter netting, alongside a laid turf football ground on the same site.',
-    images: [{ src: '/images/projects/multisport-court.jpg', alt: 'Blue acrylic multi-sport court enclosed in netting beside a green turf football ground' }],
+    images: [{ src: '/images/projects/multisport-court.jpg', alt: 'Blue acrylic multi-sport court enclosed in netting beside a green turf football ground', watermark: false }],
   },
   {
-    slug: 'artificial-green-wall',
-    title: 'Artificial Green Wall Installation',
-    location: 'Mumbai',
-    categorySlug: '',
+    slug: 'floodlit-indoor-arena',
+    title: 'Floodlit Indoor Turf Arena',
+    location: '',
+    categorySlug: 'football-turf',
     summary:
-      'Vertical foliage panels fitted along an outdoor seating area to create a living-wall appearance without maintenance.',
-    images: [{ src: '/images/projects/artificial-green-wall.jpg', alt: 'Artificial green wall of dense foliage beside outdoor restaurant seating' }],
+      'Enclosed five-a-side arena in play under floodlights: laid turf, marked pitch, full-height perimeter netting and a netted roof.',
+    images: [{ src: '/images/projects/floodlit-indoor-arena.jpg', alt: 'Players on a floodlit indoor turf pitch enclosed by green netting' }],
   },
   {
-    slug: 'lawn-artificial-grass',
-    title: 'Landscape Lawn Turf',
-    location: 'Mumbai',
+    slug: 'red-white-turf-arena',
+    title: 'Rooftop Turf Arena with Run-Off Margin',
+    location: '',
+    categorySlug: 'football-turf',
+    summary:
+      'Turf pitch laid with a contrasting red run-off margin, boxed in on all sides by netting on a red and white steel frame.',
+    images: [{ src: '/images/projects/red-white-turf-arena.jpg', alt: 'Green turf pitch with a red run-off margin, enclosed by netting on a red and white frame' }],
+  },
+  {
+    slug: 'rooftop-football-ground',
+    title: 'Rooftop Football Ground',
+    location: '',
+    categorySlug: 'football-turf',
+    summary:
+      'Marked turf football ground on a building terrace, with goal ends and tall perimeter netting on all four sides.',
+    images: [{ src: '/images/projects/rooftop-football-ground.jpg', alt: 'Marked turf football ground on a rooftop with goals and tall perimeter netting' }],
+  },
+  {
+    slug: 'villa-lawn-and-court',
+    title: 'Villa Lawn & Sports Enclosure',
+    location: '',
     categorySlug: 'artificial-grass',
-    summary: 'Striped artificial lawn turf laid across a landscaped garden area.',
-    images: [{ src: '/images/projects/lawn-artificial-grass.jpg', alt: 'Striped artificial lawn grass in a landscaped garden' }],
-  },
-  {
-    slug: 'balcony-bird-netting',
-    title: 'Residential Balcony Bird Netting',
-    location: 'Mumbai',
-    categorySlug: 'bird-nets',
     summary:
-      'Near-invisible bird netting fitted to apartment balconies, preserving the view while stopping pigeons.',
-    images: [{ src: '/images/projects/balcony-bird-netting.jpg', alt: 'Transparent bird netting fitted across an apartment balcony' }],
+      'Artificial lawn laid across a villa garden and pool surround, with a netted sports enclosure on the same property.',
+    images: [{ src: '/images/projects/villa-lawn-and-court.jpg', alt: 'Artificial lawn turf laid across a villa garden with hills behind' }],
   },
 ];

@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { heroProducts } from '@/lib/products';
 import { getCategory } from '@/lib/categories';
 import { useEnquiry } from './EnquiryStore';
-import ProductImage from './ProductImage';
+import ProductMedia from './ProductMedia';
 import { ArrowRightIcon, CheckIcon } from './Icons';
 
 /**
@@ -45,11 +45,18 @@ export default function FeaturedProducts() {
               <article className="feature-card" key={product.id}>
                 <Link
                   href={`/products/${product.slug}`}
-                  className={`feature-card__media feature-card__media--${kind}`}
+                  className={`feature-card__media feature-card__media--${kind}${
+                    image.watermark === false ? ' media--unmarked' : ''
+                  }`}
                 >
                   {/* The first card is the largest image above the fold, so it
                       must not lazy-load — it is the LCP Google measures. */}
-                  <ProductImage src={image.src} alt={image.alt} priority={i === 0} />
+                  <ProductMedia
+                    src={image.src}
+                    alt={image.alt}
+                    video={image.video}
+                    priority={i === 0}
+                  />
                 </Link>
 
                 <div className="feature-card__body">

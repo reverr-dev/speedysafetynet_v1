@@ -9,7 +9,8 @@
     "images": [
       {
         "src": "/images/products/construction-fall-safety-net.jpg",
-        "alt": "Two-layer braided safety net, full sample"
+        "alt": "Two-layer braided safety net, full sample",
+        "watermark": false
       }
     ],
     "applications": [
@@ -30,7 +31,8 @@
     "images": [
       {
         "src": "/images/products/balcony-anti-fall-net.jpg",
-        "alt": "Balcony safety net fitted to a residential balcony railing"
+        "alt": "Balcony safety net fitted to a residential balcony railing",
+        "watermark": false
       }
     ],
     "applications": [
@@ -51,7 +53,8 @@
     "images": [
       {
         "src": "/images/products/industrial-debris-net.jpg",
-        "alt": "Fine mesh debris containment net on a building facade"
+        "alt": "Fine mesh debris containment net on a building facade",
+        "watermark": false
       }
     ],
     "applications": [
@@ -70,7 +73,8 @@
     "images": [
       {
         "src": "/images/products/invisible-grill.jpg",
-        "alt": "Invisible grill safety information panel"
+        "alt": "Invisible grill safety information panel",
+        "watermark": false
       }
     ],
     "applications": [
@@ -92,7 +96,8 @@
     "images": [
       {
         "src": "/images/products/anti-bird-net.jpg",
-        "alt": "Anti bird net installation"
+        "alt": "Anti bird net installation",
+        "watermark": false
       }
     ],
     "applications": [
@@ -399,7 +404,8 @@
     "images": [
       {
         "src": "/images/products/cricket-box-net.jpg",
-        "alt": "Enclosed cricket practice net box"
+        "alt": "Indoor cricket facility with four netted practice lanes on laid green turf",
+        "video": "/images/clips/cricket-box-net.mp4"
       }
     ],
     "applications": [
@@ -420,7 +426,8 @@
     "images": [
       {
         "src": "/images/products/football-goal-post-net.jpg",
-        "alt": "Football goal post fitted with a nylon net"
+        "alt": "Yellow steel football goal frame fitted with a knotted net, on a turf ground",
+        "video": "/images/clips/football-goal-post-net.mp4"
       }
     ],
     "applications": [
@@ -439,7 +446,8 @@
     "images": [
       {
         "src": "/images/products/tennis-boundary-net.jpg",
-        "alt": "Tall boundary netting around a tennis court"
+        "alt": "Blue acrylic tennis court enclosed by tall green boundary netting",
+        "video": "/images/clips/tennis-boundary-net.mp4"
       }
     ],
     "applications": [
@@ -458,7 +466,8 @@
     "images": [
       {
         "src": "/images/products/professional-football-ground-turf.jpg",
-        "alt": "Professional football turf pitch"
+        "alt": "Striped green and red football turf with white line markings and perimeter netting",
+        "video": "/images/clips/professional-football-ground-turf.mp4"
       }
     ],
     "applications": [
@@ -478,7 +487,8 @@
     "images": [
       {
         "src": "/images/products/premium-artificial-grass-40mm.jpg",
-        "alt": "Artificial grass applications — residential, sports and commercial"
+        "alt": "Artificial grass applications — residential, sports and commercial",
+        "watermark": false
       }
     ],
     "specs": [
@@ -503,7 +513,8 @@
     "images": [
       {
         "src": "/images/products/artificial-lawn-grass.jpg",
-        "alt": "Artificial lawn grass laid on a terrace"
+        "alt": "Artificial lawn turf laid across a landscaped garden in front of a house",
+        "video": "/images/clips/artificial-lawn-grass.mp4"
       }
     ],
     "applications": [
@@ -522,7 +533,8 @@
     "images": [
       {
         "src": "/images/products/carpet-grass-roll.jpg",
-        "alt": "Roll of carpet grass being laid out"
+        "alt": "A roll of carpet grass lifted at the edge, showing the pile and its backing",
+        "video": "/images/clips/carpet-grass-roll.mp4"
       }
     ],
     "applications": [
@@ -542,7 +554,8 @@
     "images": [
       {
         "src": "/images/products/decorative-grass-mats.jpg",
-        "alt": "Interlocking decorative grass mats on a balcony floor"
+        "alt": "Decorative grass matting laid under playground equipment",
+        "video": "/images/clips/decorative-grass-mats.mp4"
       }
     ],
     "applications": [

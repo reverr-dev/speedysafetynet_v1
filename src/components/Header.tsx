@@ -26,9 +26,9 @@ export default function Header() {
       <div className="topbar">
         <div className="container topbar__inner">
           <div className="topbar__group">
-            <a className="topbar__item" href={`tel:+${SITE.contact.landlineE164}`}>
+            <a className="topbar__item" href={`tel:+${SITE.contact.phoneE164}`}>
               <PhoneIcon size={14} />
-              {SITE.contact.landlineDisplay}
+              {SITE.contact.phoneDisplay}
             </a>
             <a
               className="topbar__item topbar__item--email"

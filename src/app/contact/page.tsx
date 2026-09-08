@@ -6,8 +6,10 @@ import { MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from '@/components/Icons';
 
 export const metadata: Metadata = {
   title: 'Contact — Mumbai Head Office & Branch Locations',
-  description:
-    'Call 022-6633 1119 or message us on WhatsApp. Head office at P D Mello Road, Princess Dock, Mumbai 400009, with branches in Pune, Ahmedabad, Delhi and Surat.',
+  // The number here is built from SITE rather than typed out, because this
+  // string is what Google prints under the search result — a number that goes
+  // stale here is one a customer dials before they ever reach the site.
+  description: `Call ${SITE.contact.phoneDisplay} or message us on WhatsApp. Head office at P D Mello Road, Princess Dock, Mumbai 400009, with branches in Pune, Ahmedabad, Delhi and Surat.`,
 };
 
 /**
@@ -49,12 +51,7 @@ export default function ContactPage() {
                 <PhoneIcon size={22} />
               </div>
               <h2 style={{ fontSize: 'var(--text-lg)' }}>Call us</h2>
-              <p className="card__text">Office landline, and mobile for site matters.</p>
-              <p>
-                <a href={`tel:+${SITE.contact.landlineE164}`}>
-                  {SITE.contact.landlineDisplay}
-                </a>
-              </p>
+              <p className="card__text">Mobile, for quotations and site matters.</p>
               <p>
                 <a href={`tel:+${SITE.contact.phoneE164}`}>{SITE.contact.phoneDisplay}</a>
               </p>

@@ -41,9 +41,15 @@ export const SITE = {
   ],
 
   contact: {
-    /** Landline — signals an established business, worth showing prominently. */
-    landlineDisplay: '022-6633 1119',
-    landlineE164: '912266331119',
+    /*
+     * The landline 022-6633 1119 was removed on the client's instruction — the
+     * line is not in service. It is deliberately not left here commented out
+     * and hidden: a dead number that a customer dials and gets nothing from is
+     * worse than no number at all, because they conclude the business is gone
+     * rather than that one line changed. The mobiles below are the live
+     * contacts. If a working landline is ever connected, add it back here and
+     * to the LocalBusiness "telephone" field in src/app/layout.tsx.
+     */
 
     /** Primary mobile — Mr. Subhan. */
     phoneDisplay: '98926 12816',

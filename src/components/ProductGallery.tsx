@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { ProductImage as ProductImageType } from '@/lib/types';
 import ProductImage from './ProductImage';
+import ProductMedia from './ProductMedia';
 
 /**
  * Product image gallery — main image with a thumbnail strip.
@@ -25,8 +26,17 @@ export default function ProductGallery({ images }: { images: ProductImageType[] 
 
   return (
     <div className="gallery">
-      <div className="gallery__main">
-        <ProductImage src={current.src} alt={current.alt} priority />
+      {/* media--unmarked suppresses the CSS corner watermark for a picture
+          that already carries the company mark in its own pixels. */}
+      <div
+        className={`gallery__main${current.watermark === false ? ' media--unmarked' : ''}`}
+      >
+        <ProductMedia
+          src={current.src}
+          alt={current.alt}
+          video={current.video}
+          priority
+        />
       </div>
 
       {images.length > 1 && (

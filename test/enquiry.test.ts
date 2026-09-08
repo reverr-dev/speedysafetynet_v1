@@ -1,4 +1,5 @@
 import assert from 'node:assert';
+import { existsSync, statSync } from 'node:fs';
 import { CATEGORIES, getCategory } from '../src/lib/categories';
 import {
   PRODUCTS,
@@ -329,6 +330,79 @@ check('every home-page tile override points at a real catalogue image', () => {
       `heroImages "${slug}" points at ${image.src}, which is not in that catalogue`,
     );
     assert.ok(image.alt.length > 15, `heroImages "${slug}" has weak alt text`);
+  }
+});
+
+check('the list of products still awaiting a photograph is exactly this', () => {
+  // Not a failure — a ledger. These products show the striped "Photograph
+  // required" placeholder, which is deliberate and visible.
+  //
+  // It is written out rather than counted so that supplying a photograph
+  // means deleting a line here, and so that nobody can quietly point a
+  // product at a file that does not exist and have it look the same as a
+  // product we are legitimately still waiting on.
+  const AWAITING = [
+    '/images/products/agri-shade-net-75.jpg',
+    '/images/products/birds-protective-nets.jpg',
+    '/images/products/blue-pe-tarpaulin.jpg',
+    '/images/products/braided-pp-rope.jpg',
+    '/images/products/car-parking-shade-mesh.jpg',
+    '/images/products/heavy-duty-hdpe-tarpaulin.jpg',
+    '/images/products/industrial-monsoon-shed.jpg',
+    '/images/products/nylon-hammock-hanging-mesh-net.jpg',
+    '/images/products/plastic-bird-spike.jpg',
+    '/images/products/privacy-fence-shade.jpg',
+    '/images/products/stainless-steel-bird-spike.jpg',
+    '/images/products/transparent-bird-net.jpg',
+    '/images/products/twisted-pp-safety-rope.jpg',
+  ];
+  const root = new URL('../public', import.meta.url);
+  const missing = PRODUCTS.flatMap((p) => p.images)
+    .map((im) => im.src)
+    .filter((src) => !existsSync(new URL(`.${src}`, `${root.href}/`)))
+    .sort();
+  assert.deepEqual(missing, AWAITING);
+});
+
+check('every declared hover clip exists on disk', () => {
+  // A missing clip fails silently — the hover just does nothing — so nothing
+  // else would ever tell us.
+  const root = new URL('../public', import.meta.url);
+  const missing: string[] = [];
+  for (const prod of PRODUCTS) {
+    for (const im of prod.images) {
+      if (im.video && !existsSync(new URL(`.${im.video}`, `${root.href}/`))) missing.push(im.video);
+    }
+  }
+  assert.deepEqual(missing, []);
+});
+
+check('every hover clip is small enough for mobile data', () => {
+  // These load on hover, on a connection the visitor is paying for. A clip
+  // that creeps past a megabyte stops being an enhancement.
+  const root = new URL('../public', import.meta.url);
+  const heavy: string[] = [];
+  for (const prod of PRODUCTS) {
+    for (const im of prod.images) {
+      if (!im.video) continue;
+      const f = new URL(`.${im.video}`, `${root.href}/`);
+      if (!existsSync(f)) continue;
+      const kb = statSync(f).size / 1024;
+      if (kb > 1024) heavy.push(`${im.video} is ${Math.round(kb)} KB`);
+    }
+  }
+  assert.deepEqual(heavy, [], heavy.join('\n  '));
+});
+
+check('no project claims work we cannot evidence', () => {
+  // Four invented projects were removed. This stops one drifting back in:
+  // every project must point at a photograph that exists.
+  const root = new URL('../public', import.meta.url);
+  for (const pr of PROJECTS) {
+    assert.ok(
+      existsSync(new URL(`.${pr.images[0].src}`, `${root.href}/`)),
+      `project "${pr.slug}" has no photograph — do not publish a project we cannot show`,
+    );
   }
 });
 

@@ -313,8 +313,8 @@ p {
    HEADER
    ═══════════════════════════════════════════════════════════════════════ */
 
-/* Thin bar above the nav carrying the landline and certification — the two
-   things that make a visitor trust an unfamiliar contractor. */
+/* Thin bar above the nav carrying the phone number and certification — the
+   two things that make a visitor trust an unfamiliar contractor. */
 .topbar {
   background: var(--color-brand-strong);
   color: rgb(255 255 255 / 88%);
@@ -1434,6 +1434,185 @@ p {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   HOVER-TO-PLAY MEDIA
+   ═══════════════════════════════════════════════════════════════════════
+
+   The clip sits directly over the photograph and fades in when it plays.
+
+   Both fill the same box, so the swap has nothing to reflow: the card does
+   not change size, the text below it does not jump, and if the clip never
+   loads the photograph is simply what stays on screen. That last part is the
+   point — this is an enhancement layered on a page that is already complete
+   without it. */
+
+.media {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+}
+
+/* Where the container has no fixed frame of its own — the product page
+   gallery lets the picture set its own height — the media block flows
+   instead of filling. */
+.gallery__main .media {
+  position: relative;
+  inset: auto;
+  width: 100%;
+}
+
+.media__clip {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  pointer-events: none;
+}
+
+/* Only once it is genuinely playing. Fading in on hover would show a black
+   rectangle for the moment between the request and the first frame. */
+.media__clip--on {
+  opacity: 1;
+}
+
+/* A quiet hint that there is something to hover over, so the motion is not a
+   surprise. Hidden from anyone without a real pointer, who cannot use it. */
+.media__badge {
+  position: absolute;
+  top: var(--space-3);
+  left: var(--space-3);
+  z-index: 2;
+  display: none;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px 3px 6px;
+  border-radius: var(--radius-sm);
+  background: rgb(26 31 33 / 62%);
+  color: #fff;
+  font-size: 0.62rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .media__badge {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media__badge {
+    display: none;
+  }
+}
+
+/* Once it is playing the hint has done its job. */
+.media:has(.media__clip--on) .media__badge {
+  opacity: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   THE CORNER WATERMARK
+   ═══════════════════════════════════════════════════════════════════════
+
+   The company mark sits in the bottom-right corner of every product,
+   project and gallery picture — the way a broadcaster's bug sits in the
+   corner of the screen, or YouTube's channel watermark sits in the corner
+   of the player.
+
+   Why in CSS rather than burned into the file.
+
+   Burning it in with scripts/watermark.py means every new photograph the
+   client sends has to be processed before it can go on the site, and the
+   originals have to be kept so a re-run never stamps the same picture twice.
+   That is a step that will eventually be forgotten, and the day it is
+   forgotten one product quietly has no mark on it. Here it is automatic:
+   drop a .jpg into public/images/products/ and it is marked, forever, with
+   nothing to remember.
+
+   WHAT THIS DOES NOT DO, and it matters: an overlay is not on the picture.
+   Right-click, Save image, and what lands on the desktop is the clean
+   photograph with no mark. Burning in is the only thing that survives that.
+   So the two are for different jobs — this one brands the site, the script
+   protects a file. Both still exist; see the note in scripts/watermark.py.
+
+   Placement follows the container's corner, not the picture's. Where an
+   image is letterboxed inside its frame the mark sits on the tint beside
+   it, which is exactly what a video player does with a 21:9 film in a 16:9
+   window, and reads as a badge on the card rather than a mistake. */
+
+/* The ground-build photographs are deliberately absent from this list. Every
+   one of them was burned in by scripts/watermark.py before the CSS mark
+   existed, and there are no clean originals to go back to — so a CSS mark on
+   top would be the second one on the same picture. If those images are ever
+   replaced with fresh files from the client, add `.gbs__media::after` here. */
+.card__media::after,
+.feature-card__media::after,
+.gallery__main::after,
+.project::after {
+  content: '';
+  position: absolute;
+  right: 3.5%;
+  bottom: 3.5%;
+  /* Proportional so it holds its weight from a 260px card to a 900px
+     gallery, with a floor and a ceiling: below about 70px the lettering
+     inside the mark stops resolving, and above 150px it stops being a
+     signature and starts being the subject. */
+  width: 26%;
+  min-width: 70px;
+  max-width: 150px;
+  aspect-ratio: 606 / 359;
+  background: url('/images/brand/iso-logo.png') center / contain no-repeat;
+  opacity: 0.92;
+  /* The mark is dark blue. On a dark photograph — blue rope on brown wood —
+     it disappears without this. Two soft white shadows hug its own outline,
+     so it reads on turf, on sky and on shadow without sitting in a box. */
+  filter: drop-shadow(0 0 2px rgb(255 255 255 / 95%))
+    drop-shadow(0 0 5px rgb(255 255 255 / 75%));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* No mark where there is no photograph — a placeholder that says
+   "Photograph required" does not need signing. */
+.card__media:has(.card__placeholder)::after,
+.feature-card__media:has(.card__placeholder)::after,
+.gallery__main:has(.card__placeholder)::after,
+.project:has(.card__placeholder)::after {
+  content: none;
+}
+
+/* No mark on artwork that carries the company mark already. Set per image
+   with "watermark": false in content/products.json — the client's four
+   posters have his gear device and web address printed on them, and a
+   second one in the corner lands beside the first. */
+.media--unmarked::after {
+  content: none;
+}
+
+/* A thumbnail is 88px square. The mark would cover the picture rather than
+   sign it, and the full-size image beside it is already marked. */
+.gallery__thumb::after {
+  content: none;
+}
+
+/* Project tiles carry a dark gradient with the title and a call to action
+   along the bottom, so the mark moves to the top corner — the only part of
+   that tile the gradient leaves clear. */
+.project::after {
+  top: 4%;
+  bottom: auto;
+  width: 22%;
+  max-width: 120px;
 }
 
 /* Shown until real photography arrives. Deliberately obvious so a

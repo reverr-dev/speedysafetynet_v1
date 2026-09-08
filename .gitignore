@@ -13,6 +13,25 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 
+# Raw material from the client, before it has been processed.
+#
+# public/images/Product2/ is the WhatsApp dump he sent on 2 September: 5 photos
+# and 32 videos, 205MB. It must never be committed, for two separate reasons.
+#
+# Git history is permanent. 205MB added once stays in every clone forever, even
+# after a later commit deletes it, and Cloudflare re-downloads the whole repo
+# on every build.
+#
+# And it is inside public/, which means anything left there is PUBLISHED. The
+# whole folder would be downloadable from the live site — including a picture
+# carrying a GPS Map Camera stamp with a customer's address and coordinates on
+# it. Nobody would ever see it on a page, and it would be served all the same.
+#
+# What ships is what came out of it: the stills in images/products/ and
+# images/projects/, and the compressed loops in images/clips/. Keep this folder
+# somewhere outside the project — it is the negative, not the print.
+public/images/Product2/
+
 # Client-facing deliverables — videos, quotations, exports.
 # Kept out of git deliberately: they are outputs, not source, and git history
 # is permanent. A re-recorded 11MB walkthrough would add 11MB to the repo

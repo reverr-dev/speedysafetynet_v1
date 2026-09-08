@@ -15,6 +15,24 @@ export type CategoryGroup = 'Safety & Protection' | 'Shading & Covers' | 'Sports
 export interface ProductImage {
   src: string;
   alt: string;
+  /**
+   * Set to false to hide the corner watermark over this picture.
+   *
+   * Only for artwork that already carries the company mark in its own
+   * pixels — the client's four posters do, and a second mark in the corner
+   * lands next to the one he put there. Everything else leaves this alone
+   * and gets the mark automatically.
+   */
+  watermark?: boolean;
+  /**
+   * Optional short clip that plays when a visitor points at this picture.
+   *
+   * Silent, looping, a few seconds long, and never fetched until the first
+   * hover — see ProductMedia. Only for motion that shows something a
+   * photograph cannot: turf being brushed, a ball hitting the net. A slow pan
+   * across a still object earns nothing and costs the visitor a download.
+   */
+  video?: string;
 }
 
 export interface Product {

@@ -1,18 +1,35 @@
 #!/usr/bin/env python3
 """
-Stamp the company mark onto every product and project photograph.
+Burn the company mark into a photograph. NOT NEEDED FOR THE WEBSITE.
 
     python scripts/watermark.py            # stamp anything not yet stamped
     python scripts/watermark.py --force    # redo everything
     python scripts/watermark.py --check    # report only, change nothing
 
-Why the mark is burned into the file rather than laid over it in CSS.
+READ THIS BEFORE RUNNING IT.
 
-A CSS overlay would be less work and easier to restyle, but it vanishes the
-moment somebody right-clicks and saves the picture — which is exactly when the
-client wants his name on it. These are his own photographs of his own
-installations, and a competitor lifting them is a real thing that happens in
-this trade. Burned in, the mark travels with the file.
+The website no longer needs this. Every product, project and gallery picture
+gets the mark laid over its corner in CSS — see "THE CORNER WATERMARK" in
+src/styles/global.css. That happens automatically for any file dropped into
+public/images/, with nothing to run and nothing to remember, which is the
+whole point: a processing step that has to be repeated for every new
+photograph is a step that eventually gets skipped.
+
+So what is this still for?
+
+An overlay is not on the picture. Right-click, Save image, and the file that
+lands on someone's desktop is the clean photograph. Burning the mark in is the
+only thing that survives that, and lifting a contractor's installation photos
+is a real thing that happens in this trade.
+
+Use it deliberately, on files meant to leave the site — a WhatsApp catalogue,
+a PDF quotation, photographs sent to a marketplace listing. Running it across
+public/images/ now would give those pictures two marks: the burned-in one and
+the CSS one over it.
+
+If you do run it, note that the client's own four posters are listed in
+ALREADY_BRANDED below and are skipped, because his artwork carries his gear
+device and web address already.
 
 Originals are kept untouched in public/images/_originals/ so this is always
 reversible and never compounds — stamping a stamped image would darken the

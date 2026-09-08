@@ -5,7 +5,7 @@ import { useState } from 'react';
 import type { Product } from '@/lib/types';
 import { getCategory } from '@/lib/categories';
 import { useEnquiry } from './EnquiryStore';
-import ProductImage from './ProductImage';
+import ProductMedia from './ProductMedia';
 import { CheckIcon } from './Icons';
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -24,9 +24,12 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="card">
-      <Link href={`/products/${product.slug}`} className="card__media">
+      <Link
+        href={`/products/${product.slug}`}
+        className={`card__media${image.watermark === false ? ' media--unmarked' : ''}`}
+      >
         {category && <span className="card__tag">{category.name}</span>}
-        <ProductImage src={image.src} alt={image.alt} />
+        <ProductMedia src={image.src} alt={image.alt} video={image.video} />
       </Link>
 
       <div className="card__body">

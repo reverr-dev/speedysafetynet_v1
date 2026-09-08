@@ -49,12 +49,6 @@ export default function Footer() {
               </li>
               <li>
                 <PhoneIcon size={16} />
-                <a href={`tel:+${SITE.contact.landlineE164}`}>
-                  {SITE.contact.landlineDisplay}
-                </a>
-              </li>
-              <li>
-                <PhoneIcon size={16} />
                 <a href={`tel:+${SITE.contact.phoneE164}`}>
                   {SITE.contact.phoneDisplay}
                 </a>
