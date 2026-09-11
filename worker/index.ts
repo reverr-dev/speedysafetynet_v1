@@ -40,8 +40,41 @@ import {
 import { SITE } from '../src/lib/site';
 import type { InquiryForm, InquiryItem } from '../src/lib/types';
 
+/*
+ * The three Cloudflare runtime types this file needs, declared here rather
+ * than pulled from @cloudflare/workers-types.
+ *
+ * Not laziness — the package is the obvious move and it is the wrong one
+ * here. `next build` type-checks every .ts in the project against the DOM
+ * library, and @cloudflare/workers-types redeclares Request, Response and
+ * fetch with its own shapes. Loading both in one program produces a wall of
+ * duplicate-identifier errors in files that have nothing to do with this one.
+ *
+ * The alternative is a second tsconfig for worker/, but TypeScript follows
+ * imports: test/enquiry.test.ts imports canonicalRedirect from here, so this
+ * file gets pulled into the main program anyway and the exclusion achieves
+ * nothing.
+ *
+ * Three interfaces, eleven lines, no dependency, and they say exactly what
+ * this Worker uses. If it ever needs more of the platform, that is the point
+ * to reach for the package and give worker/ a real build of its own.
+ */
+interface AssetFetcher {
+  fetch(request: Request): Promise<Response>;
+}
+
+interface KVStore {
+  get(key: string): Promise<string | null>;
+  put(key: string, value: string, options?: { expirationTtl?: number }): Promise<void>;
+}
+
+interface WorkerContext {
+  /** Keeps the Worker alive for work that outlives the response. */
+  waitUntil(promise: Promise<unknown>): void;
+}
+
 export interface Env {
-  ASSETS: Fetcher;
+  ASSETS: AssetFetcher;
   /** Secret. `wrangler secret put RESEND_API_KEY` — never in this repo. */
   RESEND_API_KEY?: string;
   /** e.g. "Speed Safety Nets <enquiries@speedsafetynet.com>" */
@@ -49,7 +82,7 @@ export interface Env {
   /** Where enquiries land. Defaults to the address in src/lib/site.ts. */
   ENQUIRY_TO?: string;
   /** Optional. Without it the per-address throttle below is skipped. */
-  RATE_LIMIT?: KVNamespace;
+  RATE_LIMIT?: KVStore;
 }
 
 /** A form with 40 line items is not a customer. */
@@ -102,7 +135,7 @@ export function canonicalRedirect(requestUrl: string): string | null {
 }
 
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: WorkerContext): Promise<Response> {
     const canonical = canonicalRedirect(request.url);
     if (canonical) return Response.redirect(canonical, 301);
 

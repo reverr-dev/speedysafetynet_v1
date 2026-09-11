@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useEnquiry } from '@/components/EnquiryStore';
-import { PROJECT_TYPES, SITE } from '@/lib/site';
+import { PROJECT_TYPES } from '@/lib/site';
 import {
   buildWhatsAppUrl,
   isRateLimited,
