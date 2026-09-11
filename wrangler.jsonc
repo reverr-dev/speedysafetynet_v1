@@ -12,23 +12,54 @@
   //      ENOENT: .next/standalone/.next/server/pages-manifest.json
   //
   //  Declaring `assets.directory` here tells Cloudflare the truth: this is a
-  //  folder of finished HTML, serve it as-is. No server, no adapter, no
-  //  Worker script — which is exactly the architecture that makes hosting
-  //  free and means the site cannot fall over under traffic.
+  //  folder of finished HTML, serve it as-is. No adapter, no Next.js server —
+  //  which is exactly the architecture that makes hosting free and means the
+  //  site cannot fall over under traffic.
+  //
+  //  There IS now a Worker script, and it is worth being clear about how
+  //  small its job is. It exists for exactly one route, POST /api/enquiry,
+  //  because the Resend API key cannot be shipped to a browser. Every other
+  //  request is handed straight back to the static assets. The pages are
+  //  still plain HTML on a CDN.
   // ─────────────────────────────────────────────────────────────────────
 
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "speedsafetynet-demo",
   "compatibility_date": "2026-08-20",
+  "main": "worker/index.ts",
 
   "assets": {
     // Produced by `npm run build` (next.config.ts sets output: 'export').
     "directory": "./out",
 
+    // Lets the Worker hand a request back to the static files.
+    "binding": "ASSETS",
+
     // Next's static export writes 404.html at the root of out/. This serves
     // our branded not-found page instead of a bare Cloudflare error.
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+
+    // Without this, /api/enquiry matches no file and `not_found_handling`
+    // above answers it with the 404 page — the Worker would never run and
+    // the form would fail with a confusing "unexpected token <" as it tried
+    // to parse HTML as JSON. This says: for these paths, Worker first.
+    "run_worker_first": ["/api/*"]
   },
+
+  // Not secrets — these are visible in the dashboard, and they are meant to
+  // be. The API key is set separately with `wrangler secret put`.
+  "vars": {
+    "ENQUIRY_FROM": "Speed Safety Nets <enquiries@speedsafetynet.com>",
+    "ENQUIRY_TO": "speedsafetynet@gmail.com"
+  },
+
+  // Throttles repeat enquiries from the same address. Create it once with:
+  //   npx wrangler kv namespace create RATE_LIMIT
+  // then paste the id it prints here and uncomment.
+  //
+  // The Worker runs without this — it just skips the throttle. Everything
+  // else (honeypot, validation, same-origin check) still applies.
+  // "kv_namespaces": [{ "binding": "RATE_LIMIT", "id": "PASTE_ID_HERE" }],
 
   "observability": {
     "enabled": true

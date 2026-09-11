@@ -19,9 +19,12 @@ import {
   buildEmailBody,
   buildEmailSubject,
   buildEmailPayload,
+  buildCustomerBody,
+  buildCustomerSubject,
   quickWhatsAppUrl,
 } from '../src/lib/enquiry';
 import { PROJECTS } from '../src/lib/services';
+import { canonicalRedirect } from '../worker/index';
 import type { InquiryForm, InquiryItem } from '../src/lib/types';
 
 let pass = 0;
@@ -145,8 +148,11 @@ check('a valid enquiry passes', () => {
   assert.equal(validateEnquiry(goodForm, items).ok, true);
 });
 
-check('empty basket is rejected', () => {
-  const r = validateEnquiry(goodForm, []);
+check('an empty basket with no message is rejected', () => {
+  // Superseded the old "empty basket is rejected". The rule is no longer
+  // "there must be products" — it is "there must be something to act on",
+  // which a written question satisfies. See MESSAGE-ONLY ENQUIRIES below.
+  const r = validateEnquiry({ ...goodForm, message: '' }, []);
   assert.equal(r.ok, false);
   assert.ok(r.errors.items);
 });
@@ -429,6 +435,138 @@ check('watermark suppression is only used where it is justified', () => {
   for (const src of suppressed) {
     assert.ok(JUSTIFIED.has(src), `${src} suppresses the watermark with no reason on record`);
   }
+});
+
+console.log('\nMESSAGE-ONLY ENQUIRIES');
+
+// Somebody who has not browsed the catalogue and just wants to ask a
+// question. For a trade like this that is a large share of real enquiries,
+// and the site used to have no way to send one.
+const messageOnly: InquiryForm = { ...goodForm, message: 'Do you do bird netting for a godown in Bhiwandi, roughly 40ft x 60ft?' };
+
+check('an enquiry with no products but a message is accepted', () => {
+  const r = validateEnquiry(messageOnly, []);
+  assert.equal(r.ok, true, JSON.stringify(r.errors));
+});
+
+check('an enquiry with neither products nor a message is rejected', () => {
+  const r = validateEnquiry({ ...goodForm, message: '   ' }, []);
+  assert.equal(r.ok, false);
+  assert.ok(r.errors.items, 'should point at the empty list / empty message');
+});
+
+check('the email subject survives an empty basket', () => {
+  // buildEmailSubject read items[0].productName unguarded, so the one
+  // enquiry with no product in it threw before it could ever be sent.
+  const subject = buildEmailSubject(messageOnly, []);
+  assert.ok(subject.includes('General enquiry'), subject);
+  assert.ok(subject.includes('Rajesh Kumar'), subject);
+});
+
+check('the email body of a message-only enquiry leads with the message', () => {
+  const body = buildEmailBody(messageOnly, []);
+  assert.ok(body.includes('What they need'), 'message should be the headline, not a footnote');
+  assert.ok(body.includes('godown in Bhiwandi'), 'the message itself must be in the body');
+  assert.ok(!body.includes('Products required (0)'), 'no empty product heading');
+  assert.ok(body.includes('Rajesh Kumar') && body.includes('9876543210'), 'contact details still present');
+});
+
+check('the WhatsApp message of a message-only enquiry is complete', () => {
+  const wa2 = buildWhatsAppMessage(messageOnly, []);
+  assert.ok(wa2.includes('godown in Bhiwandi'));
+  assert.ok(!wa2.includes('Products required (0)'));
+});
+
+check('a product enquiry still labels the message as additional detail', () => {
+  const body = buildEmailBody(goodForm, items);
+  assert.ok(body.includes('Additional details'), 'with products the message is a footnote');
+  assert.ok(body.includes('Products required (2)'));
+});
+
+check('the email route still requires an email address, message or not', () => {
+  assert.equal(validateForEmail({ ...messageOnly, email: '' }, []).ok, false);
+  assert.equal(validateForEmail(messageOnly, []).ok, true);
+});
+
+console.log('\nCUSTOMER CONFIRMATION');
+
+check('the customer copy greets them by first name', () => {
+  const body = buildCustomerBody(goodForm, items);
+  assert.ok(body.startsWith('Hello Rajesh,'), body.slice(0, 40));
+});
+
+check('the customer copy repeats what they sent', () => {
+  const body = buildCustomerBody(goodForm, items);
+  assert.ok(body.includes('Balcony Anti-Fall Net'));
+  assert.ok(body.includes('10ft x 8ft each'), 'their own note must come back to them');
+  assert.ok(body.includes('Andheri West, Mumbai'));
+  assert.ok(body.includes('12th floor balcony'));
+});
+
+check('the customer copy promises nothing the site does not', () => {
+  // An automatic message that reads like a commitment is a commitment
+  // somebody then has to honour.
+  const body = buildCustomerBody(goodForm, items).toLowerCase();
+  for (const forbidden of ['quotation attached', 'price', '₹', 'confirmed', 'guarantee', 'in stock']) {
+    assert.ok(!body.includes(forbidden), `customer copy should not say "${forbidden}"`);
+  }
+});
+
+check('the customer copy gives them a way to chase it', () => {
+  const body = buildCustomerBody(goodForm, items);
+  assert.ok(body.includes('919892612816'), 'phone/WhatsApp must be in the acknowledgement');
+});
+
+check('the customer copy works for a message-only enquiry', () => {
+  const body = buildCustomerBody(messageOnly, []);
+  assert.ok(body.includes('godown in Bhiwandi'));
+  assert.ok(!body.includes('Products (0)'), 'no empty product heading');
+  assert.ok(buildCustomerSubject([]).includes('your enquiry'));
+});
+
+check('the customer subject names the product when there is one', () => {
+  assert.ok(buildCustomerSubject([items[0]]).includes('Balcony Anti-Fall Net'));
+  assert.ok(buildCustomerSubject(items).includes('2 products'));
+});
+
+console.log('\nCANONICAL HOSTNAME');
+
+check('www redirects to the apex', () => {
+  assert.equal(
+    canonicalRedirect('https://www.speedsafetynet.com/'),
+    'https://speedsafetynet.com/',
+  );
+});
+
+check('the redirect keeps the path and the query', () => {
+  // A lazy redirect that drops the path sends someone who followed a link to
+  // a specific product onto the home page instead.
+  assert.equal(
+    canonicalRedirect('https://www.speedsafetynet.com/products/?category=bird-nets'),
+    'https://speedsafetynet.com/products/?category=bird-nets',
+  );
+  assert.equal(
+    canonicalRedirect('https://www.speedsafetynet.com/products/cricket-box-net/'),
+    'https://speedsafetynet.com/products/cricket-box-net/',
+  );
+});
+
+check('the apex itself is left alone', () => {
+  // Redirecting the canonical host to itself is an infinite loop.
+  assert.equal(canonicalRedirect('https://speedsafetynet.com/products/'), null);
+});
+
+check('the workers.dev preview is left alone', () => {
+  assert.equal(
+    canonicalRedirect('https://speedsafetynet-demo.revatiraman199918.workers.dev/'),
+    null,
+  );
+  assert.equal(canonicalRedirect('http://localhost:3000/enquiry/'), null);
+});
+
+check('a hostname that merely contains "www" is not touched', () => {
+  // "wwwsomething.com" and "shop.www.example.com" must not be rewritten.
+  assert.equal(canonicalRedirect('https://wwwspeedsafetynet.com/'), null);
 });
 
 console.log(`\n${pass} checks passed${process.exitCode ? ' — WITH FAILURES' : ''}\n`);

@@ -38,8 +38,15 @@ export function validateEnquiry(form: InquiryForm, items: InquiryItem[]): Valida
 
   if (!form.location.trim()) errors.location = 'Please tell us the site location.';
 
-  if (items.length === 0) {
-    errors.items = 'Please add at least one product to your enquiry.';
+  // An enquiry is EITHER a list of products OR a written question — the two
+  // ways people actually arrive. Somebody who has browsed the catalogue adds
+  // items; somebody who has not, and just wants to ask whether we do bird
+  // netting for a warehouse, types it. Demanding a product from the second
+  // person turns them away at the door, which is the opposite of what an
+  // enquiry form is for.
+  if (items.length === 0 && !form.message.trim()) {
+    errors.items =
+      'Add a product to your list, or tell us what you need in the message box below.';
   }
 
   return { ok: Object.keys(errors).length === 0, errors };
@@ -111,10 +118,19 @@ export function buildWhatsAppMessage(form: InquiryForm, items: InquiryItem[]): s
   if (form.email.trim()) parts.push(`*Email:* ${form.email.trim()}`);
   parts.push(`*Project type:* ${form.projectType}`);
   parts.push(`*Site location:* ${form.location.trim()}`);
-  parts.push('', `*Products required (${items.length}):*`, ...formatItems(items));
+  if (items.length > 0) {
+    parts.push('', `*Products required (${items.length}):*`, ...formatItems(items));
+  }
 
   if (form.message.trim()) {
-    parts.push('', '*Additional details:*', form.message.trim());
+    // The heading changes with the context. On a product enquiry this text is
+    // a footnote to the list; with no list it IS the enquiry, and labelling
+    // it "additional details" makes the only real content look optional.
+    parts.push(
+      '',
+      items.length > 0 ? '*Additional details:*' : '*What they need:*',
+      form.message.trim(),
+    );
   }
 
   parts.push('', `_Sent from ${SITE.url}_`);
@@ -145,12 +161,18 @@ export function buildEmailBody(form: InquiryForm, items: InquiryItem[]): string 
     `Project type:  ${form.projectType}`,
     `Site location: ${form.location.trim()}`,
     '',
-    `--- Products required (${items.length}) ---`,
-    ...formatItems(items),
   ];
 
+  if (items.length > 0) {
+    parts.push(`--- Products required (${items.length}) ---`, ...formatItems(items));
+  }
+
   if (form.message.trim()) {
-    parts.push('', '--- Additional details ---', form.message.trim());
+    parts.push(
+      '',
+      items.length > 0 ? '--- Additional details ---' : '--- What they need ---',
+      form.message.trim(),
+    );
   }
 
   parts.push(
@@ -163,10 +185,85 @@ export function buildEmailBody(form: InquiryForm, items: InquiryItem[]): string 
 }
 
 export function buildEmailSubject(form: InquiryForm, items: InquiryItem[]): string {
+  // Reading items[0] unguarded used to throw here the moment somebody sent a
+  // message with an empty basket — the one enquiry that has no product in it.
   const first = items[0];
-  const summary =
-    items.length === 1 ? first.productName : `${first.productName} +${items.length - 1} more`;
+  const summary = !first
+    ? 'General enquiry'
+    : items.length === 1
+      ? first.productName
+      : `${first.productName} +${items.length - 1} more`;
   return `Enquiry: ${summary} — ${form.name.trim()} (${form.location.trim()})`;
+}
+
+// ── Confirmation back to the customer ────────────────────────────────────
+
+/**
+ * The acknowledgement the customer gets.
+ *
+ * Two things this earns, and they are worth being explicit about because an
+ * auto-reply is easy to do badly.
+ *
+ * It tells them it arrived. A form that swallows an enquiry and says nothing
+ * leaves the sender wondering for a day whether to phone instead — and a
+ * fair number of them phone a competitor.
+ *
+ * And it puts a copy in their inbox. When they follow up next week they have
+ * their own dimensions and notes in front of them, in writing, rather than
+ * half-remembering what they typed.
+ *
+ * What it deliberately does NOT do: quote a price, confirm availability, or
+ * promise anything the business has not already promised on the website. It
+ * repeats what they sent and says a person will reply. An automatic message
+ * that reads like a commitment is a commitment somebody has to honour.
+ */
+export function buildCustomerSubject(items: InquiryItem[]): string {
+  const what = items.length === 0
+    ? 'your enquiry'
+    : items.length === 1
+      ? `your enquiry about ${items[0].productName}`
+      : `your enquiry (${items.length} products)`;
+  return `We have received ${what} — ${SITE.name}`;
+}
+
+export function buildCustomerBody(form: InquiryForm, items: InquiryItem[]): string {
+  const first = form.name.trim().split(/\s+/)[0] || form.name.trim();
+  const parts: string[] = [
+    `Hello ${first},`,
+    '',
+    'Thank you for your enquiry. It has reached our team and someone will',
+    'reply to you within one business day.',
+    '',
+    'Here is a copy of what you sent, for your records:',
+    '',
+  ];
+
+  if (items.length > 0) {
+    parts.push(`--- Products (${items.length}) ---`, ...formatItems(items), '');
+  }
+
+  if (form.message.trim()) {
+    parts.push('--- What you told us ---', form.message.trim(), '');
+  }
+
+  parts.push(
+    `--- Site location ---`,
+    form.location.trim(),
+    '',
+    'If you need us sooner, call or message us:',
+    `  Phone / WhatsApp: +${SITE.contact.phoneE164}`,
+    `  Email:            ${SITE.contact.email}`,
+    '',
+    '---',
+    SITE.name,
+    SITE.tagline,
+    SITE.url,
+    '',
+    'You are receiving this because an enquiry was submitted with this email',
+    `address at ${SITE.url}. If that was not you, you can ignore this message.`,
+  );
+
+  return parts.join('\n');
 }
 
 /** Payload posted to the email delivery endpoint. */

@@ -10,7 +10,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test": "tsx test/enquiry.test.ts",
-    "photos": "node scripts/photos.mjs"
+    "photos": "node scripts/photos.mjs",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "next": "^15.1.0",

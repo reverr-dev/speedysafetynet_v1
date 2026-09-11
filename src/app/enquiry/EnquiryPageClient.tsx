@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useEnquiry } from '@/components/EnquiryStore';
 import { PROJECT_TYPES, SITE } from '@/lib/site';
 import {
-  buildEmailPayload,
   buildWhatsAppUrl,
   isRateLimited,
   isSpam,
@@ -20,17 +19,18 @@ import { CheckIcon, MailIcon, TrashIcon, WhatsAppIcon } from '@/components/Icons
 /**
  * Where the email actually goes.
  *
- * Web3Forms is used because it needs no server, no account key in the client
- * beyond a public access key, and its free tier covers far more than this
- * client's volume. Swap ENDPOINT/ACCESS_KEY for Formspree or a Cloudflare
- * Worker + Resend later without touching anything else in this file.
+ * Our own endpoint on our own domain — see worker/index.ts. It holds the
+ * Resend API key as a Worker secret and sends the mail server-side.
  *
- * ⚠️ Create the key at web3forms.com with the client's email address and put
- * it here before launch. Until then the email button reports failure honestly
- * rather than pretending to succeed — which is exactly the bug we are fixing.
+ * A relative path, deliberately. Same origin means no CORS preflight, no
+ * third party in the path between a customer and the business, and the same
+ * URL working on localhost, on the workers.dev preview and on the live
+ * domain, with nothing to configure per environment.
+ *
+ * This replaced a Web3Forms placeholder that was never wired up. There is no
+ * public key here any more because there is nothing public to hold.
  */
-const EMAIL_ENDPOINT = 'https://api.web3forms.com/submit';
-const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY ?? '';
+const EMAIL_ENDPOINT = '/api/enquiry';
 
 const EMPTY_FORM: InquiryForm = {
   name: '',
@@ -96,32 +96,29 @@ export default function EnquiryPageClient() {
   const sendEmail = async () => {
     if (!guard(validateForEmail(form, items))) return;
 
-    if (!WEB3FORMS_ACCESS_KEY) {
-      setFailMessage(
-        'Email sending is not configured yet. Please use the WhatsApp button, or call us directly.',
-      );
-      setState('failed');
-      return;
-    }
-
     setState('sending');
-    const payload = buildEmailPayload(form, items);
 
     try {
+      // The raw form and basket, not a pre-built message. The Worker
+      // re-validates and composes the email itself — anything this browser
+      // says about what the email should contain is a suggestion, and a
+      // request that never touched this page could suggest anything.
       const res = await fetch(EMAIL_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          subject: payload.subject,
-          from_name: `${SITE.name} website`,
-          replyto: payload.replyTo ?? '',
-          message: payload.body,
-          ...payload.meta,
-        }),
+        body: JSON.stringify({ form, items }),
       });
 
-      if (!res.ok) throw new Error(`Mail service returned ${res.status}`);
+      if (res.status === 422) {
+        // The server rejected a field the form let through. Show it on the
+        // field rather than as a generic failure.
+        const body = (await res.json()) as { errors?: ValidationResult['errors'] };
+        guard({ ok: false, errors: body.errors ?? {} });
+        setState('idle');
+        return;
+      }
+
+      if (!res.ok) throw new Error(`Enquiry endpoint returned ${res.status}`);
 
       markSubmitted();
       setState('sent-email');
@@ -182,21 +179,18 @@ export default function EnquiryPageClient() {
     return <p className="muted">Loading your enquiry list…</p>;
   }
 
-  // ── Empty basket ──────────────────────────────────────────────────────
-  if (items.length === 0) {
-    return (
-      <div className="empty">
-        <h2 style={{ marginBottom: 'var(--space-3)' }}>Your enquiry list is empty</h2>
-        <p style={{ marginBottom: 'var(--space-6)' }}>
-          Add the products you need a quotation for, then send the whole list in one
-          message.
-        </p>
-        <Link className="btn btn--primary btn--lg" href="/products">
-          Browse the catalogue
-        </Link>
-      </div>
-    );
-  }
+  /*
+   * An empty basket is NOT a dead end.
+   *
+   * This used to render a "your list is empty" screen with a link back to the
+   * catalogue and no way to send anything. That turned away the visitor who
+   * has not browsed and just wants to ask a question — "do you do bird
+   * netting for a godown in Bhiwandi?" — which for this trade is a large
+   * share of real enquiries, and often the better ones.
+   *
+   * So the form always renders. With no products it is a plain contact form,
+   * and the message box carries the enquiry.
+   */
 
   return (
     <div className="enquiry-layout">
@@ -204,16 +198,32 @@ export default function EnquiryPageClient() {
       <div>
         <div className="results-bar">
           <span>
-            <strong>{items.length}</strong> {items.length === 1 ? 'product' : 'products'} in
-            your list
+            {items.length === 0 ? (
+              'No products added — tell us what you need below'
+            ) : (
+              <>
+                <strong>{items.length}</strong>{' '}
+                {items.length === 1 ? 'product' : 'products'} in your list
+              </>
+            )}
           </span>
-          <button
-            className="btn btn--outline"
-            style={{ padding: '6px 14px', minHeight: 36, fontSize: 'var(--text-sm)' }}
-            onClick={clear}
-          >
-            Clear all
-          </button>
+          {items.length > 0 ? (
+            <button
+              className="btn btn--outline"
+              style={{ padding: '6px 14px', minHeight: 36, fontSize: 'var(--text-sm)' }}
+              onClick={clear}
+            >
+              Clear all
+            </button>
+          ) : (
+            <Link
+              className="btn btn--outline"
+              style={{ padding: '6px 14px', minHeight: 36, fontSize: 'var(--text-sm)' }}
+              href="/products"
+            >
+              Browse the catalogue
+            </Link>
+          )}
         </div>
 
         <div className="grid" style={{ gap: 'var(--space-3)' }}>
@@ -311,7 +321,11 @@ export default function EnquiryPageClient() {
             <span>{failMessage}</span>
           </div>
         )}
-        {errors.items && (
+        {/* Shown at the top only when there ARE products, because then the
+            problem is with the list itself and the list is what to look at.
+            With an empty basket the same message sits on the message box
+            instead — next to the thing the visitor has to do about it. */}
+        {errors.items && items.length > 0 && (
           <div className="alert alert--error" role="alert">
             <span>{errors.items}</span>
           </div>
@@ -396,16 +410,27 @@ export default function EnquiryPageClient() {
           {errors.location && <span className="field__error">{errors.location}</span>}
         </div>
 
-        <div className="field">
+        {/* With no products in the list this box IS the enquiry, so it says
+            so — and carries the "add a product or write here" error, which
+            would otherwise appear next to a basket that is not on screen. */}
+        <div className={`field${errors.items ? ' field--error' : ''}`}>
           <label className="field__label" htmlFor="message">
-            Anything else
+            {items.length === 0 ? 'What do you need?' : 'Anything else'}
           </label>
           <textarea
             id="message"
             value={form.message}
-            onChange={(e) => update('message', e.target.value)}
-            placeholder="Height, access, timeline, or anything else we should know."
+            onChange={(e) => {
+              update('message', e.target.value);
+              if (errors.items) setErrors((prev) => ({ ...prev, items: undefined }));
+            }}
+            placeholder={
+              items.length === 0
+                ? 'e.g. Bird netting for a warehouse in Bhiwandi, roughly 40ft x 60ft — what would that cost?'
+                : 'Height, access, timeline, or anything else we should know.'
+            }
           />
+          {errors.items && <span className="field__error">{errors.items}</span>}
         </div>
 
         {/* Honeypot — invisible to people, filled in by bots. */}
