@@ -28,6 +28,34 @@
   "compatibility_date": "2026-08-20",
   "main": "worker/index.ts",
 
+  /*
+   * The hostnames this Worker answers on.
+   *
+   * Declared here rather than clicked in the dashboard, for two reasons.
+   *
+   * It is reproducible. `wrangler deploy` creates whatever is missing and
+   * leaves what already exists alone, so the live routing always matches this
+   * file. Clicking is a step somebody has to remember, and remember correctly,
+   * every time this is set up again.
+   *
+   * And it records the intent. Anyone reading this repo can see that both
+   * hostnames are meant to serve, without going looking in a dashboard they
+   * may not have access to.
+   *
+   * `custom_domain: true` is the important part. It makes Cloudflare create
+   * the DNS record and the certificate itself. A plain route assumes a proxied
+   * DNS record already exists and points at a real origin — and when it does
+   * not, the hostname answers 522 Connection timed out, which is exactly what
+   * www did before this.
+   *
+   * www is not a second site. The Worker 301s it to the apex — see
+   * canonicalRedirect in worker/index.ts.
+   */
+  "routes": [
+    { "pattern": "speedsafetynet.com", "custom_domain": true },
+    { "pattern": "www.speedsafetynet.com", "custom_domain": true }
+  ],
+
   "assets": {
     // Produced by `npm run build` (next.config.ts sets output: 'export').
     "directory": "./out",
