@@ -85,6 +85,16 @@ export const PRODUCTS: Product[] = loadProducts(productsData);
 export const getProduct = (slug: string): Product | undefined =>
   PRODUCTS.find((p) => p.slug === slug);
 
+/**
+ * Look a product up by its internal id rather than its slug.
+ *
+ * The enquiry basket stores productId, because a slug can be renamed and a
+ * saved basket would then point at nothing. This is how the basket gets back
+ * to the product — for its photograph, and for a link to its page.
+ */
+export const getProductById = (id: string): Product | undefined =>
+  PRODUCTS.find((p) => p.id === id);
+
 export const productsInCategory = (categorySlug: string): Product[] =>
   PRODUCTS.filter((p) => p.categorySlug === categorySlug);
 

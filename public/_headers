@@ -1,0 +1,42 @@
+# Cache rules for Cloudflare Workers static assets.
+#
+# This file exists because of a real failure, not as a precaution.
+#
+# After a deploy, the enquiry page died with "Application error: a client-side
+# exception has occurred" and came back only on a hard reload. Nothing was
+# wrong with the code. The browser was holding a cached copy of the HTML from
+# the previous deploy, and that HTML names JavaScript chunks by content hash —
+# /_next/static/chunks/main-a1b2c3.js. Those exact filenames no longer exist
+# after a rebuild, so the page loaded, asked for scripts that 404'd, and threw.
+#
+# The visitor sees a dead page. A hard reload fixes it, but no customer does
+# that; they leave. And it would have happened to every returning visitor on
+# every deploy, which for a site that will be edited weekly is not a corner
+# case.
+#
+# The fix is the standard split, and it works because of the hashes:
+#
+#   HTML   — never trusted from cache. Always revalidated, so a visitor always
+#            learns which chunk filenames are current. It is a few KB.
+#   Hashed
+#   assets — cached hard, for a year, immutable. Safe precisely because the
+#            filename changes whenever the content does: a new build produces
+#            a new name, so a stale copy is never consulted.
+#
+# Net effect: the HTML is re-checked (usually a 304, a few bytes), and
+# everything heavy still comes from cache. Pages stay fast and stop breaking.
+
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Content-hashed by Next.js — the name IS the version.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Photographs and clips are not content-hashed: a filename like
+# cricket-box-net.jpg stays the same when the picture behind it is replaced.
+# A day is the compromise — long enough that repeat visitors and every page of
+# a browsing session reuse them, short enough that swapping a product photo
+# shows up the same day rather than whenever a browser decides to look again.
+/images/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800

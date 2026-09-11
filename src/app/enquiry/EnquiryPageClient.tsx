@@ -1,9 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useEnquiry } from '@/components/EnquiryStore';
 import { PROJECT_TYPES } from '@/lib/site';
+import { getProductById } from '@/lib/products';
+import ProductImage from '@/components/ProductImage';
 import {
   buildWhatsAppUrl,
   isRateLimited,
@@ -50,13 +52,50 @@ export default function EnquiryPageClient() {
   const [errors, setErrors] = useState<ValidationResult['errors']>({});
   const [state, setState] = useState<SendState>('idle');
   const [failMessage, setFailMessage] = useState('');
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Read what is actually in the boxes, not what React thinks is in them.
+   *
+   * These are controlled inputs, so normally state and DOM agree. Browser
+   * autofill breaks that. Firefox in particular fills a saved name and phone
+   * number by writing straight to the element, and React never sees an event:
+   * the box shows +918169317644, `form.phone` is still '', and the visitor is
+   * told "Please enter your phone number" while looking at their phone number.
+   *
+   * That is the worst kind of bug on a contact form. It only hits people whose
+   * browser has their details saved — which is most returning customers — it
+   * looks like the site is broken, and they leave rather than retyping.
+   *
+   * So before validating anything, the live values win. Cheap, runs once per
+   * submit, and it fixes every autofill variant rather than the one we found.
+   */
+  const readLiveValues = (): InquiryForm => {
+    const root = panelRef.current;
+    if (!root) return form;
+    const read = (id: keyof InquiryForm, fallback: string): string => {
+      const el = root.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
+        `#${id}`,
+      );
+      return el ? el.value : fallback;
+    };
+    return {
+      name: read('name', form.name),
+      phone: read('phone', form.phone),
+      email: read('email', form.email),
+      projectType: read('projectType', form.projectType),
+      location: read('location', form.location),
+      message: read('message', form.message),
+      company: read('company', form.company ?? ''),
+    };
+  };
 
   const update = <K extends keyof InquiryForm>(key: K, value: InquiryForm[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
     if (errors[key]) setErrors((e) => ({ ...e, [key]: undefined }));
   };
 
-  const guard = (result: ValidationResult): boolean => {
+  const guard = (result: ValidationResult, candidate: InquiryForm = form): boolean => {
     setErrors(result.errors);
     if (!result.ok) {
       // Deferred: setErrors has not re-rendered yet, so .field--error does not
@@ -69,7 +108,7 @@ export default function EnquiryPageClient() {
       }, 0);
       return false;
     }
-    if (isSpam(form)) {
+    if (isSpam(candidate)) {
       // Silently accept for the bot, do nothing real.
       setState('sent-whatsapp');
       return false;
@@ -82,9 +121,38 @@ export default function EnquiryPageClient() {
     return true;
   };
 
+  /*
+   * Catch up with autofill once the page has settled.
+   *
+   * Browsers fill saved details at their own pace — sometimes before React
+   * hydrates, sometimes a beat after. Anything written before the handlers
+   * are attached is invisible to React, and a controlled input whose state
+   * says '' while the box shows text is a field that fights the person
+   * typing in it.
+   *
+   * One read shortly after mount reconciles the two, and from that moment it
+   * behaves as an ordinary controlled input. The submit-time read stays as
+   * well, for autofill chosen from a dropdown much later.
+   */
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      const live = readLiveValues();
+      setForm((current) =>
+        (Object.keys(live) as (keyof InquiryForm)[]).some((k) => live[k] !== current[k])
+          ? live
+          : current,
+      );
+    }, 350);
+    return () => window.clearTimeout(id);
+    // Once, after mount. readLiveValues only reads the DOM, so it needs no deps.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const sendWhatsApp = () => {
-    if (!guard(validateEnquiry(form, items))) return;
-    const url = buildWhatsAppUrl(form, items);
+    const live = readLiveValues();
+    setForm(live);
+    if (!guard(validateEnquiry(live, items), live)) return;
+    const url = buildWhatsAppUrl(live, items);
     markSubmitted();
     // Opened before any state change so the browser still treats it as a
     // direct result of the click and does not block the popup.
@@ -94,7 +162,9 @@ export default function EnquiryPageClient() {
   };
 
   const sendEmail = async () => {
-    if (!guard(validateForEmail(form, items))) return;
+    const live = readLiveValues();
+    setForm(live);
+    if (!guard(validateForEmail(live, items), live)) return;
 
     setState('sending');
 
@@ -106,7 +176,7 @@ export default function EnquiryPageClient() {
       const res = await fetch(EMAIL_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ form, items }),
+        body: JSON.stringify({ form: live, items }),
       });
 
       if (res.status === 422) {
@@ -227,12 +297,28 @@ export default function EnquiryPageClient() {
         </div>
 
         <div className="grid" style={{ gap: 'var(--space-3)' }}>
-          {items.map((item) => (
+          {items.map((item) => {
+            // The basket stores only ids and names — deliberately, so a saved
+            // list survives a product being renamed. The photograph is looked
+            // up live from the catalogue each render.
+            //
+            // It can legitimately come back undefined: a basket sitting in
+            // localStorage for a month may name a product since removed. That
+            // falls through to the placeholder rather than throwing, because
+            // losing a thumbnail is a blemish and losing the whole page is an
+            // outage.
+            const product = getProductById(item.productId);
+            const image = product?.images[0];
+            return (
             <div className="basket-item" key={item.productId}>
               <div className="basket-item__media">
-                <div className="card__placeholder">
-                  <span style={{ fontSize: '0.6rem' }}>Photo</span>
-                </div>
+                {image ? (
+                  <ProductImage src={image.src} alt={image.alt} />
+                ) : (
+                  <div className="card__placeholder">
+                    <span style={{ fontSize: '0.6rem' }}>Photo</span>
+                  </div>
+                )}
               </div>
 
               <div className="basket-item__body">
@@ -306,12 +392,13 @@ export default function EnquiryPageClient() {
                 />
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       {/* ── Form ── */}
-      <div className="panel panel--sticky">
+      <div className="panel panel--sticky" ref={panelRef}>
         <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: 'var(--space-5)' }}>
           Your details
         </h2>
@@ -321,15 +408,11 @@ export default function EnquiryPageClient() {
             <span>{failMessage}</span>
           </div>
         )}
-        {/* Shown at the top only when there ARE products, because then the
-            problem is with the list itself and the list is what to look at.
-            With an empty basket the same message sits on the message box
-            instead — next to the thing the visitor has to do about it. */}
-        {errors.items && items.length > 0 && (
-          <div className="alert alert--error" role="alert">
-            <span>{errors.items}</span>
-          </div>
-        )}
+        {/* There is deliberately no items error banner here.
+            errors.items is only ever set when the basket is empty AND the
+            message box is blank, so a banner gated on items.length > 0 could
+            never render. The message now lives on the message box itself,
+            which is the field the visitor has to act on. */}
 
         <div className={`field${errors.name ? ' field--error' : ''}`}>
           <label className="field__label" htmlFor="name">

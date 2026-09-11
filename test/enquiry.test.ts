@@ -166,7 +166,10 @@ check('missing location is rejected', () => {
 });
 
 check('accepts Indian mobile formats', () => {
-  for (const phone of ['9876543210', '+919876543210', '09876543210', '+91 9876543210', '98765-43210']) {
+  for (const phone of ['9876543210', '+919876543210', '09876543210', '+91 9876543210', '98765-43210',
+                       // A real number from live testing — reported as rejected,
+                       // which turned out to be the form not seeing it at all.
+                       '+918169317644']) {
     assert.equal(validateEnquiry({ ...goodForm, phone }, items).ok, true, `rejected: ${phone}`);
   }
 });

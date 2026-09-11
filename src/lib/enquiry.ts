@@ -45,8 +45,10 @@ export function validateEnquiry(form: InquiryForm, items: InquiryItem[]): Valida
   // person turns them away at the door, which is the opposite of what an
   // enquiry form is for.
   if (items.length === 0 && !form.message.trim()) {
-    errors.items =
-      'Add a product to your list, or tell us what you need in the message box below.';
+    // Worded for where it is actually shown: attached to the message box
+    // itself. It said "in the message box below" and appeared underneath that
+    // box, pointing the visitor past the only thing that would fix it.
+    errors.items = 'Add a product to your list, or describe what you need here.';
   }
 
   return { ok: Object.keys(errors).length === 0, errors };
