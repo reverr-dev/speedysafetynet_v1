@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Featured products — design options</title>
+<style>
+  :root{
+    --brand-50:#fff4ec; --brand-100:#ffe3d0; --brand-300:#f9a76b;
+    --brand-400:#f2762b; --brand-500:#b84d17; --brand-700:#333b3f;
+    --brand-800:#262c2f; --brand-900:#1a1f21;
+    --grey-50:#faf9f8; --grey-200:#e7e3e0; --grey-600:#6b6660; --grey-900:#1f1d1b;
+    --r:10px; --rl:14px;
+    --font: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--grey-50);color:var(--grey-900);font-family:var(--font);line-height:1.55}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 20px 80px}
+  .lede{max-width:70ch}
+  h1{font-size:1.7rem;margin:0 0 6px;letter-spacing:-.02em}
+  .sub{color:var(--grey-600);margin:0 0 28px}
+  .opt{background:#fff;border:1px solid var(--grey-200);border-radius:var(--rl);margin:0 0 34px;overflow:hidden}
+  .opt__head{padding:16px 20px;border-bottom:1px solid var(--grey-200);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+  .opt__tag{background:var(--brand-500);color:#fff;font-size:.68rem;font-weight:700;letter-spacing:.09em;
+            text-transform:uppercase;padding:4px 9px;border-radius:6px}
+  .opt__name{font-weight:700;font-size:1.05rem}
+  .opt__why{color:var(--grey-600);font-size:.88rem;flex:1 1 320px;min-width:0}
+  .stage{padding:26px 20px 30px;background:var(--brand-50)}
+  .eyebrow{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--brand-500);display:block;margin-bottom:6px}
+  .stage h2{font-size:1.35rem;margin:0 0 22px;letter-spacing:-.02em}
+  .btn{display:inline-flex;align-items:center;justify-content:center;border:0;cursor:pointer;
+       font-family:inherit;font-weight:600;border-radius:var(--r);padding:9px 16px;font-size:.85rem}
+  .btn--p{background:var(--brand-800);color:#fff}
+  .btn--a{background:var(--brand-500);color:#fff}
+  .btn--o{background:transparent;border:2px solid var(--grey-200);color:var(--grey-900)}
+  .cat{font-size:.66rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--brand-500)}
+  .more{color:var(--brand-500);font-weight:600;font-size:.82rem;text-decoration:none}
+
+  /* ── A: current ───────────────────────────────────────── */
+  .gA{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .cA{background:#fff;border:1px solid var(--grey-200);border-radius:var(--rl);overflow:hidden;display:flex;flex-direction:column}
+  .cA .m{aspect-ratio:4/3;background:var(--brand-50);padding:14px;display:grid;place-items:center}
+  .cA img{max-width:100%;max-height:100%;object-fit:contain}
+  .cA .b{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+  .cA h3{margin:0;font-size:.98rem}
+  .cA p{margin:0;color:var(--grey-600);font-size:.82rem;flex:1}
+  .cA .f{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:8px}
+
+  /* ── B: hero + three ──────────────────────────────────── */
+  .gB{display:grid;grid-template-columns:1.55fr 1fr;gap:16px}
+  .gB__side{display:grid;gap:16px}
+  .cB{background:#fff;border:1px solid var(--grey-200);border-radius:var(--rl);overflow:hidden;display:flex;flex-direction:column}
+  .cB--hero .m{aspect-ratio:4/3;background:var(--brand-50);padding:18px;display:grid;place-items:center}
+  .cB--hero img{max-width:100%;max-height:100%;object-fit:contain}
+  .cB--hero .b{padding:18px 20px 20px}
+  .cB--hero h3{margin:6px 0 6px;font-size:1.35rem;letter-spacing:-.02em}
+  .cB--hero p{margin:0 0 14px;color:var(--grey-600);font-size:.9rem;max-width:46ch}
+  .cB--row{flex-direction:row;align-items:stretch}
+  .cB--row .m{width:112px;flex:0 0 112px;background:var(--brand-50);padding:9px;display:grid;place-items:center}
+  .cB--row img{max-width:100%;max-height:100%;object-fit:contain}
+  .cB--row .b{padding:11px 14px;display:flex;flex-direction:column;justify-content:center;gap:3px;min-width:0}
+  .cB--row h3{margin:0;font-size:.95rem}
+  .cB--row .f{margin-top:6px}
+
+  /* ── C: framed + best-seller ribbon ───────────────────── */
+  .gC{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .cC{background:#fff;border:1px solid var(--grey-200);border-radius:var(--rl);overflow:hidden;
+      display:flex;flex-direction:column;position:relative;transition:transform .18s,box-shadow .18s}
+  .cC:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgb(26 31 33/12%)}
+  .cC .rib{position:absolute;top:12px;left:0;z-index:2;background:var(--brand-500);color:#fff;
+           font-size:.62rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+           padding:4px 10px 4px 12px;border-radius:0 6px 6px 0}
+  .cC .m{aspect-ratio:4/3;background:linear-gradient(160deg,var(--brand-50),#fff);padding:16px;display:grid;place-items:center}
+  .cC img{max-width:100%;max-height:100%;object-fit:contain}
+  .cC .b{padding:14px 16px 16px;display:flex;flex-direction:column;gap:7px;flex:1;border-top:3px solid var(--brand-400)}
+  .cC h3{margin:0;font-size:1rem}
+  .cC ul{margin:0;padding:0 0 0 15px;color:var(--grey-600);font-size:.78rem}
+  .cC li{margin:1px 0}
+  .cC .f{margin-top:auto;padding-top:10px;display:flex;gap:8px;align-items:center}
+
+  /* ── D: alternating rows ──────────────────────────────── */
+  .gD{display:grid;gap:14px}
+  .cD{background:#fff;border:1px solid var(--grey-200);border-radius:var(--rl);overflow:hidden;
+      display:grid;grid-template-columns:300px 1fr;align-items:stretch}
+  .cD:nth-child(even){grid-template-columns:1fr 300px}
+  .cD:nth-child(even) .m{order:2}
+  .cD .m{background:var(--brand-50);padding:16px;display:grid;place-items:center}
+  .cD img{max-width:100%;max-height:190px;object-fit:contain}
+  .cD .b{padding:20px 24px;display:flex;flex-direction:column;justify-content:center;gap:8px}
+  .cD h3{margin:2px 0 0;font-size:1.22rem;letter-spacing:-.02em}
+  .cD p{margin:0;color:var(--grey-600);font-size:.88rem;max-width:52ch}
+  .cD .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .cD .tag{background:var(--brand-50);border:1px solid var(--brand-100);color:var(--brand-500);
+           font-size:.7rem;font-weight:600;padding:3px 9px;border-radius:999px}
+  .cD .f{display:flex;gap:10px;align-items:center;margin-top:10px}
+
+  .note{font-size:.82rem;color:var(--grey-600);padding:12px 20px;background:#fff;border-top:1px solid var(--grey-200)}
+  .note b{color:var(--grey-900)}
+
+  @media (max-width:860px){
+    .gA,.gC{grid-template-columns:repeat(2,1fr)}
+    .gB{grid-template-columns:1fr}
+    .cD,.cD:nth-child(even){grid-template-columns:1fr}
+    .cD:nth-child(even) .m{order:0}
+    .cD img{max-height:230px}
+  }
+  @media (max-width:520px){
+    .gA,.gC{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="lede">
+    <h1>The four best sellers — four ways</h1>
+    <p class="sub">Same colours, same type, same photographs. Only the arrangement changes.
+      Every option shows each picture <b>whole</b> — none of them crop his artwork.</p>
+  </div>
+
+  <!-- A -->
+  <section class="opt">
+    <div class="opt__head">
+      <span class="opt__tag" style="background:var(--grey-600)">A · now</span>
+      <span class="opt__name">Four equal cards</span>
+      <span class="opt__why">What the site does today. Tidy and honest, but every product carries
+        the same weight, so nothing tells a first-time visitor what this business is known for.</span>
+    </div>
+    <div class="stage">
+      <span class="eyebrow">Our range</span>
+      <h2>What we are best known for</h2>
+      <div class="gA" id="gA"></div>
+    </div>
+  </section>
+
+  <!-- B -->
+  <section class="opt">
+    <div class="opt__head">
+      <span class="opt__tag">B</span>
+      <span class="opt__name">One lead, three beside it</span>
+      <span class="opt__why">Safety netting is the business's core trade, so it gets the large card
+        and room for a real sentence. The other three sit beside it as a compact list.</span>
+    </div>
+    <div class="stage">
+      <span class="eyebrow">Our range</span>
+      <h2>What we are best known for</h2>
+      <div class="gB">
+        <article class="cB cB--hero" id="heroB"></article>
+        <div class="gB__side" id="sideB"></div>
+      </div>
+    </div>
+    <p class="note"><b>Trade-off:</b> ranks the four, so the client must be happy that one line
+      leads. Easy to change — it is one list in <code>settings.json</code>.</p>
+  </section>
+
+  <!-- C -->
+  <section class="opt">
+    <div class="opt__head">
+      <span class="opt__tag">C</span>
+      <span class="opt__name">Framed cards, with a best-seller ribbon</span>
+      <span class="opt__why">Keeps four equal cards but says out loud what the client told us —
+        these are his best sellers. Two or three uses under each name answer
+        “is this for me?” without a click.</span>
+    </div>
+    <div class="stage">
+      <span class="eyebrow">Our range</span>
+      <h2>Our best-selling lines</h2>
+      <div class="gC" id="gC"></div>
+    </div>
+    <p class="note"><b>Trade-off:</b> only credible while it stays on four products. A ribbon on
+      everything means nothing.</p>
+  </section>
+
+  <!-- D -->
+  <section class="opt">
+    <div class="opt__head">
+      <span class="opt__tag">D</span>
+      <span class="opt__name">Alternating rows</span>
+      <span class="opt__why">Gives each product a full row, a large picture and space for the
+        applications that actually win an enquiry. Stacks into a clean single column on a phone,
+        where most of this traffic will be.</span>
+    </div>
+    <div class="stage">
+      <span class="eyebrow">Our range</span>
+      <h2>What we are best known for</h2>
+      <div class="gD" id="gD"></div>
+    </div>
+    <p class="note"><b>Trade-off:</b> the tallest of the four. Pushes the rest of the home page
+      further down, so it suits a short page better than a long one.</p>
+  </section>
+
+</div>
+
+<script>
+const BASE = 'https://speedsafetynet.com/images/products/';
+const P = [
+  { f:'construction-fall-safety-net.jpg', n:'Construction Fall Safety Net', c:'Safety Nets',
+    s:'Impact-tested fall and debris netting for high-rise sites, installed and tensioned by our own team.',
+    short:'Site safety nets for high-rise projects.',
+    u:['High-rise construction','Scaffolding perimeters','Open floor edges'] },
+  { f:'premium-artificial-grass-40mm.jpg', n:'Premium Artificial Grass — 40mm', c:'Artificial Grass',
+    s:'40mm landscape turf for gardens, terraces and commercial frontage, laid over a prepared base.',
+    short:'Lush 40mm landscape grass.',
+    u:['Gardens & terraces','Playgrounds','Commercial frontage'] },
+  { f:'invisible-grill.jpg', n:'Invisible Grill', c:'Invisible Grills',
+    s:'Stainless steel cable grills for windows and balconies — fall protection that keeps the view.',
+    short:'Stainless steel cable grill for windows and balconies.',
+    u:['Balconies','School windows','High-rise flats'] },
+  { f:'anti-bird-net.jpg', n:'Anti Bird Net', c:'Bird Nets',
+    s:'Knotted nylon netting that keeps pigeons off balconies, ducts and atriums without harming them.',
+    short:'Knotted nylon anti-bird netting.',
+    u:['Balconies','Ducts & shafts','Warehouses'] },
+];
+const img = p => `<img src="${BASE}${p.f}" alt="${p.n}" loading="lazy">`;
+
+document.getElementById('gA').innerHTML = P.map(p => `
+  <article class="cA">
+    <div class="m">${img(p)}</div>
+    <div class="b">
+      <span class="cat">${p.c}</span>
+      <h3>${p.n}</h3><p>${p.short}</p>
+      <div class="f"><button class="btn btn--p">Add to enquiry</button><a class="more" href="#">Details →</a></div>
+    </div>
+  </article>`).join('');
+
+const h = P[0];
+document.getElementById('heroB').innerHTML = `
+  <div class="m">${img(h)}</div>
+  <div class="b">
+    <span class="cat">${h.c}</span>
+    <h3>${h.n}</h3><p>${h.s}</p>
+    <div class="f" style="display:flex;gap:10px">
+      <button class="btn btn--a">Add to enquiry</button>
+      <button class="btn btn--o">See details</button>
+    </div>
+  </div>`;
+document.getElementById('sideB').innerHTML = P.slice(1).map(p => `
+  <article class="cB cB--row">
+    <div class="m">${img(p)}</div>
+    <div class="b">
+      <span class="cat">${p.c}</span>
+      <h3>${p.n}</h3>
+      <div class="f"><a class="more" href="#">Add to enquiry →</a></div>
+    </div>
+  </article>`).join('');
+
+document.getElementById('gC').innerHTML = P.map((p,i) => `
+  <article class="cC">
+    ${i < 4 ? '<span class="rib">Best seller</span>' : ''}
+    <div class="m">${img(p)}</div>
+    <div class="b">
+      <span class="cat">${p.c}</span>
+      <h3>${p.n}</h3>
+      <ul>${p.u.map(x => `<li>${x}</li>`).join('')}</ul>
+      <div class="f"><button class="btn btn--p">Add to enquiry</button><a class="more" href="#">Details →</a></div>
+    </div>
+  </article>`).join('');
+
+document.getElementById('gD').innerHTML = P.map(p => `
+  <article class="cD">
+    <div class="m">${img(p)}</div>
+    <div class="b">
+      <span class="cat">${p.c}</span>
+      <h3>${p.n}</h3><p>${p.s}</p>
+      <div class="tags">${p.u.map(x => `<span class="tag">${x}</span>`).join('')}</div>
+      <div class="f"><button class="btn btn--a">Add to enquiry</button><a class="more" href="#">See details →</a></div>
+    </div>
+  </article>`).join('');
+</script>
+</body>
+</html>

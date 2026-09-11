@@ -41,8 +41,19 @@ export default function FeaturedProducts() {
         <div className="featured__grid">
           {items.map(({ product, image, kind }, i) => {
             const category = getCategory(product.categorySlug);
+            // Three at most. A card is a glance, not a specification — the
+            // fourth and fifth use are on the product page.
+            const uses = (product.applications ?? []).slice(0, 3);
             return (
               <article className="feature-card" key={product.id}>
+                {/* The client's own words: these four are his best-selling
+                    lines. Saying so is the one thing we know about them that
+                    a visitor cannot work out from a photograph.
+
+                    It stays credible only while it stays at four. A ribbon on
+                    every product means nothing, which is why this is tied to
+                    the hero band rather than to a flag on each product. */}
+                <span className="feature-card__ribbon">Best seller</span>
                 <Link
                   href={`/products/${product.slug}`}
                   className={`feature-card__media feature-card__media--${kind}${
@@ -67,6 +78,18 @@ export default function FeaturedProducts() {
                     <Link href={`/products/${product.slug}`}>{product.name}</Link>
                   </h3>
                   <p className="feature-card__text">{product.shortDescription}</p>
+
+                  {/* Where it is used, not what it is made of. A facility
+                      manager scanning this band is looking for his own
+                      problem — "Balconies", "Warehouses" — and finds it
+                      faster in three words than in a sentence. */}
+                  {uses.length > 0 && (
+                    <ul className="feature-card__uses">
+                      {uses.map((use) => (
+                        <li key={use}>{use}</li>
+                      ))}
+                    </ul>
+                  )}
 
                   <div className="feature-card__actions">
                     <button

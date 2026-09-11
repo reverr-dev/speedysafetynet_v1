@@ -36,6 +36,34 @@ export default function ServicesPage() {
             </p>
           </div>
 
+        </div>
+      </section>
+
+      {/* ── Sports ground construction ──────────────────────────────────
+          Moved directly under the headline, ahead of the service cards.
+
+          The cards are twelve bullet points and three icons — good at
+          confirming detail for somebody already interested, and hopeless at
+          creating that interest. Leading with them meant the first thing
+          after the headline was a wall of text.
+
+          This block has the photograph, the clip and the numbered build
+          stages. Landing on a real pitch and a clear claim gives a visitor a
+          reason to keep reading; the bullets then answer the questions that
+          reading raises, which is the order that actually works.          */}
+      <GroundBuild />
+
+      {/* ── What we supply ──────────────────────────────────────────────
+          Below the ground block on purpose — see the note above.
+          Plain `.section`, not `--alt`: the gallery below is already alt, and
+          two tinted bands touching read as one very long band.            */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <span className="eyebrow">Every service</span>
+            <h2>What we supply and install</h2>
+          </div>
+
           <div className="grid grid--3">
             {SERVICES.map((service) => {
               const Icon = SERVICE_ICONS[service.icon];
@@ -77,12 +105,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-
-      {/* ── Sports ground construction ──────────────────────────────────
-          Placed before the gallery deliberately: it is the highest-value
-          work the client does, and specification detail at this level is
-          what a facility owner is actually comparing contractors on. */}
-      <GroundBuild />
 
       {/* ── Our Work ────────────────────────────────────────────────────
           Completed outdoor installations. Every tile carries an
@@ -138,12 +160,6 @@ export default function ServicesPage() {
             })}
           </div>
 
-          <p
-            className="muted"
-            style={{ marginTop: 'var(--space-5)', fontSize: 'var(--text-sm)' }}
-          >
-            Project photographs to be supplied by the client before launch.
-          </p>
         </div>
       </section>
 

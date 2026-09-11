@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { CATEGORIES, CATEGORY_GROUPS, categoriesByGroup } from '@/lib/categories';
 import { PRODUCTS, countByCategory } from '@/lib/products';
 import ProductCard from '@/components/ProductCard';
-import { SearchIcon } from '@/components/Icons';
+import { CloseIcon, SearchIcon } from '@/components/Icons';
 
 /**
  * The catalogue browser.
@@ -24,6 +24,22 @@ export default function ProductBrowser({ initialCategory }: { initialCategory?: 
   );
   const [query, setQuery] = useState('');
 
+  /*
+   * Whether the category list is expanded. Phone only — on a wide screen the
+   * list is a permanent sidebar and this is ignored.
+   *
+   * Closed by default, and that is the whole point of this change. The
+   * sidebar used to stack above the grid on a narrow screen, so arriving at
+   * the catalogue on a phone meant scrolling past fifteen category names
+   * before seeing a single product. Somebody who came to look at safety nets
+   * was shown a table of contents instead.
+   *
+   * Now the products are the first thing on screen and the categories are one
+   * tap away, which is the right order: browsing is the default, filtering is
+   * the exception.
+   */
+  const [filtersOpen, setFiltersOpen] = useState(false);
+
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     return PRODUCTS.filter((p) => {
@@ -38,27 +54,74 @@ export default function ProductBrowser({ initialCategory }: { initialCategory?: 
 
   const activeName = active ? CATEGORIES.find((c) => c.slug === active)?.name : null;
 
+  /**
+   * Picking a category closes the list on a phone.
+   *
+   * Leaving it open would mean the visitor taps a category and still cannot
+   * see what they chose — the results are below a list that is still covering
+   * them. Closing shows the answer immediately, which is what the tap asked
+   * for.
+   */
+  const choose = (slug: string | null) => {
+    setActive(slug);
+    setFiltersOpen(false);
+  };
+
   return (
     <div className="catalogue">
       <aside className="filters">
-        <div className="search">
-          <SearchIcon className="search__icon" />
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products…"
-            aria-label="Search products"
-          />
+        <div className="filters__bar">
+          <div className="search">
+            <SearchIcon className="search__icon" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search products…"
+              aria-label="Search products"
+            />
+          </div>
+
+          {/* Phone only — CSS hides it once the sidebar is permanent. */}
+          <button
+            type="button"
+            className="filters__toggle"
+            aria-expanded={filtersOpen}
+            aria-controls="category-filters"
+            onClick={() => setFiltersOpen((o) => !o)}
+          >
+            Categories
+            {active && <span className="filters__toggle-count">1</span>}
+            <span className={`filters__caret${filtersOpen ? ' filters__caret--up' : ''}`} aria-hidden="true" />
+          </button>
         </div>
 
-        <div>
-          <div className="filter-group__title">Categories</div>
+        {/* The chosen category, shown as a removable chip.
+            Someone who arrives here by tapping a category on the home page
+            needs to see straight away that they are looking at a filtered
+            list — otherwise a short list reads as "they only sell three
+            things" rather than "three things in this category". */}
+        {activeName && (
+          <div className="filters__active">
+            <button type="button" className="chip chip--active" onClick={() => choose(null)}>
+              {activeName}
+              <CloseIcon size={13} />
+              <span className="sr-only">Remove this filter</span>
+            </button>
+          </div>
+        )}
+
+        <div
+          id="category-filters"
+          className={`filters__panel${filtersOpen ? ' filters__panel--open' : ''}`}
+        >
+          <div>
+            <div className="filter-group__title">Categories</div>
           <div className="filter-list">
             <button
               className="filter-list__item"
               aria-pressed={active === null}
-              onClick={() => setActive(null)}
+              onClick={() => choose(null)}
             >
               <span>All products</span>
               <span className="filter-list__count">{PRODUCTS.length}</span>
@@ -78,7 +141,7 @@ export default function ProductBrowser({ initialCategory }: { initialCategory?: 
                     key={c.slug}
                     className="filter-list__item"
                     aria-pressed={active === c.slug}
-                    onClick={() => setActive(active === c.slug ? null : c.slug)}
+                    onClick={() => choose(active === c.slug ? null : c.slug)}
                   >
                     <span>{c.name}</span>
                     <span className="filter-list__count">{countByCategory(c.slug)}</span>
@@ -88,6 +151,7 @@ export default function ProductBrowser({ initialCategory }: { initialCategory?: 
             </div>
           );
         })}
+        </div>
       </aside>
 
       <div>

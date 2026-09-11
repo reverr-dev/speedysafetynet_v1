@@ -10,7 +10,24 @@ export default function Footer() {
         <div className="footer__grid">
           <div>
             <div className="footer__brand">
-              <span className="logo__mark">SSN</span>
+              {/* On a white plate, not bare.
+
+                  The mark is dark blue with fine lettering, and the footer is
+                  near-black — laid straight on it the gear muddies and the web
+                  address inside it disappears completely. The plate is how a
+                  certification mark is normally reproduced on dark stationery,
+                  and it keeps his logo legible instead of decorative.
+
+                  eslint-disable-next-line @next/next/no-img-element: the static
+                  export runs images unoptimized, so next/image buys nothing. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="footer__mark"
+                src="/images/brand/iso-logo.png"
+                alt=""
+                width={606}
+                height={359}
+              />
               <span className="logo__text">
                 <span className="logo__name">{SITE.name}</span>
               </span>

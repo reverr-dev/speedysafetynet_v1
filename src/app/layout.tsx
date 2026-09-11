@@ -54,6 +54,23 @@ export const metadata: Metadata = {
   robots: ALLOW_INDEXING
     ? { index: true, follow: true }
     : { index: false, follow: false, nocache: true },
+
+  /*
+   * Canonical URL, relative to metadataBase above.
+   *
+   * This site is reachable at more than one address — the real domain, and
+   * the speedsafetynet-demo.*.workers.dev hostname Cloudflare always provides
+   * and which cannot be turned off. Without this tag Google sees two complete
+   * copies of the catalogue and has to guess which is the original; it
+   * sometimes guesses the workers.dev one, and then the client's own domain
+   * ranks below a preview URL.
+   *
+   * './' resolves per page, so /products/anti-bird-net/ declares itself
+   * canonical at the real domain no matter which hostname served it.
+   */
+  alternates: {
+    canonical: './',
+  },
 };
 
 export const viewport: Viewport = {
