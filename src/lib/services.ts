@@ -170,7 +170,7 @@ export const PROJECTS: Project[] = [
     categorySlug: 'sports-nets',
     summary:
       'Fully enclosed indoor cricket facility: tensile sheet roof on a steel frame, laid turf, lane netting and full overhead lighting.',
-    images: [{ src: '/images/projects/indoor-cricket-dome.jpg', alt: 'Indoor cricket facility with green turf, lane netting and a tensile sheet roof', watermark: false }],
+    images: [{ src: '/images/projects/indoor-cricket-dome.jpg', alt: 'Indoor cricket facility with green turf, lane netting and a tensile sheet roof' }],
   },
   {
     slug: 'multisport-court',
@@ -179,7 +179,7 @@ export const PROJECTS: Project[] = [
     categorySlug: 'sports-nets',
     summary:
       'Acrylic multi-sport court with perimeter netting, alongside a laid turf football ground on the same site.',
-    images: [{ src: '/images/projects/multisport-court.jpg', alt: 'Blue acrylic multi-sport court enclosed in netting beside a green turf football ground', watermark: false }],
+    images: [{ src: '/images/projects/multisport-court.jpg', alt: 'Blue acrylic multi-sport court enclosed in netting beside a green turf football ground' }],
   },
   {
     slug: 'floodlit-indoor-arena',

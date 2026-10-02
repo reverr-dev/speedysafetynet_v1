@@ -356,9 +356,6 @@ check('the list of products still awaiting a photograph is exactly this', () => 
   // four below are the ones that batch did NOT cover — see the note in
   // docs/PENDING-PHOTOS.md for what is still needed and why.
   const AWAITING = [
-    '/images/products/blue-pe-tarpaulin.jpg',
-    '/images/products/braided-pp-rope.jpg',
-    '/images/products/car-parking-shade-mesh.jpg',
     '/images/products/plastic-bird-spike.jpg',
   ];
   const root = new URL('../public', import.meta.url);
@@ -411,30 +408,29 @@ check('no project claims work we cannot evidence', () => {
   }
 });
 
-check('watermark suppression is only used where it is justified', () => {
-  // The client's rule is that every product carries the company mark, so the
-  // bar for `watermark: false` is now one thing only: the SAME gear device is
-  // already burned into the SAME corner by the old stamping script, and a
-  // second one there reads as a printing fault.
+check('nothing suppresses the watermark', () => {
+  // The client's rule is absolute: every product and every project carries
+  // the company mark. So this is not a list of exceptions any more — it is
+  // zero.
   //
-  // His own posters are NOT on this list any more. They carry his logo
-  // elsewhere in the artwork, which is what `watermarkCorner` is for — the
-  // site mark moves to a plain corner rather than being dropped.
+  // There used to be a JUSTIFIED list for pictures with the same gear device
+  // already burned into the same corner by the old stamping script. When the
+  // flag was checked against the files actually on disk, NONE of them had a
+  // burned-in mark: the originals had been restored at some point and the
+  // flags were left behind, so three items had been quietly shipping with no
+  // branding at all. The balcony net was spotted on the live site.
   //
-  // This check exists because the flag was once applied to a plain
-  // photograph by mistake, and the only symptom was a product quietly
-  // shipping with no branding on it at all.
-  const JUSTIFIED = new Set([
-    '/images/products/balcony-anti-fall-net.jpg',
-    '/images/projects/indoor-cricket-dome.jpg',
-    '/images/projects/multisport-court.jpg',
-  ]);
+  // If a genuinely pre-branded picture ever arrives, `watermark: false` still
+  // works — but adding it means changing this test, deliberately, with the
+  // file open in front of you. That is the point.
   const suppressed = [...PRODUCTS.flatMap((p) => p.images), ...PROJECTS.flatMap((p) => p.images)]
     .filter((im) => im.watermark === false)
     .map((im) => im.src);
-  for (const src of suppressed) {
-    assert.ok(JUSTIFIED.has(src), `${src} suppresses the watermark with no reason on record`);
-  }
+  assert.deepEqual(
+    suppressed,
+    [],
+    `these pictures hide the company mark: ${suppressed.join(', ')}`,
+  );
 });
 
 check('every product on the home page carries the mark', () => {
