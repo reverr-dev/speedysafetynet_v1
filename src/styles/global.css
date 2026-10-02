@@ -598,11 +598,81 @@ p {
    HERO
    ═══════════════════════════════════════════════════════════════════════ */
 
+/*
+  The hero, now built on a photograph of the client's own work.
+ 
+  It used to be text on a dark panel with the animated net behind it, and the
+  comment here said why: "ties the page to what they sell without needing a
+  photograph, which matters while we wait for real photos."
+ 
+  The photos arrived. Holding a text-only hero after that is the single
+  biggest thing making this page feel dated — a contractor's strongest asset
+  is proof he has done the work, and there was none of it above the fold.
+ 
+  The picture is deliberately this one: netting in the foreground, in focus,
+  with a real match going on behind it. The product is the thing you are
+  looking THROUGH, which is exactly what he sells and is far better than a
+  photograph of a net lying on the ground.
+ 
+  The animated mesh stays, layered over the photo. It was chosen for good
+  reason and it now reads as netting moving over a real pitch rather than as
+  an abstract pattern standing in for one.
+*/
 .hero {
   position: relative;
-  background: var(--color-brand-strong);
+  background-color: var(--color-brand-strong);
   color: var(--color-text-inverse);
   overflow: hidden;
+  /* Establishes the depth in which the hero's layers sit. */
+  perspective: 1000px;
+}
+
+/*
+  The photograph, on its own layer.
+ 
+  Taller than the hero and pulled up, so there is room for it to travel
+  without ever exposing an edge. The scrim rides with it as a gradient in the
+  same paint, which keeps the text legible at every scroll position.
+*/
+.hero__bg {
+  position: absolute;
+  inset: -12% 0 -12% 0;
+  background-color: var(--color-brand-strong);
+  background-image: linear-gradient(
+      100deg,
+      rgb(26 31 33 / 94%) 0%,
+      rgb(26 31 33 / 88%) 38%,
+      rgb(26 31 33 / 64%) 68%,
+      rgb(26 31 33 / 46%) 100%
+    ),
+    url('/images/brand/hero-ground.jpg');
+  background-size: cover, cover;
+  background-position: center, 62% center;
+  background-repeat: no-repeat;
+  transform-origin: center 30%;
+  will-change: transform;
+}
+
+/* Give it real presence. A hero that is only as tall as its text reads as a
+   heading with a background, not as a hero. */
+/*
+  Deliberately SHORTER than a full screen.
+ 
+  A hero sized to fill the viewport looks impressive in a screenshot and
+  costs you the visitor: they see one picture, one headline, and no evidence
+  there is anything below. Leaving the top of the product row showing is what
+  makes someone scroll — they can see it is cut off, so they finish it.
+ 
+  Measured at 1440x820 with the header above it: this puts roughly 110px of
+  the first product cards on screen. Enough to read as "there is more", not
+  so much that the hero stops being a hero.
+*/
+@media (min-width: 768px) {
+  .hero {
+    display: flex;
+    align-items: center;
+    min-height: clamp(360px, 48vh, 470px);
+  }
 }
 
 /*
@@ -658,8 +728,9 @@ p {
   content: '';
   position: absolute;
   inset: -60%;
-  background-image: linear-gradient(rgb(255 255 255 / 7%) 1px, transparent 1px),
-    linear-gradient(90deg, rgb(255 255 255 / 7%) 1px, transparent 1px);
+  /* 7% read as texture on a flat panel; over a photograph it read as noise. */
+  background-image: linear-gradient(rgb(255 255 255 / 4.5%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 4.5%) 1px, transparent 1px);
   background-size: 26px 26px;
   pointer-events: none;
   will-change: transform;
@@ -708,32 +779,42 @@ p {
   width: 60%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--brand-700) 0%, transparent 68%);
+  /* Warm, and much weaker than the flat-panel version — over a photograph a
+     solid grey glow just looked like a smudge on the lens. */
+  background: radial-gradient(circle, rgb(242 118 43 / 16%) 0%, transparent 66%);
   pointer-events: none;
 }
 
 .hero__inner {
   position: relative;
   z-index: 1;
-  padding-block: var(--space-8) var(--space-9);
+  /* Tighter on a phone, where vertical space is the scarce thing. */
+  padding-block: var(--space-6) var(--space-6);
   max-width: 46rem;
 }
 
 @media (min-width: 768px) {
   .hero__inner {
-    padding-block: var(--space-9);
+    padding-block: var(--space-6);
   }
 }
 
+/* Larger and tighter than the global h1. On a photographic hero the headline
+   has to hold its own against the picture; at the default size it floated. */
 .hero h1 {
   color: var(--color-text-inverse);
+  font-size: clamp(2rem, 4.8vw, 3rem);
+  letter-spacing: -0.03em;
+  line-height: 1.06;
   margin-bottom: var(--space-4);
+  text-wrap: balance;
+  max-width: 20ch;
 }
 
 .hero__lead {
   font-size: var(--text-lg);
   color: rgb(255 255 255 / 82%);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-5);
   max-width: 54ch;
 }
 
@@ -743,12 +824,21 @@ p {
   gap: var(--space-3);
 }
 
+/*
+  Hidden on a phone.
+ 
+  Four trust phrases are worth ~120px there, which on a 780px screen is the
+  difference between seeing a product and not. They are repeated in the
+  About page and in the footer; the hero is not the only place they exist.
+*/
 .hero__badges {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-5);
-  margin-top: var(--space-7);
-  padding-top: var(--space-5);
+  /* Halved from space-7/space-5. This row was spending 130px of the first
+     screen on four short phrases. */
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
   border-top: 1px solid rgb(255 255 255 / 18%);
 }
 
@@ -773,6 +863,16 @@ p {
 .featured {
   background: var(--color-brand-soft);
   border-bottom: 1px solid var(--color-border);
+  /* Tighter at the top than a standard section: this band is meant to be
+     partly visible under the hero, and 96px of empty tint above the heading
+     would be all anyone saw of it. */
+  padding-block-start: var(--space-5);
+}
+
+/* The band's heading sits close to its cards, so what peeks above the fold is
+   the products rather than empty tint. */
+.featured__head {
+  margin-bottom: var(--space-5);
 }
 
 .featured__head {
@@ -1521,6 +1621,402 @@ p {
   object-fit: contain;
 }
 
+/*
+  Short screens get a shorter hero.
+ 
+  Sizing the hero off viewport WIDTH was the mistake. The thing that decides
+  whether a product is visible is viewport HEIGHT, and a 1366x768 laptop has
+  about 640px of usable page once the browser's own chrome is taken out —
+  which is most laptops in an Indian office.
+ 
+  At that height a 503px hero plus an 80px header leaves nothing. So below
+  roughly 800px of viewport the hero tightens: smaller headline, shorter
+  lead, less padding, and the trust row folded away. None of it is lost —
+  those four phrases appear again in the footer and on the About page — and
+  what is gained is the top of the product cards showing, which is the only
+  thing that tells a visitor there is more page below.
+*/
+@media (min-width: 768px) and (max-height: 900px) {
+  /*
+    Shorter than a tall screen, but still a hero.
+
+    The first pass here set min-height to 0 and let the hero collapse onto
+    its own text — about 315px. That bought a generous peek at the products
+    and cost the page its opening: a photograph that short stops being a
+    scene and becomes a strip behind a heading.
+
+    56vh is the compromise, clamped so it cannot run away at either end.
+    Measured on a 1366x640 screen it leaves the hero around 360px and still
+    puts about 100px of the product row on screen — which was the whole
+    point of the exercise, and 100px is plenty to read as "cut off".
+  */
+  .hero {
+    min-height: clamp(330px, 56vh, 430px);
+  }
+
+  .hero__inner {
+    padding-block: var(--space-5);
+  }
+
+  /* Two lines, not three. The 20ch limit that makes the headline look
+     deliberate on a tall screen costs 40px of a short one, and 40px is the
+     difference between seeing a product and not. */
+  .hero h1 {
+    font-size: clamp(1.95rem, 3.5vw, 2.5rem);
+    max-width: 26ch;
+  }
+
+  .hero__lead {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-4);
+    max-width: 52ch;
+  }
+
+  .hero__badges {
+    display: none;
+  }
+
+  /* 80 → 68. The mark stays at its full 54px; what goes is the padding
+     around it, which on a short screen is the cheapest 12px on the page. */
+  :root {
+    --header-height: 68px;
+  }
+
+  .featured {
+    padding-block-start: var(--space-4);
+  }
+
+  .featured__head {
+    margin-bottom: var(--space-3);
+  }
+
+  .featured__head h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/*
+  Phones, where the squeeze is worst.
+ 
+  A 390x780 handset has roughly 660px of page once the browser's own bars are
+  counted. A photographic hero and a product card cannot both have that, so
+  the hero gives way: the buttons sit side by side instead of stacking, the
+  lead is shorter, and the whole block is tighter. The picture still carries
+  the page — it is just no longer the only thing on it.
+*/
+@media (max-width: 767px) {
+  /*
+    The top bar goes.
+   
+    It carries the phone number and the ISO line — both of which a phone
+    visitor already has: the number sits in the fixed Call/WhatsApp bar at
+    the bottom of every screen, and the ISO line is the hero's own eyebrow,
+    right under it. Thirty-eight pixels spent repeating what is visible twice
+    over, on the screen where pixels are scarcest.
+  */
+  .topbar {
+    display: none;
+  }
+
+  /*
+    80px of header on a 660px screen is a twelfth of the page spent on a
+    logo that is already 44px tall here (see the ≤560px rule above) and
+    sitting in a 80px box. 62 fits the mark with room to breathe and stays
+    well clear of the 44px minimum the menu button needs.
+
+    Declared on :root rather than bare in this block — a custom property
+    needs a selector, and --header-height is read by scroll-padding-top and
+    the sticky filter/product rails as well as by the header itself, so all
+    of them move together.
+  */
+  :root {
+    --header-height: 62px;
+  }
+
+  /*
+    Show the photograph.
+
+    The desktop scrim is a LEFT-TO-RIGHT gradient: 94% opaque at the left
+    edge, easing to 46% at the right, so the headline sits on near-solid
+    charcoal while the picture stays readable in the space beside it. On a
+    390px-wide screen there is no "beside it" — the entire width falls in the
+    94-88% end, and the photograph was being painted and then almost
+    completely covered up. All that download for a dark rectangle.
+
+    So on a phone the scrim turns vertical instead and the layout changes to
+    match: the picture gets the top of the hero to itself as a band, and the
+    words sit underneath it on charcoal. The framing moves to 73% across,
+    which is where the man watching through the net stands — at the desktop's
+    62% he was cropped off the right edge entirely, and he is the reason the
+    photograph works. Measured white-on-scrim contrast in the text zone is
+    10.5:1; AA wants 4.5.
+  */
+  .hero__bg {
+    /* No overhang: the drift is switched off below, so there is nothing to
+       travel and an inset would just crop the picture for no reason. */
+    inset: 0;
+    background-image: linear-gradient(
+        180deg,
+        rgb(26 31 33 / 18%) 0%,
+        rgb(26 31 33 / 26%) 24%,
+        rgb(26 31 33 / 88%) 40%,
+        rgb(26 31 33 / 94%) 100%
+      ),
+      url('/images/brand/hero-ground.jpg');
+    background-position: center, 68% top;
+  }
+
+  /*
+    The trust row goes.
+
+    This was supposed to be hidden on phones already, but the rule was
+    written ABOVE the `.hero__badges { display: flex }` block — same
+    specificity, later declaration wins, so it never took effect and three
+    phrases were quietly costing 80px of the first screen. The hide lives
+    here now, after the base rule and inside the block that owns phone
+    layout. All three lines appear again in the footer and on the About
+    page.
+  */
+  .hero__badges {
+    display: none;
+  }
+
+  /* 150px of picture band above the words — enough to read as a photograph
+     of a real site rather than as a texture. */
+  .hero__inner {
+    padding-block: 150px var(--space-4);
+  }
+
+  /* Two lines on a phone: "ISO 9001:2015 ·" / "GOVERNMENT CERTIFIED". The
+     rule before it is what forces the wrap, and the wide letter-spacing is
+     what forces the rule. Both ease off and it fits on one. */
+  .hero .eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-2);
+  }
+
+  .hero .eyebrow::before {
+    width: 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.55rem, 6.4vw, 1.85rem);
+    max-width: 16ch;
+  }
+
+  .hero__lead {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+    max-width: 40ch;
+  }
+
+  /* Side by side. Two stacked full-width buttons were spending 123px. */
+  .hero__actions {
+    flex-wrap: nowrap;
+  }
+
+  .hero__actions .btn {
+    flex: 1;
+    padding-inline: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .featured {
+    padding-block-start: var(--space-3);
+  }
+
+  /*
+    "Our range" goes. It is a label for the heading directly beneath it, and
+    that heading already says what the band is. Two lines of chrome above
+    the first product on the screen where the first product is the thing
+    fighting hardest to be seen.
+  */
+  .featured__head .eyebrow {
+    display: none;
+  }
+
+  .featured__head {
+    margin-bottom: var(--space-3);
+  }
+
+  .featured__head h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/*
+  Small phones — 360x640 and the iPhone SE class of device.
+
+  Everything above buys back roughly 120px, which is enough on a 390x660
+  handset and not quite enough here. The remaining cut is the hero lead: at
+  this width it runs to three lines, and the first of them repeats the
+  headline. Two lines say the same thing.
+*/
+@media (max-width: 380px) {
+  .hero h1 {
+    font-size: 1.45rem;
+  }
+
+  .hero__lead {
+    max-width: 32ch;
+    margin-bottom: var(--space-2);
+  }
+
+  .hero__inner {
+    padding-block: 128px var(--space-3);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   DEPTH ON SCROLL
+   ═══════════════════════════════════════════════════════════════════════
+
+   Scroll-driven animation: the browser ties these to scroll POSITION rather
+   than to a clock. Nothing here runs on a timer and nothing is measured in
+   JavaScript, so there is no scroll listener, no layout thrash and no jank —
+   the compositor drives it on its own thread and it stays smooth on a cheap
+   Android phone, which is what most of this traffic will be on.
+
+   `animation-timeline: view()` is Chrome and Edge today. Everything is inside
+   @supports, so a browser without it simply gets the page as it is now: no
+   fallback code, nothing hidden, nothing to go wrong. That is the whole
+   reason for choosing this over a scroll library.
+
+   The restraint matters more than the technique. Movement here is a few
+   pixels and a couple of degrees — enough that the page feels like it has
+   depth, not so much that anyone notices an effect happening. Big parallax
+   is what made 2014 sites feel cheap, and it will do the same in 2026.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /*
+      The hero photograph drifts slower than the words on top of it.
+     
+      This is the whole trick behind depth: things further away move less.
+      The picture travels about 9% of the hero's height while the text
+      travels the full amount, so the scene reads as sitting behind the
+      copy rather than printed on the same sheet.
+    */
+    .hero__bg {
+      animation: hero-drift linear both;
+      animation-timeline: view();
+      animation-range: exit-crossing 0% exit 100%;
+    }
+
+    /*
+      Product cards arrive with a slight tilt and settle flat.
+     
+      The rotation is 4 degrees — small enough to register as the card
+      turning to face you rather than as a card doing a trick. Paired with a
+      little Z translation so it genuinely moves through the perspective set
+      on the grid, instead of being a flat scale pretending to.
+    */
+    .featured__grid,
+    .grid--3 {
+      perspective: 1200px;
+      perspective-origin: center 40%;
+    }
+
+    .feature-card {
+      animation: card-rise linear both;
+      animation-timeline: view();
+      /* Finished well before the card is centred, so it is settled and
+         readable by the time anyone looks at it. */
+      animation-range: entry 5% entry 45%;
+    }
+
+    /*
+      No tilt on a phone.
+
+      Measured: the starting transform pushed the first card 47px further
+      down the page — on a 660px screen that is the entire sliver the hero
+      was shrunk to expose. The effect was cancelling the thing it was there
+      to sell. On a narrow screen the cards are stacked one per row anyway,
+      so a perspective set on the grid has almost nothing to act on; the
+      fade alone carries the arrival.
+    */
+    @media (max-width: 767px) {
+      .featured__grid,
+      .grid--3 {
+        perspective: none;
+      }
+
+      .feature-card {
+        animation-name: card-fade;
+      }
+
+      /* And no parallax on the hero picture. The phone layout gives it a
+         fixed band at the top of the hero; drifting it inside that band
+         would slide the man out of frame, which is the one thing the crop
+         is there to hold. */
+      .hero__bg {
+        animation: none;
+      }
+    }
+
+    /* The band's heading leads its cards in by a moment. */
+    .featured__head {
+      animation: head-rise linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+
+@keyframes hero-drift {
+  from {
+    transform: translate3d(0, -4.5%, 0) scale(1.06);
+  }
+  to {
+    transform: translate3d(0, 4.5%, 0) scale(1.06);
+  }
+}
+
+/*
+  Starts visible, not hidden.
+ 
+  The first version began at opacity 0 with a 26px drop — which defeated the
+  point of the whole hero exercise. The card peeking above the fold is the
+  thing that tells a visitor to scroll, and it was being faded out and pushed
+  down precisely while it was doing that job.
+ 
+  0.4 and 14px still read as arrival once it moves, and leave the sliver at
+  the bottom of the screen legible before anybody has touched the wheel.
+*/
+@keyframes card-rise {
+  from {
+    opacity: 0.55;
+    transform: perspective(1200px) translate3d(0, 14px, -30px) rotateX(3deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1200px) translate3d(0, 0, 0) rotateX(0deg);
+  }
+}
+
+/* The phone version: brightness only, no movement, so nothing shifts the
+   card out of the sliver of screen it is supposed to be occupying. */
+@keyframes card-fade {
+  from {
+    opacity: 0.55;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes head-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
 /* ═══════════════════════════════════════════════════════════════════════
    HOVER-TO-PLAY MEDIA
    ═══════════════════════════════════════════════════════════════════════
@@ -1676,12 +2172,29 @@ p {
   content: none;
 }
 
-/* No mark on artwork that carries the company mark already. Set per image
-   with "watermark": false in content/products.json — the client's four
-   posters have his gear device and web address printed on them, and a
-   second one in the corner lands beside the first. */
+/* No mark only where the SAME gear device is already burned into the SAME
+   corner by the old stamping script — a second one there is a duplicate, not
+   branding. Set per image with "watermark": false in content/products.json.
+   Everything else carries the mark, including the client's own posters. */
 .media--unmarked::after {
   content: none;
+}
+
+/* Corner overrides, for artwork that already has something where the mark
+   normally sits. The invisible-grill poster has a certification roundel
+   bottom-right; ours moves to the plain top-left corner rather than being
+   dropped. `inset` resets all four sides first so a variant never inherits
+   half of the default position. */
+.media--mark-tl::after {
+  inset: 3.5% auto auto 3.5%;
+}
+
+.media--mark-tr::after {
+  inset: 3.5% 3.5% auto auto;
+}
+
+.media--mark-bl::after {
+  inset: auto auto 3.5% 3.5%;
 }
 
 /* A thumbnail is 88px square. The mark would cover the picture rather than
@@ -2860,12 +3373,37 @@ p {
 */
 .page-enter {
   animation: page-enter var(--duration-base) var(--ease-out) both;
+  /*
+    No `will-change: transform` here, tempting as it is.
+
+    This element wraps every page, and a transform hint on it creates a
+    containing block for the whole subtree — which would silently re-anchor
+    `position: fixed` descendants to this div instead of the viewport. The
+    floating WhatsApp and call buttons are fixed. They would stop floating.
+
+    translate3d in the keyframes already gets the animation onto the
+    compositor for the moment it runs, which is all that was wanted.
+  */
 }
 
+/*
+  Opacity leads, movement follows.
+
+  Both used to run over the full duration, which meant the page was still
+  visibly sliding when it was already fully opaque — the tail of the movement
+  had nothing to hide it and read as a lurch. Ending the travel at 70% lets
+  it settle under cover of the fade, and the whole thing lands quietly.
+
+  6px rather than 10. The lift is meant to suggest the page arriving, not to
+  be noticed as an effect; past about 8px it becomes the thing you watch.
+*/
 @keyframes page-enter {
   from {
     opacity: 0;
-    transform: translate3d(0, 10px, 0);
+    transform: translate3d(0, 6px, 0);
+  }
+  70% {
+    transform: translate3d(0, 0, 0);
   }
   to {
     opacity: 1;

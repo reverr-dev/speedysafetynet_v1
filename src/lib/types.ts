@@ -18,12 +18,25 @@ export interface ProductImage {
   /**
    * Set to false to hide the corner watermark over this picture.
    *
-   * Only for artwork that already carries the company mark in its own
-   * pixels — the client's four posters do, and a second mark in the corner
-   * lands next to the one he put there. Everything else leaves this alone
-   * and gets the mark automatically.
+   * The bar for this is now high: the client's instruction is that every
+   * product carries the mark, so the only pictures that suppress it are the
+   * handful with THE SAME gear device already burned into the SAME corner by
+   * the old stamping script. On those, a second one is a visible duplicate,
+   * not extra branding.
+   *
+   * Artwork that carries the client's logo somewhere else — his own posters —
+   * still gets the corner mark. Use `watermarkCorner` to keep it clear of
+   * whatever is already printed there.
    */
   watermark?: boolean;
+  /**
+   * Which corner the watermark sits in. Defaults to bottom-right.
+   *
+   * Only worth setting when the picture already has something in that corner
+   * — the invisible-grill poster has a certification roundel bottom-right, so
+   * the site mark moves to the top-left where the artwork is plain.
+   */
+  watermarkCorner?: 'top-left' | 'top-right' | 'bottom-left';
   /**
    * Optional short clip that plays when a visitor points at this picture.
    *

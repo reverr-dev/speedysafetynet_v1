@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { ProductImage as ProductImageType } from '@/lib/types';
 import ProductImage from './ProductImage';
 import ProductMedia from './ProductMedia';
+import { markClass } from '@/lib/watermark';
 
 /**
  * Product image gallery — main image with a thumbnail strip.
@@ -26,11 +27,10 @@ export default function ProductGallery({ images }: { images: ProductImageType[] 
 
   return (
     <div className="gallery">
-      {/* media--unmarked suppresses the CSS corner watermark for a picture
-          that already carries the company mark in its own pixels. */}
-      <div
-        className={`gallery__main${current.watermark === false ? ' media--unmarked' : ''}`}
-      >
+      {/* markClass decides the corner the watermark sits in, and suppresses
+          it only for a picture that already has the same mark burned into the
+          same corner. See src/lib/watermark.ts. */}
+      <div className={`gallery__main${markClass(current)}`}>
         <ProductMedia
           src={current.src}
           alt={current.alt}

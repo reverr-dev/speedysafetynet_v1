@@ -6,6 +6,7 @@ import { GROUND_BUILD, fromRate, rupees } from '@/lib/groundBuild';
 import { useEnquiry } from './EnquiryStore';
 import ProductImage from './ProductImage';
 import { ArrowRightIcon, CheckIcon, PlusIcon } from './Icons';
+import { markClass } from '@/lib/watermark';
 
 /**
  * Football and cricket ground construction.
@@ -102,9 +103,7 @@ export default function GroundBuild() {
           {stages.map((stage) => (
             <article className="gbs" key={stage.id}>
               <div
-                className={`gbs__media${stage.image ? '' : ' gbs__media--none'}${
-                  stage.watermark === false ? ' media--unmarked' : ''
-                }`}
+                className={`gbs__media${stage.image ? '' : ' gbs__media--none'}${markClass(stage)}`}
               >
                 {stage.image ? (
                   <ProductImage src={stage.image} alt={stage.alt ?? stage.title} />

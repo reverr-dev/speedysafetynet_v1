@@ -62,6 +62,25 @@
     ]
   },
   {
+    "id": "sn-004",
+    "slug": "flyover-safety-net",
+    "name": "Flyover Safety Net",
+    "categorySlug": "safety-nets",
+    "shortDescription": "Edge and under-deck netting for flyovers.",
+    "fullDescription": "Netting fitted along the edges of a flyover and beneath its deck, so that objects and debris cannot fall onto the carriageway, footpath or rail line below. Fixed to the existing railing and supports, and specified to the span and exposure of the structure.",
+    "images": [
+      {
+        "src": "/images/products/flyover-safety-net.jpg",
+        "alt": "Green safety netting running along the side edge and under the deck of a city flyover"
+      }
+    ],
+    "applications": [
+      "Flyover edges",
+      "Under-deck protection",
+      "Road and rail bridges"
+    ]
+  },
+  {
     "id": "ig-001",
     "slug": "invisible-grill",
     "name": "Invisible Grill",
@@ -72,7 +91,7 @@
       {
         "src": "/images/products/invisible-grill.jpg",
         "alt": "Invisible grill safety information panel",
-        "watermark": false
+        "watermarkCorner": "top-right"
       }
     ],
     "applications": [
@@ -94,8 +113,7 @@
     "images": [
       {
         "src": "/images/products/anti-bird-net.jpg",
-        "alt": "Anti bird net installation",
-        "watermark": false
+        "alt": "Anti bird net installation"
       }
     ],
     "applications": [
@@ -116,7 +134,7 @@
     "images": [
       {
         "src": "/images/products/birds-protective-nets.jpg",
-        "alt": "Large span bird netting across a warehouse roof structure"
+        "alt": "Bird protection netting across an apartment balcony, with pigeons on the railing outside it"
       }
     ],
     "applications": [
@@ -155,7 +173,7 @@
     "images": [
       {
         "src": "/images/products/stainless-steel-bird-spike.jpg",
-        "alt": "Stainless steel bird spikes mounted along a building ledge"
+        "alt": "Stainless steel bird spikes on a clear polycarbonate base, fitted along a metro station platform railing"
       }
     ],
     "price": {
@@ -268,7 +286,7 @@
     "images": [
       {
         "src": "/images/products/agri-shade-net-75.jpg",
-        "alt": "Green agricultural shade net over a plant nursery"
+        "alt": "Green 75% agro shade net on a steel frame over a field of crops"
       }
     ],
     "specs": [
@@ -332,7 +350,7 @@
     "images": [
       {
         "src": "/images/products/industrial-monsoon-shed.jpg",
-        "alt": "Industrial monsoon shed covering a loading bay"
+        "alt": "Steel-framed monsoon shade canopy over an industrial storage yard in heavy rain"
       }
     ],
     "applications": [
@@ -377,7 +395,7 @@
     "images": [
       {
         "src": "/images/products/heavy-duty-hdpe-tarpaulin.jpg",
-        "alt": "Heavy duty HDPE tarpaulin covering machinery"
+        "alt": "Folded heavy duty blue HDPE tarpaulin with reinforced eyelets"
       }
     ],
     "specs": [
@@ -485,8 +503,7 @@
     "images": [
       {
         "src": "/images/products/premium-artificial-grass-40mm.jpg",
-        "alt": "Artificial grass applications — residential, sports and commercial",
-        "watermark": false
+        "alt": "Artificial grass applications — residential, sports and commercial"
       }
     ],
     "specs": [
@@ -572,7 +589,7 @@
     "images": [
       {
         "src": "/images/products/nylon-hammock-hanging-mesh-net.jpg",
-        "alt": "Nylon rope hammock mesh net"
+        "alt": "White nylon mesh hammock slung between two trees on a verandah"
       }
     ],
     "specs": [

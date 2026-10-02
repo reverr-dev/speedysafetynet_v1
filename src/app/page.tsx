@@ -21,6 +21,11 @@ export default function HomePage() {
   return (
     <>
       <section className="hero">
+        {/* The photograph as its own layer rather than a background on the
+            section. It has to be a separate element so it can be moved
+            independently of the text as the page scrolls — a background-image
+            cannot be animated on the compositor. */}
+        <div className="hero__bg" aria-hidden="true" />
         <div className="container hero__inner">
           <span className="eyebrow" style={{ color: 'var(--brand-300)' }}>
             ISO 9001:2015 · Government Certified

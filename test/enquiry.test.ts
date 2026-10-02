@@ -9,6 +9,7 @@ import {
   featuredProducts,
   HERO_IMAGES,
   HERO_PRODUCT_SLUGS,
+  heroProducts,
 } from '../src/lib/products';
 import {
   validateEnquiry,
@@ -41,7 +42,7 @@ const check = (name: string, fn: () => void) => {
 
 console.log('\nDATA INTEGRITY');
 
-check('26 products in the catalogue', () => assert.equal(PRODUCTS.length, 26));
+check('27 products in the catalogue', () => assert.equal(PRODUCTS.length, 27));
 check('15 categories defined', () => assert.equal(CATEGORIES.length, 15));
 
 check('every product slug is unique', () => {
@@ -94,7 +95,7 @@ check('no picsum placeholders survived the port', () => {
 check('lookups resolve', () => {
   assert.equal(getProduct('balcony-anti-fall-net')?.name, 'Balcony Anti-Fall Net');
   assert.equal(getProduct('does-not-exist'), undefined);
-  assert.equal(productsInCategory('safety-nets').length, 3);
+  assert.equal(productsInCategory('safety-nets').length, 4);
 });
 
 check('featured products exist for the home page', () => {
@@ -350,20 +351,15 @@ check('the list of products still awaiting a photograph is exactly this', () => 
   // means deleting a line here, and so that nobody can quietly point a
   // product at a file that does not exist and have it look the same as a
   // product we are legitimately still waiting on.
+  //
+  // Nine lines came off this list when the client sent artwork on 1 Oct. The
+  // four below are the ones that batch did NOT cover — see the note in
+  // docs/PENDING-PHOTOS.md for what is still needed and why.
   const AWAITING = [
-    '/images/products/agri-shade-net-75.jpg',
-    '/images/products/birds-protective-nets.jpg',
     '/images/products/blue-pe-tarpaulin.jpg',
     '/images/products/braided-pp-rope.jpg',
     '/images/products/car-parking-shade-mesh.jpg',
-    '/images/products/heavy-duty-hdpe-tarpaulin.jpg',
-    '/images/products/industrial-monsoon-shed.jpg',
-    '/images/products/nylon-hammock-hanging-mesh-net.jpg',
     '/images/products/plastic-bird-spike.jpg',
-    '/images/products/privacy-fence-shade.jpg',
-    '/images/products/stainless-steel-bird-spike.jpg',
-    '/images/products/transparent-bird-net.jpg',
-    '/images/products/twisted-pp-safety-rope.jpg',
   ];
   const root = new URL('../public', import.meta.url);
   const missing = PRODUCTS.flatMap((p) => p.images)
@@ -416,18 +412,19 @@ check('no project claims work we cannot evidence', () => {
 });
 
 check('watermark suppression is only used where it is justified', () => {
-  // `watermark: false` hides the corner mark. Every use of it has to be a
-  // picture that already carries the company mark in its own pixels — three
-  // of the client's posters, and one photograph the old burn-in script
-  // stamped before there were clean originals to restore from.
+  // The client's rule is that every product carries the company mark, so the
+  // bar for `watermark: false` is now one thing only: the SAME gear device is
+  // already burned into the SAME corner by the old stamping script, and a
+  // second one there reads as a printing fault.
+  //
+  // His own posters are NOT on this list any more. They carry his logo
+  // elsewhere in the artwork, which is what `watermarkCorner` is for — the
+  // site mark moves to a plain corner rather than being dropped.
   //
   // This check exists because the flag was once applied to a plain
   // photograph by mistake, and the only symptom was a product quietly
   // shipping with no branding on it at all.
   const JUSTIFIED = new Set([
-    '/images/products/invisible-grill.jpg',
-    '/images/products/anti-bird-net.jpg',
-    '/images/products/premium-artificial-grass-40mm.jpg',
     '/images/products/balcony-anti-fall-net.jpg',
     '/images/projects/indoor-cricket-dome.jpg',
     '/images/projects/multisport-court.jpg',
@@ -437,6 +434,39 @@ check('watermark suppression is only used where it is justified', () => {
     .map((im) => im.src);
   for (const src of suppressed) {
     assert.ok(JUSTIFIED.has(src), `${src} suppresses the watermark with no reason on record`);
+  }
+});
+
+check('every product on the home page carries the mark', () => {
+  // The four featured products are the first thing anybody sees, and three of
+  // them were his own posters running with the corner mark suppressed — so
+  // the home page showed one branded picture and three unbranded ones. He
+  // noticed. This pins it: nothing in the featured band opts out.
+  for (const { product, image } of heroProducts()) {
+    assert.notStrictEqual(
+      image.watermark,
+      false,
+      `featured product "${product.slug}" is showing a picture with no company mark on it`,
+    );
+  }
+});
+
+check('a watermark corner override names a real corner', () => {
+  const CORNERS = new Set(['top-left', 'top-right', 'bottom-left']);
+  const overrides = [...PRODUCTS.flatMap((p) => p.images), ...PROJECTS.flatMap((p) => p.images)]
+    .filter((im) => im.watermarkCorner !== undefined);
+  for (const im of overrides) {
+    assert.ok(
+      CORNERS.has(im.watermarkCorner as string),
+      `${im.src} asks for corner "${im.watermarkCorner}", which has no CSS behind it`,
+    );
+    // Both together is a contradiction: one says hide it, the other says put
+    // it over there. Silently picking a winner is how the mark goes missing.
+    assert.notStrictEqual(
+      im.watermark,
+      false,
+      `${im.src} sets a watermark corner and also suppresses the watermark`,
+    );
   }
 });
 
