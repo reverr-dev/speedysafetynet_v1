@@ -89,8 +89,7 @@
     "images": [
       {
         "src": "/images/products/invisible-grill.jpg",
-        "alt": "Invisible grill safety information panel",
-        "watermarkCorner": "top-right"
+        "alt": "Invisible grill safety information panel"
       }
     ],
     "applications": [

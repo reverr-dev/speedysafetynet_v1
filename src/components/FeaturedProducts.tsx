@@ -7,7 +7,6 @@ import { getCategory } from '@/lib/categories';
 import { useEnquiry } from './EnquiryStore';
 import ProductMedia from './ProductMedia';
 import { ArrowRightIcon, CheckIcon } from './Icons';
-import { markClass } from '@/lib/watermark';
 
 /**
  * The client's four chosen products, as a band directly below the hero.
@@ -57,7 +56,7 @@ export default function FeaturedProducts() {
                 <span className="feature-card__ribbon">Best seller</span>
                 <Link
                   href={`/products/${product.slug}`}
-                  className={`feature-card__media feature-card__media--${kind}${markClass(image)}`}
+                  className={`feature-card__media feature-card__media--${kind}`}
                 >
                   {/* The first card is the largest image above the fold, so it
                       must not lazy-load — it is the LCP Google measures. */}

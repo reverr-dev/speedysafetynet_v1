@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE, addressOneLine } from '@/lib/site';
+import { SITE, addressOneLine, branchesOneLine } from '@/lib/site';
 import { quickWhatsAppUrl } from '@/lib/enquiry';
 import { MailIcon, PhoneIcon, PinIcon, WhatsAppIcon } from '@/components/Icons';
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   // The number here is built from SITE rather than typed out, because this
   // string is what Google prints under the search result — a number that goes
   // stale here is one a customer dials before they ever reach the site.
-  description: `Call ${SITE.contact.phoneDisplay} or message us on WhatsApp. Head office at P D Mello Road, Princess Dock, Mumbai 400009, with branches in Pune, Ahmedabad, Delhi and Surat.`,
+  description: `Call ${SITE.contact.phoneDisplay} or message us on WhatsApp. Head office at P D Mello Road, Princess Dock, Mumbai 400009, with branches in ${branchesOneLine()}.`,
 };
 
 /**

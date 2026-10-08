@@ -7,7 +7,6 @@ import { getCategory } from '@/lib/categories';
 import { useEnquiry } from './EnquiryStore';
 import ProductMedia from './ProductMedia';
 import { CheckIcon } from './Icons';
-import { markClass } from '@/lib/watermark';
 
 export default function ProductCard({ product }: { product: Product }) {
   const { add, has } = useEnquiry();
@@ -27,7 +26,7 @@ export default function ProductCard({ product }: { product: Product }) {
     <article className="card">
       <Link
         href={`/products/${product.slug}`}
-        className={`card__media${markClass(image)}`}
+        className="card__media"
       >
         {category && <span className="card__tag">{category.name}</span>}
         <ProductMedia src={image.src} alt={image.alt} video={image.video} />

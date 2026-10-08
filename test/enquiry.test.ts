@@ -343,27 +343,21 @@ check('every home-page tile override points at a real catalogue image', () => {
   }
 });
 
-check('the list of products still awaiting a photograph is exactly this', () => {
-  // Not a failure — a ledger. These products show the striped "Photograph
-  // required" placeholder, which is deliberate and visible.
+check('every product has a photograph on disk', () => {
+  // This was a ledger of products still waiting on the client. It is now
+  // empty: as of 8 October every product in the catalogue has a file.
   //
-  // It is written out rather than counted so that supplying a photograph
-  // means deleting a line here, and so that nobody can quietly point a
-  // product at a file that does not exist and have it look the same as a
-  // product we are legitimately still waiting on.
-  //
-  // Nine lines came off this list when the client sent artwork on 1 Oct. The
-  // four below are the ones that batch did NOT cover — see the note in
-  // docs/PENDING-PHOTOS.md for what is still needed and why.
-  const AWAITING = [
-    '/images/products/plastic-bird-spike.jpg',
-  ];
+  // Kept as an assertion rather than deleted, because the failure it catches
+  // is a nasty one — the site finds pictures purely by filename, so a typo
+  // in a slug or a file saved as .JPG or .jpeg shows the striped placeholder
+  // and nothing else complains. This turns that into a build failure that
+  // names the file.
   const root = new URL('../public', import.meta.url);
   const missing = PRODUCTS.flatMap((p) => p.images)
     .map((im) => im.src)
     .filter((src) => !existsSync(new URL(`.${src}`, `${root.href}/`)))
     .sort();
-  assert.deepEqual(missing, AWAITING);
+  assert.deepEqual(missing, [], `no file on disk for: ${missing.join(', ')}`);
 });
 
 check('every declared hover clip exists on disk', () => {
@@ -408,63 +402,21 @@ check('no project claims work we cannot evidence', () => {
   }
 });
 
-check('nothing suppresses the watermark', () => {
-  // The client's rule is absolute: every product and every project carries
-  // the company mark. So this is not a list of exceptions any more — it is
-  // zero.
-  //
-  // There used to be a JUSTIFIED list for pictures with the same gear device
-  // already burned into the same corner by the old stamping script. When the
-  // flag was checked against the files actually on disk, NONE of them had a
-  // burned-in mark: the originals had been restored at some point and the
-  // flags were left behind, so three items had been quietly shipping with no
-  // branding at all. The balcony net was spotted on the live site.
-  //
-  // If a genuinely pre-branded picture ever arrives, `watermark: false` still
-  // works — but adding it means changing this test, deliberately, with the
-  // file open in front of you. That is the point.
-  const suppressed = [...PRODUCTS.flatMap((p) => p.images), ...PROJECTS.flatMap((p) => p.images)]
-    .filter((im) => im.watermark === false)
-    .map((im) => im.src);
-  assert.deepEqual(
-    suppressed,
-    [],
-    `these pictures hide the company mark: ${suppressed.join(', ')}`,
-  );
-});
-
-check('every product on the home page carries the mark', () => {
-  // The four featured products are the first thing anybody sees, and three of
-  // them were his own posters running with the corner mark suppressed — so
-  // the home page showed one branded picture and three unbranded ones. He
-  // noticed. This pins it: nothing in the featured band opts out.
+check('every featured product has a picture on disk', () => {
+  // The four featured products are the first thing anybody sees, so a
+  // placeholder there is the worst place to have one. This used to assert
+  // they carried the CSS watermark; the mark now comes burned into the
+  // artwork the client supplies, so what is left to guarantee is simply
+  // that the file is there.
+  const root = new URL('../public', import.meta.url);
   for (const { product, image } of heroProducts()) {
-    assert.notStrictEqual(
-      image.watermark,
-      false,
-      `featured product "${product.slug}" is showing a picture with no company mark on it`,
+    assert.ok(
+      existsSync(new URL(`.${image.src}`, `${root.href}/`)),
+      `featured product "${product.slug}" has no photograph on disk`,
     );
   }
 });
 
-check('a watermark corner override names a real corner', () => {
-  const CORNERS = new Set(['top-left', 'top-right', 'bottom-left']);
-  const overrides = [...PRODUCTS.flatMap((p) => p.images), ...PROJECTS.flatMap((p) => p.images)]
-    .filter((im) => im.watermarkCorner !== undefined);
-  for (const im of overrides) {
-    assert.ok(
-      CORNERS.has(im.watermarkCorner as string),
-      `${im.src} asks for corner "${im.watermarkCorner}", which has no CSS behind it`,
-    );
-    // Both together is a contradiction: one says hide it, the other says put
-    // it over there. Silently picking a winner is how the mark goes missing.
-    assert.notStrictEqual(
-      im.watermark,
-      false,
-      `${im.src} sets a watermark corner and also suppresses the watermark`,
-    );
-  }
-});
 
 console.log('\nMESSAGE-ONLY ENQUIRIES');
 

@@ -6,7 +6,6 @@ import { quickWhatsAppUrl } from '@/lib/enquiry';
 import ProductImage from '@/components/ProductImage';
 import GroundBuild from '@/components/GroundBuild';
 import { SERVICE_ICONS, ArrowRightIcon, WhatsAppIcon } from '@/components/Icons';
-import { markClass } from '@/lib/watermark';
 
 export const metadata: Metadata = {
   title: 'Services — Installation, Bird Proofing, Sports Grounds & Green Walls',
@@ -132,7 +131,7 @@ export default function ServicesPage() {
 
               return (
                 <article
-                  className={`project${markClass(project.images[0])}`}
+                  className="project"
                   key={project.slug}
                 >
                   <ProductImage

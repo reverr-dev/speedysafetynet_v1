@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE, ABOUT_UNCONFIRMED, addressOneLine } from '@/lib/site';
+import { SITE, ABOUT_UNCONFIRMED, addressOneLine, branchesOneLine } from '@/lib/site';
 import { CATEGORIES } from '@/lib/categories';
 import { PRODUCTS } from '@/lib/products';
 import { BadgeCheckIcon, CheckIcon, PinIcon } from '@/components/Icons';
@@ -8,7 +8,7 @@ import { BadgeCheckIcon, CheckIcon, PinIcon } from '@/components/Icons';
 export const metadata: Metadata = {
   title: 'About — ISO 9001:2015 Certified Netting Manufacturer',
   description:
-    'Speed Safety Nets is an ISO 9001:2015 certified supplier and installer of safety netting, headquartered in Mumbai with branches in Pune, Ahmedabad, Delhi and Surat.',
+    `Speed Safety Nets is an ISO 9001:2015 certified supplier and installer of safety netting, headquartered in Mumbai with branches in ${branchesOneLine()}.`,
 };
 
 const VALUES = [
@@ -28,9 +28,9 @@ const VALUES = [
       'Every net is fitted to a consistent standard for tensioning, anchoring and impact resistance, whatever the size of the job.',
   },
   {
-    title: 'Present in five cities',
+    title: `Present in ${SITE.branches.length} cities`,
     detail:
-      'Branches in Mumbai, Pune, Ahmedabad, Delhi and Surat mean we can service multi-site contracts without relying on local intermediaries.',
+      `Branches in ${branchesOneLine(true)} mean we can service multi-site contracts without relying on local intermediaries.`,
   },
 ];
 

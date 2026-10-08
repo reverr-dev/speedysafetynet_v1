@@ -4,7 +4,7 @@
  * Everything below is transcribed from the client's visiting card, which
  * supersedes the old demo. The old demo was wrong in almost every detail:
  * it invented a Hyderabad address, a fake phone number, a fake email, and it
- * described the business as Mumbai-only when it in fact runs five branches.
+ * described the business as Mumbai-only when it in fact runs seven branches.
  *
  * Every component reads from this file, so contact details cannot drift
  * out of sync between the header, footer and contact page again.
@@ -14,7 +14,7 @@ export const SITE = {
   name: 'Speed Safety Nets',
   tagline: 'Professional Netting Solutions',
   description:
-    'Manufacturer and installer of safety nets, cricket nets, football turf, bird nets, shade nets, artificial grass and green walls. Mumbai head office with branches in Pune, Ahmedabad, Delhi and Surat.',
+    'Manufacturer and installer of safety nets, cricket nets, football turf, bird nets, shade nets, artificial grass and green walls. Mumbai head office with branches across Maharashtra, Gujarat and Delhi.',
 
   /** ⚠️ NOT YET REGISTERED — see DOMAIN_NOTE below. */
   url: 'https://speedsafetynet.com',
@@ -80,19 +80,41 @@ export const SITE = {
   },
 
   /**
-   * Five locations, not one. The old demo described a Mumbai-only business —
-   * this materially undersells them, and multi-city presence is a real
+   * Seven locations, not one. The old demo described a Mumbai-only business —
+   * that materially undersells them, and multi-city presence is a real
    * differentiator when quoting national contractors.
+   *
+   * Nashik and Vadodara are new branches, added October 2026.
+   *
+   * Ordered by region — Maharashtra, Gujarat, then Delhi — rather than by
+   * when they opened, so the list reads as a network. Head office first.
+   *
+   * ADD A BRANCH HERE AND NOWHERE ELSE. Every count on the site reads
+   * `SITE.branches.length` and every prose list is built by
+   * branchesOneLine() at the bottom of this file, so nothing can be left
+   * saying "five cities" after the sixth opens. That had already happened:
+   * three pages named the old five by hand.
    */
   branches: [
     { city: 'Mumbai', isHeadOffice: true },
     { city: 'Pune', isHeadOffice: false },
+    { city: 'Nashik', isHeadOffice: false },
     { city: 'Ahmedabad', isHeadOffice: false },
-    { city: 'Delhi', isHeadOffice: false },
+    { city: 'Vadodara', isHeadOffice: false },
     { city: 'Surat', isHeadOffice: false },
+    { city: 'Delhi', isHeadOffice: false },
   ],
 
-  serviceAreas: ['Mumbai', 'Pune', 'Ahmedabad', 'Delhi', 'Surat', 'Pan-India'],
+  serviceAreas: [
+    'Mumbai',
+    'Pune',
+    'Nashik',
+    'Ahmedabad',
+    'Vadodara',
+    'Surat',
+    'Delhi',
+    'Pan-India',
+  ],
 
   hours: 'Monday to Saturday, 9:00 AM – 7:00 PM',
 } as const;
@@ -164,3 +186,22 @@ export const addressOneLine = (): string =>
     SITE.address.line2,
     `${SITE.address.city} - ${SITE.address.postalCode}`,
   ].join(', ');
+
+/**
+ * The branch cities as a prose list — "Pune, Nashik, Ahmedabad, Vadodara,
+ * Surat and Delhi".
+ *
+ * Exists so page copy and meta descriptions never hard-code the list. They
+ * used to, in three places, and a visitor could read "branches in Pune,
+ * Ahmedabad, Delhi and Surat" directly above a list showing seven cities.
+ *
+ * Head office is excluded by default: most sentences read "Mumbai head
+ * office with branches in …", and naming Mumbai twice is clumsy.
+ */
+export const branchesOneLine = (includeHeadOffice = false): string => {
+  const cities = SITE.branches
+    .filter((b) => includeHeadOffice || !b.isHeadOffice)
+    .map((b) => b.city);
+  if (cities.length < 2) return cities.join('');
+  return `${cities.slice(0, -1).join(', ')} and ${cities[cities.length - 1]}`;
+};
