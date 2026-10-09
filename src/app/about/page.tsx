@@ -1,6 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SITE, ABOUT_UNCONFIRMED, addressOneLine, branchesOneLine } from '@/lib/site';
+import {
+  SITE,
+  ABOUT_UNCONFIRMED,
+  DIRECTOR,
+  PORTFOLIO_UNCONFIRMED,
+  addressOneLine,
+  branchesOneLine,
+} from '@/lib/site';
 import { CATEGORIES } from '@/lib/categories';
 import { PRODUCTS } from '@/lib/products';
 import { BadgeCheckIcon, CheckIcon, PinIcon } from '@/components/Icons';
@@ -91,6 +98,90 @@ export default function AboutPage() {
                 <p className="card__text">{v.detail}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/*
+        The director, and what the business actually is.
+
+        The client asked for "information regarding the business portfolio"
+        and sent a photograph with no text. Everything written below is drawn
+        from facts already established on this site — the certification, the
+        branch network, the catalogue, the in-house installation — and nothing
+        is invented. The figures he has not given (founding year, projects
+        completed, team size, named clients) live in PORTFOLIO_UNCONFIRMED and
+        each sentence is skipped while its value is null, so this section is
+        safe to publish today and gets stronger as he fills them in.
+      */}
+      <section className="section section--alt">
+        <div className="container">
+          <div className="director">
+            <div className="director__media">
+              {/* eslint-disable-next-line @next/next/no-img-element -- the
+                  static export runs images unoptimized, so next/image adds
+                  nothing here. */}
+              <img
+                src={DIRECTOR.photo}
+                alt={DIRECTOR.alt}
+                width={1086}
+                height={758}
+                loading="lazy"
+              />
+            </div>
+
+            <div className="director__body">
+              <span className="eyebrow">Our portfolio</span>
+              <h2>The business behind the nets</h2>
+
+              <p>
+                {SITE.name} manufactures, supplies and installs safety netting
+                and allied systems from a head office in Mumbai and{' '}
+                {SITE.branches.length - 1} further branches across Maharashtra,
+                Gujarat and Delhi
+                {PORTFOLIO_UNCONFIRMED.foundingYear
+                  ? `, trading since ${PORTFOLIO_UNCONFIRMED.foundingYear}`
+                  : ''}
+                . The range runs from construction fall-arrest and balcony nets
+                through bird proofing, invisible grills, shade nets, monsoon
+                sheds and tarpaulins, to sports nets, football turf and
+                artificial grass.
+              </p>
+
+              <p>
+                Every job is surveyed, supplied and fitted by our own team
+                rather than passed to a subcontractor
+                {PORTFOLIO_UNCONFIRMED.teamSize
+                  ? ` of ${PORTFOLIO_UNCONFIRMED.teamSize} people`
+                  : ''}
+                . It is the reason we take on complete sports grounds end to
+                end — civil base, turf, perimeter netting, padding and
+                branding — rather than supplying the netting and leaving the
+                rest to somebody else.
+                {PORTFOLIO_UNCONFIRMED.projectsCompleted
+                  ? ` Over ${PORTFOLIO_UNCONFIRMED.projectsCompleted} installations completed to date.`
+                  : ''}
+              </p>
+
+              <p>
+                The company is ISO 9001:2015 certified and GST registered
+                {SITE.gst ? ` under ${SITE.gst}` : ''}.
+                {PORTFOLIO_UNCONFIRMED.notableClients
+                  ? ` Clients include ${PORTFOLIO_UNCONFIRMED.notableClients.join(', ')}.`
+                  : ''}
+              </p>
+
+              <figcaption className="director__name">
+                {DIRECTOR.name ? (
+                  <>
+                    <strong>{DIRECTOR.name}</strong>
+                    <span>{DIRECTOR.role}</span>
+                  </>
+                ) : (
+                  <strong>{DIRECTOR.role}</strong>
+                )}
+              </figcaption>
+            </div>
           </div>
         </div>
       </section>

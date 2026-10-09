@@ -160,6 +160,46 @@ export const ABOUT_UNCONFIRMED = {
   proprietorFullName: null as string | null,
 } as const;
 
+/**
+ * The director, for the About page.
+ *
+ * ⚠️ THE NAME IS NOT CONFIRMED. Three different names are on record for this
+ * business — see ABOUT_UNCONFIRMED above. "Mr. Subhan" is the one printed on
+ * the visiting card, which is the most reliable of the three, but he has not
+ * confirmed it himself and the client sent the photograph with no text.
+ *
+ * TO CHANGE IT: edit `name` on the line below and nothing else. It is used
+ * in one place on the About page. Set it to null to show the role on its own
+ * with no name, which is the safe state if a correction is ever disputed.
+ */
+export const DIRECTOR = {
+  name: 'Mr. Subhan' as string | null,
+  role: 'Director',
+  photo: '/images/brand/director.jpg',
+  alt: 'The director of Speed Safety Nets at his desk, with artificial turf samples and a football turf specification board behind him',
+} as const;
+
+/**
+ * Portfolio figures the client has NOT supplied.
+ *
+ * Each sentence that depends on one of these is skipped entirely while the
+ * value is null, so the page is always safe to publish and never shows a
+ * bracket or a "TBC" to a customer. Fill a value in and its sentence appears.
+ *
+ * These are the four things worth asking him for — in rough order of how
+ * much they would add:
+ *   foundingYear      — "trading since 2006" is worth more than any adjective
+ *   projectsCompleted — a round number he is comfortable standing behind
+ *   teamSize          — supports the "our own team, not subcontractors" claim
+ *   notableClients    — only with written permission to name them
+ */
+export const PORTFOLIO_UNCONFIRMED = {
+  foundingYear: null as number | null,
+  projectsCompleted: null as number | null,
+  teamSize: null as number | null,
+  notableClients: null as readonly string[] | null,
+} as const;
+
 /** Main navigation. */
 export const NAV = [
   { label: 'Home', href: '/' },
